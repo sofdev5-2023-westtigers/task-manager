@@ -17,9 +17,9 @@
   }
 </script>
 
-<div class="list">
-  <li class="title-List">{name}</li>
-  <button class="button-AddTask" type="button" on:click={addNewTask}>Add task</button>
-  <button class="button-deleteList" type="button" on:click={deleteTaskList}>Delete List</button>
+<div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
+  <li class="title-List font-bold">{name}</li>
+  <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
+  <button class="button-deleteList bg-[#ee6767] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={deleteTaskList}>Delete List</button>
   <ul class="ul-listTasks"></ul>
 </div>

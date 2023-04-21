@@ -1,6 +1,7 @@
 <script>  
 
     import TaskList from "./TaskList.svelte";
+    import '../app.css';
 
     let lists = [];
 
@@ -27,15 +28,15 @@
     }
 </script>
 
-<div class="toDoList">
-    <h1 class="title-ToDoList">To-do List</h1>
-    <button class="button-NewList" hidden on:click={handleNewListClick}>New List</button>
+<div class="toDoList bg-[#675D50] rounded-[10PX] p-4 mb-4">
+    <h1 class="title-ToDoList text-center text-4xl text-gray-800 font-bold">To-do List</h1>
+    <button class="button-NewList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" hidden on:click={handleNewListClick}>New List</button>
 </div>
 
 <div class="lists" id="listsTask">
     <div id="addNewList" class="addNewList">
-        <input class="text-nameList" type="text" name="name" placeholder="Name List....">
-        <button class="button-addList" type="button" on:click={createList}>Add List</button>
+        <input class="text-nameList border-gray-300 bg-gray-100 rounded-[20PX] w-3/3 px-4 py-2" type="text" name="name" placeholder="Name List....">
+        <button class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" type="button" on:click={createList}>Add List</button>
     </div>
   
     <div id="tasklist" class="taskList">

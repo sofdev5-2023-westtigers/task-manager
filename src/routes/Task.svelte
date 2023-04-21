@@ -29,9 +29,9 @@
 </script>
 
 <li class="li-newtask">
-  <input class="input-nameTask" type="text" name="item1-textfield" placeholder="Name Task....">
-  <button class="button-add" type="button" on:click={(event) => createTask(event)}>Add</button>
+  <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" type="text" name="item1-textfield" placeholder="Name Task....">
+  <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={(event) => createTask(event)}>Add</button>
   <ul class="list-Task">
-    <button class="button-delete" type="button" hidden on:click={(event) => deleteTask(event)}>Delete</button>
+    <button class="button-delete bg-[#ee6767] text-black px-1 py-1 rounded-md mt-4 mb-2 text-sm" type="button" hidden on:click={(event) => deleteTask(event)}>Delete</button>
   </ul>
 </li>
