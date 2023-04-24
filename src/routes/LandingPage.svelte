@@ -1,0 +1,49 @@
+<script>
+	import { onMount } from 'svelte';
+	import { Registry } from '$lib/auth/Registry';
+	import AuthGuard from '$lib/auth/AuthGuard.svelte';
+    import ListOfLists from "./ListOfLists.svelte";
+
+    let showListOfLists = false;
+
+	onMount(() => {
+		Registry.auth.checkParams();
+	});
+	let login = () => {
+		Registry.auth.login({ redirectUri: location.href });
+	};
+	let logout = () => {
+		Registry.auth.logout();
+	};
+    let continueB = () => {
+    showListOfLists = true;
+    };
+</script>
+
+{#if showListOfLists}
+<ListOfLists />
+{:else}
+<div class="navbar bg-[#ABC4AA] rounded-box h-32">
+    <div class="flex-1 px-2 lg:flex-none" >
+        <img src="../src/resources/west.png"  class="w-21 h-16"/>
+        <a class="text-4xl text-[#f9f9f9] font-bold"> West Tigers</a>
+    </div> 
+    <div class="flex justify-end flex-1 px-2">
+        <div class="flex items-stretch">
+            <a on:click={logout} class="text-xl text-[#f9f9f9] btn btn-ghost rounded-btn">Logout</a>
+        </div>
+    </div>
+</div>
+<div class="hero min-h-screen">
+    <div class="hero-content flex-col lg:flex-row-reverse">
+        <img src="../src/resources/image-removebg-preview.png" class="max-w-sm rounded-lg shadow-2xl"/>
+        <div>
+            <h1 class="text-7xl text-[#675D50] font-bold">TASK  MANAGER</h1>
+            <p class="py-6 text-2xl text-[#675D50]">On this platform, you will be able to effectively keep track of your daily tasks in a simple and intuitive way. 
+                With our tool, you will be able to assign responsibilities, set deadlines and track the progress of your tasks.</p>
+                <button on:click={continueB} class="btn bg-[#ABC4AA] border-none">Continue!</button>
+        </div>
+    </div>
+</div>
+
+{/if}
