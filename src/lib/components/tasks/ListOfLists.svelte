@@ -1,9 +1,14 @@
-<script>  
-
+<script lang="ts">  
+    import type { PageData } from "../../../routes/$types";
     import TaskList from "./TaskList.svelte";
-    import '../app.css'
 
-    let lists = [];
+    /*export let data: PageData;
+    /*export let data: {
+      lists: any;
+    }
+    $: ({ lists } = data);*/
+
+    let listTasks = [];
 
     function handleNewListClick() {
         const addNewList = document.querySelector('.addNewList');
@@ -22,7 +27,7 @@
         buttonSortFil?.removeAttribute('hidden');
   
         addNewList.setAttribute('hidden', true);
-        lists = [...lists, { name, id: Date.now() }];
+        listTasks = [...listTasks, { name, id: Date.now() }];
         nameInput.value = '';
       }
     }
@@ -33,14 +38,14 @@
     <button class="button-NewList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" hidden on:click={handleNewListClick}>New List</button>
 </div>
 
-<div class="lists" id="listsTask">
+<div class="listTasks" id="listsTask">
     <div id="addNewList" class="addNewList">
         <input class="text-nameList border-gray-300 bg-gray-100 rounded-[20PX] w-3/3 px-4 py-2" type="text" name="name" placeholder="Name List....">
         <button class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" type="button" on:click={createList}>Add List</button>
     </div>
   
     <div id="tasklist" class="taskList">
-          {#each lists as list}
+          {#each listTasks as list}
             <TaskList key={list.id} name={list.name} />
           {/each}
     </div>

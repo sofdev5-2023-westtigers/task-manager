@@ -1,10 +1,13 @@
 <script>
   import NewTask from './NewTask.svelte';
+  import name from './TaskList.svelte'
+
   let taskList = [];
 
   function createTask(event) {
     const inputElement = event.target.parentNode.querySelector('.input-nameTask');
     const inputValue = inputElement.value;
+    console.log(name);
 
     const newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
