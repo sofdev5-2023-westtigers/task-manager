@@ -28,7 +28,7 @@
 		<ListOfLists/>
 		<div>
 			{#each lists as list}
-            	{list.taskName}
+            	{list.name}
         	{/each}
 		</div>
 		

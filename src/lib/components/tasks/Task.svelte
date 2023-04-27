@@ -4,10 +4,22 @@
 
   let taskList = [];
 
-  function createTask(event) {
-    const inputElement = event.target.parentNode.querySelector('.input-nameTask');
-    const inputValue = inputElement.value;
-    console.log(name);
+  async function createTask(event) {
+      const inputElement = event.target.parentNode.querySelector('.input-nameTask');
+      const inputValue = inputElement.value;
+      let listName = name
+      console.log(name);
+
+    //console.log(user);
+      const body = new FormData();
+      body.append('taskName', inputValue);
+      body.append('listName', listName.name);
+      body.append('isCompleted', false.toString());
+      const result = await fetch('/api/tasks/addTask', {
+        method: 'POST',body
+      });
+      const task = await result.json();
+      console.log(task);
 
     const newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),

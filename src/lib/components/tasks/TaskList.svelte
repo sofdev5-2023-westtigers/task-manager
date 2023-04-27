@@ -10,17 +10,11 @@
 
   async function addNewTask() {
     if (name) {
+      const body = new FormData();
+      body.append('listName', name);
       const newTask = new Task({
         target: event.target.parentNode.querySelector('.ul-listTasks'),
       });
-      console.log(user);
-      const body = new FormData();
-      body.append('name', name);
-      const result = await fetch('/api/tasks/addTask', {
-        method: 'POST',body
-      });
-      const task = await result.json();
-      console.log(task);
     }
   }
 

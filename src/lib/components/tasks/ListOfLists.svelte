@@ -15,12 +15,22 @@
         addNewList?.removeAttribute('hidden');
     }
   
-    function createList() {
+    async function createList() {
+
       const nameInput = event.target.parentNode.querySelector('.text-nameList');
       const name = nameInput.value.trim();
       const addNewList = document.querySelector('.addNewList');
   
       if (name) {
+        //console.log(user);
+        const body = new FormData();
+        body.append('listName', name);
+        const result = await fetch('/api/tasks/addList', {
+          method: 'POST',body
+        });
+        const task = await result.json();
+        console.log(task);
+        //
         const buttonNewList = document.querySelector('.button-NewList');
         const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
         buttonNewList?.removeAttribute('hidden');
