@@ -10,7 +10,7 @@
     let user: User;
 
     onMount(async() => {
-      posts = await getPost();
+      //posts = await getPost();
       Registry.auth.getUser().subscribe((data: User) => {
 			user = data;
 		});
@@ -18,16 +18,15 @@
 
     
 
-    const getPost = async () => {
-      const res = await fetch('/api/tasks/getList');
-      const data = await res.json();
-      //const filterData = data.slice(0, 3);
-      //console.log(filterData);
-      return data;
-    };
 
     //$: console.log(posts);
     
+    let groupedTasks = [];
+    async function fetchTasks() {
+    const res = await fetch('/api/tasks/getList');
+    groupedTasks = await res.json();
+    }
+    fetchTasks();
 
     // =======================================
 
@@ -88,13 +87,12 @@
 
 
 
-{#await getPost()}
-{:then data}
-{#each data as {taskName, listName, userId}}
- 
-  {#if userId && user && userId.toString() === user.userId.toString()}
-    <TaskList name={listName} inputValue={taskName} />
-  {/if}
+{#each groupedTasks as group}
+ {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
+ <TaskList name={group._id.listName} inputValue={group.tasks} />
+
+ {/if}
 {/each}
 <!-- {JSON.stringify(data)} -->
-{/await}
+
+

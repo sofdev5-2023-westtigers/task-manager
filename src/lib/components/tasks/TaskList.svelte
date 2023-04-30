@@ -5,7 +5,7 @@
   import NewTask from './NewTask.svelte';
 
   export let name = '';
-  export let inputValue = '';
+  export let inputValue = [];
   let user: User;
   let taskList = [];
 
@@ -67,12 +67,14 @@
       <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 rounded-md text-sm" hidden type="button" on:click={(event) => createTask(event)}>Add</button>
       <ul class="list-Task">
         <!-- -->
-        {#if inputValue}
+        {#each inputValue as task}
+        {#if task}
         <div>
           <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
-          <label class="label-task ml-2" for="task">{inputValue} </label>
+          <label class="label-task ml-2" for="task">{task.taskName} </label>
         </div>
         {/if}
+        {/each}
       <!-- -->
       </ul>
     </li>

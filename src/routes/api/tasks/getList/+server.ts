@@ -1,13 +1,10 @@
 import { tasks } from "$db/tasks";
 import { json, type RequestHandler } from "@sveltejs/kit";
 
- 
-
 export const GET: RequestHandler = async ({ locals }) => {
-    const allTasks = await tasks.find().toArray();
-    
-    // log all tasks
-    //console.log(allTasks, locals);
-  
-    return json(allTasks);
-};
+    const groupedTasks = await tasks.aggregate([
+      { $group: { _id: { userId: "$userId", listName: "$listName" }, tasks: { $push: "$$ROOT" } } }
+    ]).toArray();
+    console.log(groupedTasks);
+    return json(groupedTasks);
+  };
