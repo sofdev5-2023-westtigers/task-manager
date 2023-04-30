@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Registry } from '$lib/auth/Registry';
+  import DatePick from '$calendar/DatePick.svelte';
 	import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
+  import {selectedDate}  from "$calendar/DeadlineCalendar.svelte";
+  import {selectedDatesValue}  from "$calendar/SelectDaysCalendar.svelte";
+  import {showPickDate, showDates}  from "$calendar/OptionsDate.svelte";
 
   export let name = '';
   let user: User;
@@ -16,6 +20,8 @@
       inputNameTask?.removeAttribute('hidden');
       const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
       inputNameTask1?.removeAttribute('hidden');
+      const datepickTask = event.target.parentNode.querySelector('.datepick-select');
+      datepickTask?.removeAttribute('hidden');
     }
   }
 
@@ -27,13 +33,14 @@
 
   async function createTask(event) {
       const inputElement = event.target.parentNode.querySelector('.input-nameTask');
-      const inputValue = inputElement.value;
+      const inputValue1 = inputElement.value;
       console.log(name);
+      let newTask = null;
 
     //console.log(user);
       const body = new FormData();
       body.append('userId',user.userId.toString());
-      body.append('taskName', inputValue);
+      body.append('taskName', inputValue1);
       body.append('listName', name);
       body.append('isCompleted', false.toString());
       const result = await fetch('/api/tasks/addTask', {
@@ -42,29 +49,46 @@
       const task = await result.json();
       console.log(task);
 
-    const newTask = new NewTask({
+      if(showPickDate == true){
+      newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
-      props: { inputValue },
-    });
+      props: { inputValue : inputValue1, containsDate : true ,dateValue : selectedDate },
+      });
+    }else if(showDates == true){
+      newTask = new NewTask({
+      target: event.target.parentNode.querySelector('.list-Task'),
+      props: { inputValue : inputValue1, containsDates : true ,datesValue : selectedDatesValue },
+      });
+    }else{
+      newTask = new NewTask({
+      target: event.target.parentNode.querySelector('.list-Task'),
+      props: { inputValue : inputValue1},
+      });
+    }
 
     taskList = [...taskList, newTask];
     inputElement.value = '';
 
     const inputNameTask = event.target.parentNode.querySelector('.input-nameTask');
     inputNameTask?.setAttribute('hidden', true);
+    const datepickTask = event.target.parentNode.querySelector('.datepick-select');
+    datepickTask?.setAttribute('hidden', true);
     const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
     inputNameTask1?.setAttribute('hidden', true);
   }
 </script>
 
 <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
-  <li class="title-List font-bold">{name}</li>
+  <li class="title-List font-bold text-2xl">{name}</li>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
   <ul class="ul-listTasks">
     <li class="li-newtask">
       <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
-      <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 rounded-md text-sm" hidden type="button" on:click={(event) => createTask(event)}>Add</button>
-      <ul class="list-Task">
+      <div class="datepick-select" hidden>
+        <DatePick/>
+      </div>
+      <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={(event) => createTask(event)}>Add</button>
+      <ul class="list-Task mt-2">
       </ul>
     </li>
   </ul>
