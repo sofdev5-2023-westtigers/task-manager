@@ -1,12 +1,5 @@
 <script lang="ts">  
-    import type { PageData } from "../../../routes/$types";
     import TaskList from "./TaskList.svelte";
-
-    /*export let data: PageData;
-    /*export let data: {
-      lists: any;
-    }
-    $: ({ lists } = data);*/
 
     let listTasks = [];
 
