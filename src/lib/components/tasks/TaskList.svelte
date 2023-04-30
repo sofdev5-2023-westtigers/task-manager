@@ -5,6 +5,7 @@
   import NewTask from './NewTask.svelte';
 
   export let name = '';
+  export let inputValue = '';
   let user: User;
   let taskList = [];
 
@@ -28,7 +29,7 @@
   async function createTask(event) {
       const inputElement = event.target.parentNode.querySelector('.input-nameTask');
       const inputValue = inputElement.value;
-      console.log(name);
+      //console.log(name);
 
     //console.log(user);
       const body = new FormData();
@@ -40,7 +41,7 @@
         method: 'POST',body
       });
       const task = await result.json();
-      console.log(task);
+      //console.log(task);
 
     const newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
@@ -65,7 +66,19 @@
       <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
       <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 rounded-md text-sm" hidden type="button" on:click={(event) => createTask(event)}>Add</button>
       <ul class="list-Task">
+        <!-- -->
+        <div>
+          <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+          <label class="label-task ml-2" for="task">{inputValue} </label>
+        </div>
+      <!-- -->
       </ul>
     </li>
   </ul>
 </div>
+
+<style>
+  input:checked + label {
+      text-decoration: line-through;
+  }
+</style>

@@ -1,5 +1,27 @@
 <script lang="ts">  
+	import { onMount } from "svelte";
     import TaskList from "./TaskList.svelte";
+
+    // ======================================
+
+    let posts = []
+    onMount(async() => {
+      posts = await getPost();
+    });
+
+    const getPost = async () => {
+      const res = await fetch('/api/tasks/getList');
+      const data = await res.json();
+      //const filterData = data.slice(0, 3);
+      //console.log(filterData);
+      return data;
+    };
+
+    //$: console.log(posts);
+    
+
+    // =======================================
+
 
     let listTasks = [];
 
@@ -53,3 +75,13 @@
           {/each}
     </div>
 </div>
+
+
+
+{#await getPost()}
+{:then data}
+{#each data as {taskName, listName}}
+  <TaskList name={listName} inputValue={taskName} />
+{/each}
+<!-- {JSON.stringify(data)} -->
+{/await}
