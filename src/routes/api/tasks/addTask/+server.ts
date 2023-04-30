@@ -12,3 +12,19 @@ export const POST : RequestHandler = (async ({request,locals}) => {
 
     return json(insertedList);
 });
+
+export const PUT: RequestHandler = async ({ request, locals }) => {
+    const body = await request.formData();
+    const list = {userId: body.get('userId'), taskNameOld: body.get('taskNameOld'), taskName: body.get('taskName'), listName: body.get('listName')};
+
+    const result = await tasks.updateOne(
+        { userId: body.get('userId'), taskName:  body.get('taskNameOld'), },
+        { $set: { taskName: list.taskName} }
+      );
+    
+    const updatedList = await tasks.findOne({ taskName: list.taskName});
+    
+    console.log(updatedList, locals);
+    
+    return json(updatedList);
+  };
