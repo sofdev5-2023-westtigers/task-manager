@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { Registry } from '$lib/auth/Registry';
 	import AuthGuard from '$lib/auth/AuthGuard.svelte';
-	import LandingPage from "./LandingPage.svelte";
+	import ListOfLists from "$lib/components/tasks/ListOfLists.svelte";
+  import LandingPage from "./LandingPage.svelte";
 
 	onMount(() => {
 		Registry.auth.checkParams();
@@ -19,7 +20,8 @@
 
 <AuthGuard manual={true}>
 	<div slot="authed" let:user>
-		<LandingPage/>
+    <LandingPage/>
+	  <button on:click={logout}>Logout</button>
 	</div>
 	<button slot="not_authed" on:click={login}>Login</button>
 </AuthGuard>

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Registry } from '$lib/auth/Registry';
 	import AuthGuard from '$lib/auth/AuthGuard.svelte';
-    import ListOfLists from "./ListOfLists.svelte";
+    import ListOfLists from "$lib/components/tasks/ListOfLists.svelte";
 
     let showListOfLists = false;
 
