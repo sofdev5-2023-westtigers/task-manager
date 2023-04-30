@@ -1,13 +1,22 @@
 <script lang="ts">  
 	import { onMount } from "svelte";
-    import TaskList from "./TaskList.svelte";
+  import { Registry } from '$lib/auth/Registry';
+	import type { User } from '$lib/auth/User';
+  import TaskList from "./TaskList.svelte";
 
     // ======================================
 
     let posts = []
+    let user: User;
+
     onMount(async() => {
       posts = await getPost();
+      Registry.auth.getUser().subscribe((data: User) => {
+			user = data;
+		});
     });
+
+    
 
     const getPost = async () => {
       const res = await fetch('/api/tasks/getList');
@@ -35,6 +44,7 @@
       const nameInput = event.target.parentNode.querySelector('.text-nameList');
       const name = nameInput.value.trim();
       const addNewList = document.querySelector('.addNewList');
+      console.log(user.userId);
   
       if (name) {
         //console.log(user);
@@ -80,8 +90,11 @@
 
 {#await getPost()}
 {:then data}
-{#each data as {taskName, listName}}
-  <TaskList name={listName} inputValue={taskName} />
+{#each data as {taskName, listName, userId}}
+ 
+  {#if userId && user && userId.toString() === user.userId.toString()}
+    <TaskList name={listName} inputValue={taskName} />
+  {/if}
 {/each}
 <!-- {JSON.stringify(data)} -->
 {/await}
