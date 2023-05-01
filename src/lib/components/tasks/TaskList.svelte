@@ -78,6 +78,28 @@
     const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
     inputNameTask1?.setAttribute('hidden', true);
   }
+  function save() {
+        const parent = this.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        if (inputs[0].value == "") {
+            inputs[0].value = labels[0].textContent;
+        } else {
+            labels[0].textContent = inputs[0].value;
+        }
+        buttons[1].style.display = "none";
+        inputs[0].style.display = "none";
+    }
+    function show() {
+        const parent = this.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        inputs[0].value = labels[0].textContent
+        buttons[1].style.display = "inline";
+        inputs[0].style.display = "inline";
+    }
 </script>
 
 <svelte:head>
@@ -85,9 +107,11 @@
 </svelte:head>
 
 <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
-  <li class="title-List font-bold text-2xl">{name}</li>
+  <label class="title-List font-bold text-2xl" on:click={show}>{name}</label>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
-  <ul class="ul-listTasks">
+  <input type="text" style="display: none;">
+  <button on:click={save} style="display: none;">Done</button>
+  <ul class="ul-listTasks"></ul>
     <li class="li-newtask">
       <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
       <div class="datepick-select" hidden>
@@ -111,7 +135,6 @@
         {/each}
       </ul>
     </li>
-  </ul>
 </div>
 
 <style>
