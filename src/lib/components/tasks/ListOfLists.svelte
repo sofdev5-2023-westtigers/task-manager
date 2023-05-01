@@ -4,22 +4,13 @@
 	import type { User } from '$lib/auth/User';
   import TaskList from "./TaskList.svelte";
 
-    // ======================================
-
-    let posts = []
     let user: User;
 
     onMount(async() => {
-      //posts = await getPost();
       Registry.auth.getUser().subscribe((data: User) => {
 			user = data;
 		});
     });
-
-    
-
-
-    //$: console.log(posts);
     
     let groupedTasks = [];
     async function fetchTasks() {
@@ -27,9 +18,6 @@
     groupedTasks = await res.json();
     }
     fetchTasks();
-
-    // =======================================
-
 
     let listTasks = [];
 
@@ -43,18 +31,14 @@
       const nameInput = event.target.parentNode.querySelector('.text-nameList');
       const name = nameInput.value.trim();
       const addNewList = document.querySelector('.addNewList');
-      console.log(user.userId);
   
       if (name) {
-        //console.log(user);
         const body = new FormData();
         body.append('listName', name);
-        const result = await fetch('/api/tasks/addList', {
+        await fetch('/api/tasks/addList', {
           method: 'POST',body
         });
-        const task = await result.json();
-        console.log(task);
-        //
+        
         const buttonNewList = document.querySelector('.button-NewList');
         const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
         buttonNewList?.removeAttribute('hidden');

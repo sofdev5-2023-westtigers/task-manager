@@ -8,7 +8,6 @@ export const POST : RequestHandler = (async ({request,locals}) => {
     const insertedList = await lists.findOne({_id : result.insertedId});
 
     // log all fields
-    console.log(insertedList,locals);
 
     return json(insertedList);
 });

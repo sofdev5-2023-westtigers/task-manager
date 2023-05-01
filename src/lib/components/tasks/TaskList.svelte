@@ -35,39 +35,38 @@
   async function createTask(event) {
       const inputElement = event.target.parentNode.querySelector('.input-nameTask');
 
-      const inputValue = inputElement.value;
+      const inputValue1 = inputElement.value;
 
       let newTask = null;
 
-
-    //console.log(user);
       const body = new FormData();
       body.append('userId',user.userId.toString());
       body.append('taskName', inputValue1);
       body.append('listName', name);
       body.append('isCompleted', false.toString());
-      const result = await fetch('/api/tasks/addTask', {
-        method: 'POST',body
-      });
-      const task = await result.json();
-      //console.log(task);
+      
 
       if(showPickDate == true){
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1, containsDate : true ,dateValue : selectedDate },
       });
+      body.append('date', selectedDate);
     }else if(showDates == true){
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1, containsDates : true ,datesValue : selectedDatesValue },
       });
+      body.append('dates', selectedDatesValue);
     }else{
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1},
       });
     }
+    await fetch('/api/tasks/addTask', {
+        method: 'POST',body
+    });
 
     taskList = [...taskList, newTask];
     inputElement.value = '';
@@ -80,6 +79,10 @@
     inputNameTask1?.setAttribute('hidden', true);
   }
 </script>
+
+<svelte:head>
+	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
+</svelte:head>
 
 <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
   <li class="title-List font-bold text-2xl">{name}</li>
@@ -97,6 +100,12 @@
         <div>
           <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
           <label class="label-task ml-2" for="task">{task.taskName} </label>
+          {#if task.date}
+            <i class="mi mi-calendar"><span class="u-sr-only">{task.date}</span></i>
+          {/if}
+          {#if task.dates}
+            <i class="mi mi-calendar"><span class="u-sr-only">{task.dates}</span></i>
+          {/if}
         </div>
         {/if}
         {/each}
