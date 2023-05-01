@@ -100,6 +100,44 @@
         buttons[1].style.display = "inline";
         inputs[0].style.display = "inline";
     }
+
+    async function saveTask(event) {
+        const parent = this.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        const oldValue = labels[0].textContent;
+        if (inputs[1].value == "") {
+            inputs[1].value = labels[0].textContent;
+        } else {
+            labels[0].textContent = inputs[1].value;
+        }
+        
+        
+        buttons[0].style.display = "none";
+        inputs[1].style.display = "none";
+        const inputElement = event.target.parentNode.querySelector('.task-modified');
+        const inputValue = inputElement.value;
+        const body = new FormData();
+        body.append('userId', user.userId.toString());
+        body.append('taskNameOld', oldValue);
+        body.append('taskName', inputValue);
+        const result = await fetch('/api/tasks/addTask', {
+        method: 'PUT', body
+        });
+        const task = await result.json();
+        console.log(task);
+    }
+
+    function showTasks() {
+        const parent = this.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        inputs[1].value = labels[0].textContent
+        buttons[0].style.display = "inline";
+        inputs[1].style.display = "inline";
+    }
 </script>
 
 <svelte:head>
@@ -123,7 +161,9 @@
         {#if task}
         <div>
           <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
-          <label class="label-task ml-2" for="task">{task.taskName} </label>
+          <label class="label-task ml-2" for="task" on:click={showTasks}>{task.taskName}</label>
+          <input class="task-modified "type="text" style="display: none;">
+          <button on:click={saveTask} style="display: none;">Done</button>
           {#if task.date}
             <i class="mi mi-calendar"><span class="u-sr-only">{task.date}</span></i>
           {/if}
