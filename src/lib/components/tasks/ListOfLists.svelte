@@ -1,5 +1,23 @@
 <script lang="ts">  
-    import TaskList from "./TaskList.svelte";
+	import { onMount } from "svelte";
+  import { Registry } from '$lib/auth/Registry';
+	import type { User } from '$lib/auth/User';
+  import TaskList from "./TaskList.svelte";
+
+    let user: User;
+
+    onMount(async() => {
+      Registry.auth.getUser().subscribe((data: User) => {
+			user = data;
+		});
+    });
+    
+    let groupedTasks = [];
+    async function fetchTasks() {
+    const res = await fetch('/api/tasks/getList');
+    groupedTasks = await res.json();
+    }
+    fetchTasks();
 
     let listTasks = [];
 
@@ -15,15 +33,12 @@
       const addNewList = document.querySelector('.addNewList');
   
       if (name) {
-        //console.log(user);
         const body = new FormData();
         body.append('listName', name);
-        const result = await fetch('/api/tasks/addList', {
+        await fetch('/api/tasks/addList', {
           method: 'POST',body
         });
-        const task = await result.json();
-        console.log(task);
-        //
+        
         const buttonNewList = document.querySelector('.button-NewList');
         const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
         buttonNewList?.removeAttribute('hidden');
@@ -53,3 +68,15 @@
           {/each}
     </div>
 </div>
+
+
+
+{#each groupedTasks as group}
+ {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
+ <TaskList name={group._id.listName} inputValue={group.tasks} />
+
+ {/if}
+{/each}
+<!-- {JSON.stringify(data)} -->
+
+

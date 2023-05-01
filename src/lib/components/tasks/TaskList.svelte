@@ -9,6 +9,7 @@
   import {showPickDate, showDates}  from "$calendar/OptionsDate.svelte";
 
   export let name = '';
+  export let inputValue = [];
   let user: User;
   let taskList = [];
 
@@ -33,38 +34,39 @@
 
   async function createTask(event) {
       const inputElement = event.target.parentNode.querySelector('.input-nameTask');
+
       const inputValue1 = inputElement.value;
-      console.log(name);
+
       let newTask = null;
 
-    //console.log(user);
       const body = new FormData();
       body.append('userId',user.userId.toString());
       body.append('taskName', inputValue1);
       body.append('listName', name);
       body.append('isCompleted', false.toString());
-      const result = await fetch('/api/tasks/addTask', {
-        method: 'POST',body
-      });
-      const task = await result.json();
-      console.log(task);
+      
 
       if(showPickDate == true){
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1, containsDate : true ,dateValue : selectedDate },
       });
+      body.append('date', selectedDate);
     }else if(showDates == true){
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1, containsDates : true ,datesValue : selectedDatesValue },
       });
+      body.append('dates', selectedDatesValue);
     }else{
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1},
       });
     }
+    await fetch('/api/tasks/addTask', {
+        method: 'POST',body
+    });
 
     taskList = [...taskList, newTask];
     inputElement.value = '';
@@ -78,6 +80,10 @@
   }
 </script>
 
+<svelte:head>
+	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
+</svelte:head>
+
 <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
   <li class="title-List font-bold text-2xl">{name}</li>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
@@ -89,7 +95,27 @@
       </div>
       <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={(event) => createTask(event)}>Add</button>
       <ul class="list-Task mt-2">
+        {#each inputValue as task}
+        {#if task}
+        <div>
+          <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+          <label class="label-task ml-2" for="task">{task.taskName} </label>
+          {#if task.date}
+            <i class="mi mi-calendar"><span class="u-sr-only">{task.date}</span></i>
+          {/if}
+          {#if task.dates}
+            <i class="mi mi-calendar"><span class="u-sr-only">{task.dates}</span></i>
+          {/if}
+        </div>
+        {/if}
+        {/each}
       </ul>
     </li>
   </ul>
 </div>
+
+<style>
+  input:checked + label {
+      text-decoration: line-through;
+  }
+</style>
