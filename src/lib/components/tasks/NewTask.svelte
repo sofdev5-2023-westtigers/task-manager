@@ -25,15 +25,15 @@
         inputs[1].style.display = "none";
         const inputElement = event.target.parentNode.querySelector('.task-modified');
         const inputValue = inputElement.value;
-        // const body = new FormData();
-        // body.append('userId', user.userId.toString());
-        // body.append('taskNameOld', oldValue);
-        // body.append('taskName', inputValue);
-        // const result = await fetch('/api/tasks/addTask', {
-        // method: 'PUT', body
-        // });
-        // const task = await result.json();
-        // console.log(task);
+        const body = new FormData();
+        body.append('userId', user.userId.toString());
+        body.append('taskNameOld', oldValue);
+        body.append('taskName', inputValue);
+        const result = await fetch('/api/tasks/addTask', {
+        method: 'PUT', body
+        });
+        const task = await result.json();
+        console.log(task);
     }
     onMount(() => {
         Registry.auth.getUser().subscribe((data: User) => {
