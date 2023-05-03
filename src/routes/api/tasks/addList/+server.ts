@@ -17,13 +17,17 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     const body = await request.formData();
     const list = {userId: body.get('userId'), listNameOld: body.get('listNameOld'), listName: body.get('listName')};
   
-    const result = await tasks.updateOne(
+    const result = await tasks.updateMany(
         { listName:  body.get('listNameOld') },
         { $set: { listName: list.listName} }
       );
       const result2 = await lists.updateOne(
         { listName:  body.get('listNameOld') },
         { $set: { listName: list.listName} }
+      );
+      const result3 = await tasks.updateMany(
+        { listName: list.listName },
+        { $set: { listName: list.listName } }
       );
 
     
