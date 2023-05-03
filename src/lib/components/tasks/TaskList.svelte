@@ -4,15 +4,17 @@
   import DatePick from '$calendar/DatePick.svelte';
 	import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
-  import {selectedDate}  from "$calendar/DeadlineCalendar.svelte";
-  import {selectedDatesValue}  from "$calendar/SelectDaysCalendar.svelte";
-  import {showPickDate, showDates}  from "$calendar/OptionsDate.svelte";
-
+  import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
+  import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
+  
+  
   export let name = '';
   export let inputValue = [];
   let user: User;
   let taskList = [];
+  $: setTaskList(inputValue);
   export let inputValueListName = '';
+  
   async function addNewTask(event) {
     if (name) {
       const body = new FormData();
@@ -44,26 +46,26 @@
       body.append('taskName', inputValue1);
       body.append('listName', name);
       body.append('isCompleted', false.toString());
-      
 
       if(showPickDate == true){
+        newTask = new NewTask({
+        target: event.target.parentNode.querySelector('.list-Task'),
+        props: { inputValue : inputValue1, containsDate : true ,dateValue : date },
+        });
+        body.append('date', date);
+    }else if(showPickDates == true){
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
-      props: { inputValue : inputValue1, containsDate : true ,dateValue : selectedDate },
+      props: { inputValue : inputValue1, containsDate : true , dateValue : dates },
       });
-      body.append('date', selectedDate);
-    }else if(showDates == true){
-      newTask = new NewTask({
-      target: event.target.parentNode.querySelector('.list-Task'),
-      props: { inputValue : inputValue1, containsDates : true ,datesValue : selectedDatesValue },
-      });
-      body.append('dates', selectedDatesValue);
+      body.append('dates', dates);
     }else{
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1},
       });
     }
+    setFalsePicks();
     await fetch('/api/tasks/addTask', {
         method: 'POST',body
     });
@@ -266,10 +268,10 @@
         {/each}
       </ul>
     </li>
-</div>
+</div> 
 
 <style>
-  input:checked + label {
+  input:checked + label, input:checked + label + i {
       text-decoration: line-through;
   }
 </style>

@@ -1,8 +1,8 @@
-<script context="module">
+<script>
     import DeadLineCalendar from "./DeadlineCalendar.svelte";
     import SelectDayCalendar from "./SelectDaysCalendar.svelte";
-    export let showPickDate = false;
-    export let showDates = false;
+    let showPickDate = false;
+    let showDates = false;
 
     function toggleNoDate() {
         showPickDate = true;
