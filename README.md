@@ -1,12 +1,15 @@
-# Sveltekit - Keycloak
+# Sveltekit - TaskManager
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+West Tigers project about a task manager using integration and others tools
 
 ## Starting a project
 
 ```bash
 # install node modules
 npm install
+
+#install the pickdate and calendar styles
+npm install --save-dev mono-icons carbon-components-svelte @event-calendar/core @event-calendar/time-grid @event-calendar/day-grid @event-calendar/list @event-calendar/resource-time-grid @event-calendar/interaction
 ```
 
 ## Developing
@@ -20,24 +23,13 @@ npm run dev
 npm run dev -- --open
 ```
 
-## Building
-
-To create a production version of your app:
+In other terminal run the next command to apply the tailwind and daisy styles:
 
 ```bash
-npm run build
+npx tailwindcss -i ./src/app.css -o ./src/lib/styles.css --watch
 ```
 
-You can preview the production build with `npm run preview`.
+## Considerations:
 
-## About keycloak
-
-Follow the instructions here https://www.keycloak.org/getting-started/getting-started-docker#_start_keycloak
-
-With the only difference on the `Create Client` part, instead of adding the urls they suggest use your application url which should be `http://localhost:5173` and make sure to have this url properly set on the `Root URL` field just like the image below.
-
-![create client example](/createClient.png)
-
-Now that you have your docker running in the port 8080, find the file `.env.example` make a copy and rename the copy to `.env` this file will be read to get keycloak configuration.
-
-That should be it, test the connection running this project and going to `hppt:localhost:5173`
+- To use keycloak you need to start the docker container on your docker desktop, once done you would be able to register in the app
+- To connect with the database you need to rename the .env.example file to: .env
