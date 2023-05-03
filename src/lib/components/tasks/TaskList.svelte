@@ -12,7 +12,7 @@
   export let inputValue = [];
   let user: User;
   let taskList = [];
-
+  export let inputValueListName = '';
   async function addNewTask(event) {
     if (name) {
       const body = new FormData();
@@ -78,6 +78,106 @@
     const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
     inputNameTask1?.setAttribute('hidden', true);
   }
+  function save() {
+        const parent = this.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        if (inputs[0].value == "") {
+            inputs[0].value = labels[0].textContent;
+        } else {
+            labels[0].textContent = inputs[0].value;
+        }
+        buttons[1].style.display = "none";
+        inputs[0].style.display = "none";
+    }
+    function show() {
+        const parent = this.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        inputs[0].value = labels[0].textContent
+        buttons[1].style.display = "inline";
+        inputs[0].style.display = "inline";
+    }
+
+    async function saveList(event) {
+        const parent = this.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        const oldList = labels[0].textContent;
+        console.log("holdL")
+        console.log(inputs[0].value)
+        console.log(inputs[1].value)
+        console.log(oldList)
+        if (inputs[0].value == "") {
+            inputs[0].value = labels[0].textContent;
+        } else {
+            labels[0].textContent = inputs[0].value;
+        }
+        
+        
+        inputs[0].style.display = "none";
+        buttons[1].style.display = "none";
+        const inputElement = event.target.parentNode.querySelector('.listName-modified');
+        const inputValueListName = inputElement.value;
+        console.log(inputValueListName)
+        const body = new FormData();
+        body.append('userId', user.userId.toString());
+        body.append('listNameOld', oldList);
+        body.append('listName', inputValueListName);
+        const result = await fetch('/api/tasks/addList', {
+        method: 'PUT', body
+        });
+        const task = await result.json();
+        console.log(task);
+    }
+
+    async function saveTask(event) {
+        const parent = this.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        const oldValue = labels[0].textContent;
+        // console.log("holT")
+        // console.log(inputs[0].value)
+        // console.log(inputs[1].value)
+        // console.log(oldValue)
+        if (inputs[1].value == "") {
+            inputs[1].value = labels[0].textContent;
+        } else {
+            labels[0].textContent = inputs[1].value;
+        }
+        
+        buttons[0].style.display = "none";
+        inputs[1].style.display = "none";
+        const inputElement = event.target.parentNode.querySelector('.task-modified');
+        const inputValueTask = inputElement.value;
+        const checkbox = event.target.parentNode.querySelector('.checkbox-task');
+        const isChecked = checkbox.checked;
+        // console.log(isChecked, "ho")
+        const body = new FormData();
+        body.append('userId', user.userId.toString());
+        body.append('taskNameOld', oldValue);
+        body.append('taskName', inputValueTask);
+        body.append('isCompleted', isChecked.toString());
+        const result = await fetch('/api/tasks/addTask', {
+        method: 'PUT', body
+        });
+        const task = await result.json();
+        console.log(task);
+    }
+
+    function showTasks() {
+        const parent = this.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        inputs[1].value = labels[0].textContent
+        buttons[0].style.display = "inline";
+        inputs[1].style.display = "inline";
+    }
 </script>
 
 <svelte:head>
@@ -85,9 +185,11 @@
 </svelte:head>
 
 <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
-  <li class="title-List font-bold text-2xl">{name}</li>
+  <label class="title-List font-bold text-2xl" on:click={show}>{name}</label>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
-  <ul class="ul-listTasks">
+  <input class="listName-modified" type="text" style="display: none;">
+  <button on:click={saveList} style="display: none;">Done</button>
+  <ul class="ul-listTasks"></ul>
     <li class="li-newtask">
       <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
       <div class="datepick-select" hidden>
@@ -99,7 +201,9 @@
         {#if task}
         <div>
           <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
-          <label class="label-task ml-2" for="task">{task.taskName} </label>
+          <label class="label-task ml-2" for="task" on:click={showTasks}>{task.taskName}</label>
+          <input class="task-modified "type="text" style="display: none;">
+          <button on:click={saveTask} style="display: none;">Done</button>
           {#if task.date}
             <i class="mi mi-calendar"><span class="u-sr-only">{task.date}</span></i>
           {/if}
@@ -111,7 +215,6 @@
         {/each}
       </ul>
     </li>
-  </ul>
 </div>
 
 <style>
