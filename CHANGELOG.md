@@ -13,3 +13,4 @@ In this release the features that was completed are:
   - The function to add tasks to the list was implemented
 - Module for viewing and editing tasks:
   - The task list with options to mark as completed was implemented
+  - The editing for list name and task name was implemented
