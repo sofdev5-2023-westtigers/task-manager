@@ -268,7 +268,6 @@
         {/each}
       </ul>
     </li>
-  </ul>
 </div> 
 
 <style>
