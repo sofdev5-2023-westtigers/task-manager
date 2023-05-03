@@ -15,6 +15,7 @@ const config = {
 		alias: {
 			$lib: 'src/lib',
 			$calendar: 'src/lib/components/calendar',
+			$calendarTasks: 'src/lib/components/calendarTask',
 			$db: 'src/db'
 		}
 	}
