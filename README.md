@@ -7,6 +7,9 @@ West Tigers project about a task manager using integration and others tools
 ```bash
 # install node modules
 npm install
+
+#install the pickdate and calendar styles
+npm install --save-dev mono-icons carbon-components-svelte @event-calendar/core @event-calendar/time-grid @event-calendar/day-grid @event-calendar/list @event-calendar/resource-time-grid @event-calendar/interaction
 ```
 
 ## Developing

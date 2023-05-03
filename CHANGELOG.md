@@ -14,3 +14,4 @@ In this release the features that was completed are:
 - Module for viewing and editing tasks:
   - The task list with options to mark as completed was implemented
   - The editing for list name and task name was implemented
+  - The editing for the calendar was implemented
