@@ -62,7 +62,7 @@
 
 <div style="margin-bottom:2px;">
     <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
-    <label class="label-task ml-2" for="task" on:click={show}>{inputValue}</label>
+    <label class="label-task ml-2 border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" for="task" on:click={show}>{inputValue}</label>
     <input class="task-modified "type="text" style="display: none;">
     <button on:click={save} style="display: none;">Done</button>
 </div>
