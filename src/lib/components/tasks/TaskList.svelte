@@ -5,11 +5,13 @@
 	import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$lib/components/calendar/CalendarOptions.ts';
-
+  import {addNewEventTask, setTaskList, convertDatesFormat} from "$calendarTasks/CalendarTaskFunction.ts";
   export let name = '';
   export let inputValue = [];
   let user: User;
   let taskList = [];
+
+  setTaskList(inputValue);
 
   async function addNewTask(event) {
     if (name) {
@@ -52,8 +54,8 @@
         });
         body.append('date', date);
     }else if(showPickDates == true){
-      // let arraydate = convertDatesFormat(dates);
-      // addNewEventTask(inputValue1, arraydate[0], arraydate[1]);
+      let arraydate = convertDatesFormat(dates);
+      addNewEventTask(inputValue1, arraydate[0], arraydate[1]);
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1, containsDate : true , dateValue : dates },
@@ -114,10 +116,10 @@
       </ul>
     </li>
   </ul>
-</div>
+</div> 
 
 <style>
-  input:checked + label {
+  input:checked + label, input:checked + label + i {
       text-decoration: line-through;
   }
 </style>
