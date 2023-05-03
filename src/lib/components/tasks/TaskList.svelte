@@ -4,7 +4,7 @@
   import DatePick from '$calendar/DatePick.svelte';
 	import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
-  import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$lib/components/calendar/CalendarOptions.ts';
+  import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
   import {addNewEventTask, setTaskList, convertDatesFormat} from "$calendarTasks/CalendarTaskFunction.ts";
   export let name = '';
   export let inputValue = [];
