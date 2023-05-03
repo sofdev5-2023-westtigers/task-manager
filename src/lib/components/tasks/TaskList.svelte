@@ -178,6 +178,55 @@
         buttons[0].style.display = "inline";
         inputs[1].style.display = "inline";
     }
+
+    async function saveCalendar(event, singleDate) {
+    if (singleDate) {
+      let oldDate = event.target.parentNode.querySelector('span');
+      let oldDateValue = oldDate.textContent;
+      
+      const body = new FormData();
+      body.append('userId', user.userId.toString());
+      body.append('oldDates', '');
+      body.append('dates', '');
+      body.append('oldDate', oldDateValue);
+      body.append('date', selectedDate);
+      const result = await fetch('/api/tasks/addTask', {
+      method: 'PUT', body
+      });
+
+      oldDate.textContent = selectedDate;
+    }
+    else {
+      let oldDates = event.target.parentNode.querySelector('span');
+      let oldDatesValue = oldDates.textContent;
+      
+      const body = new FormData();
+      body.append('userId', user.userId.toString());
+      body.append('oldDates', oldDatesValue);
+      body.append('dates', selectedDatesValue);
+      body.append('oldDate', '');
+      body.append('date', '');
+      const result = await fetch('/api/tasks/addTask', {
+      method: 'PUT', body
+      });
+
+      oldDates.textContent = selectedDatesValue;
+    }
+
+    const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
+    datepickTask?.setAttribute('hidden', true);
+    const saveButton = event.target;
+    saveButton?.setAttribute('hidden', true);
+  }
+
+  function showCalendar(event) {
+    const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
+    datepickTask?.removeAttribute('hidden');
+    // const saveButton = event.target.parentNode.parentNode.querySelector('button');
+    const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
+    console.log("saveButton",saveButton);
+    saveButton?.removeAttribute('hidden');
+  }
 </script>
 
 <svelte:head>
@@ -205,10 +254,12 @@
           <input class="task-modified "type="text" style="display: none;">
           <button on:click={saveTask} style="display: none;">Done</button>
           {#if task.date}
-            <i class="mi mi-calendar"><span class="u-sr-only">{task.date}</span></i>
+          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.date}</span></i>
+          <button name="save" type="button" on:click={(event) => saveCalendar(event, true)} hidden>Save</button>
           {/if}
           {#if task.dates}
-            <i class="mi mi-calendar"><span class="u-sr-only">{task.dates}</span></i>
+          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.dates}</span></i>
+          <button name="save" type="button" on:click={(event) => saveCalendar(event, false)} hidden>Save</button>
           {/if}
         </div>
         {/if}
