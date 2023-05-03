@@ -4,9 +4,8 @@
 	import type { User } from '$lib/auth/User';
   import TaskList from "./TaskList.svelte";
   import CalendarTask from "$calendarTasks/CalendarTask.svelte";
-  import { tasksListEvents, addedEvent } from "$calendarTasks/CalendarTaskFunction.ts";
+  import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction.ts";
   let tasksList2 = [];
-
   $:tasksList2 = tasksListEvents; 
 
   let user: User;
@@ -16,6 +15,10 @@
       user = data;
     });
   });
+
+  let logout = () => {
+      Registry.auth.logout();
+    };
     
   let groupedTasks = [];
   async function fetchTasks() {
@@ -52,9 +55,10 @@
   }
 </script>
 
-<div class="toDoList bg-[#675D50] rounded-[10PX] p-4 mb-4">
-    <h1 class="title-ToDoList text-center text-4xl text-gray-800 font-bold">To-do List</h1>
-    <button class="button-NewList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" hidden on:click={handleNewListClick}>New List</button>
+<div class="toDoList bg-[#675D50] rounded-[10PX] p-4 mb-4" style="display: flex; justify-content: space-between;">
+  <button class="button-NewList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" hidden on:click={handleNewListClick} style="margin-right: auto;">New List</button>
+  <h1 class="title-ToDoList text-center text-4xl text-gray-800 font-bold" style="margin: auto; flex-grow: 1;">To-do List</h1>
+  <button class="bg-[#ABC4AA] text-white px-4 py-2 rounded-md ml-auto" style="margin-left: auto;" on:click={logout}>Log Out</button>
 </div>
 
 <div class="listTasks" id="listsTask">
@@ -75,6 +79,7 @@
     </div>
   </div>
   <div class="calendarTaskComp" style="float: right; margin-right: 50px; width: 37%">
-    <CalendarTask tasksEvents={addedEvent? tasksListEvents : tasksList2}/>
+    <CalendarTask tasksEvents={tasksList2}/>
   </div>
+  <div></div>
 </div>

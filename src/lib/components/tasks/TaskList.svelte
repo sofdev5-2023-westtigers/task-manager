@@ -5,12 +5,13 @@
 	import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
-  import {addNewEventTask, setTaskList, convertDatesFormat,setAddedEvent} from "$calendarTasks/CalendarTaskFunction.ts";
+  import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
   export let name = '';
   export let inputValue = [];
   let user: User;
   let taskList = [];
 
+  $: setTaskList(inputValue);
   async function addNewTask(event) {
     if (name) {
       const body = new FormData();
@@ -28,10 +29,6 @@
 		Registry.auth.getUser().subscribe((data: User) => {
 			user = data;
 		});
-
-    setTaskList(inputValue);
-    setAddedEvent(false);
-    setAddedEvent(true);
 	});
 
   async function createTask(event) {
