@@ -7,7 +7,6 @@
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
   import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
   
-  
   export let name = '';
   export let inputValue = [];
   let user: User;
@@ -191,12 +190,12 @@
       body.append('oldDates', '');
       body.append('dates', '');
       body.append('oldDate', oldDateValue);
-      body.append('date', selectedDate);
+      body.append('date', date);
       const result = await fetch('/api/tasks/addTask', {
       method: 'PUT', body
       });
 
-      oldDate.textContent = selectedDate;
+      oldDate.textContent = date;
     }
     else {
       let oldDates = event.target.parentNode.querySelector('span');
@@ -205,14 +204,16 @@
       const body = new FormData();
       body.append('userId', user.userId.toString());
       body.append('oldDates', oldDatesValue);
-      body.append('dates', selectedDatesValue);
+      body.append('dates', String(dates));
       body.append('oldDate', '');
       body.append('date', '');
       const result = await fetch('/api/tasks/addTask', {
       method: 'PUT', body
       });
 
-      oldDates.textContent = selectedDatesValue;
+      oldDates.textContent = String(dates);
+      console.log("oldDatesValue", oldDatesValue);
+      console.log("dates",String(dates));
     }
 
     const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
@@ -224,9 +225,7 @@
   function showCalendar(event) {
     const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
     datepickTask?.removeAttribute('hidden');
-    // const saveButton = event.target.parentNode.parentNode.querySelector('button');
     const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
-    console.log("saveButton",saveButton);
     saveButton?.removeAttribute('hidden');
   }
 </script>
