@@ -5,13 +5,11 @@
 	import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
-  import {addNewEventTask, setTaskList, convertDatesFormat} from "$calendarTasks/CalendarTaskFunction.ts";
+  import {addNewEventTask, setTaskList, convertDatesFormat,setAddedEvent} from "$calendarTasks/CalendarTaskFunction.ts";
   export let name = '';
   export let inputValue = [];
   let user: User;
   let taskList = [];
-
-  setTaskList(inputValue);
 
   async function addNewTask(event) {
     if (name) {
@@ -30,6 +28,10 @@
 		Registry.auth.getUser().subscribe((data: User) => {
 			user = data;
 		});
+
+    setTaskList(inputValue);
+    setAddedEvent(false);
+    setAddedEvent(true);
 	});
 
   async function createTask(event) {
@@ -44,18 +46,14 @@
       body.append('taskName', inputValue1);
       body.append('listName', name);
       body.append('isCompleted', false.toString());
-      
 
       if(showPickDate == true){
-        addNewEventTask(inputValue1, date, date);
         newTask = new NewTask({
         target: event.target.parentNode.querySelector('.list-Task'),
         props: { inputValue : inputValue1, containsDate : true ,dateValue : date },
         });
         body.append('date', date);
     }else if(showPickDates == true){
-      let arraydate = convertDatesFormat(dates);
-      addNewEventTask(inputValue1, arraydate[0], arraydate[1]);
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1, containsDate : true , dateValue : dates },

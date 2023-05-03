@@ -1,18 +1,13 @@
 <script lang="ts">  
-	import { onMount, onDestroy } from "svelte";
+	import { onMount } from "svelte";
   import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
   import TaskList from "./TaskList.svelte";
   import CalendarTask from "$calendarTasks/CalendarTask.svelte";
-  import {tasksListEvents, addedEvent, falseAddedEvent} from "$calendarTasks/CalendarTaskFunction.ts";
+  import { tasksListEvents, addedEvent } from "$calendarTasks/CalendarTaskFunction.ts";
   let tasksList2 = [];
 
-  $:{
-    if (addedEvent) {
-      tasksList2 = tasksListEvents;
-      falseAddedEvent();
-    }
-  }  
+  $:tasksList2 = tasksListEvents; 
 
   let user: User;
 
@@ -80,7 +75,6 @@
     </div>
   </div>
   <div class="calendarTaskComp" style="float: right; margin-right: 50px; width: 37%">
-    <CalendarTask tasksEvents={tasksList2}/>
-  </div>  
-  <div></div>
+    <CalendarTask tasksEvents={addedEvent? tasksListEvents : tasksList2}/>
+  </div>
 </div>
