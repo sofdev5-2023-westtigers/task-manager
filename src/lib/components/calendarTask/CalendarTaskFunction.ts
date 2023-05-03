@@ -1,20 +1,23 @@
 export let tasksListEvents = [];
-
-export let addedEvent = true;
+let taskListV = [] 
+export let addedEvent = false;
 
 export function setTaskList(taskList){
     taskList.forEach(task => {
-        if (task.date) {
-            addNewEventTask(task.taskName,task.date,task.date);
-        }else if(task.dates){
-            let date = convertDatesFormat(task.dates);
-            addNewEventTask(task.taskName, date[0], date[1]);
+        if(!taskListV.includes(task._id)){
+            if (task.date) {
+                addNewEventTask(task.taskName,task.date,task.date);
+            }else if(task.dates){
+                let date = convertDatesFormat(task.dates);
+                addNewEventTask(task.taskName, date[0], date[1]);
+            }
+            taskListV.push(task._id);
         }
     });
 }
 
-export function falseAddedEvent(){
-    addedEvent = false;
+export function setAddedEvent(addedEventNew){
+    addedEvent = addedEventNew;
 }
 
 export function addNewEventTask(newTaskTitle, dateStart, dateEnd){
@@ -24,7 +27,6 @@ export function addNewEventTask(newTaskTitle, dateStart, dateEnd){
         title: newTaskTitle,
         backgroundColor: generateColorRandom()
     };
-    addedEvent = true;
     tasksListEvents.push(event);
 }
 
