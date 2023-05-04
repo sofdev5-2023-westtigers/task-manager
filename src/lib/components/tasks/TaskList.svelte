@@ -4,15 +4,17 @@
   import DatePick from '$calendar/DatePick.svelte';
 	import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
-  import {selectedDate}  from "$calendar/DeadlineCalendar.svelte";
-  import {selectedDatesValue}  from "$calendar/SelectDaysCalendar.svelte";
-  import {showPickDate, showDates}  from "$calendar/OptionsDate.svelte";
-
+  import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
+  import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
+  
+  
   export let name = '';
   export let inputValue = [];
   let user: User;
   let taskList = [];
+  $: setTaskList(inputValue);
   export let inputValueListName = '';
+  
   async function addNewTask(event) {
     if (name) {
       const body = new FormData();
@@ -44,26 +46,26 @@
       body.append('taskName', inputValue1);
       body.append('listName', name);
       body.append('isCompleted', false.toString());
-      
 
       if(showPickDate == true){
+        newTask = new NewTask({
+        target: event.target.parentNode.querySelector('.list-Task'),
+        props: { inputValue : inputValue1, containsDate : true ,dateValue : date },
+        });
+        body.append('date', date);
+    }else if(showPickDates == true){
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
-      props: { inputValue : inputValue1, containsDate : true ,dateValue : selectedDate },
+      props: { inputValue : inputValue1, containsDate : true , dateValue : dates },
       });
-      body.append('date', selectedDate);
-    }else if(showDates == true){
-      newTask = new NewTask({
-      target: event.target.parentNode.querySelector('.list-Task'),
-      props: { inputValue : inputValue1, containsDates : true ,datesValue : selectedDatesValue },
-      });
-      body.append('dates', selectedDatesValue);
+      body.append('dates', dates);
     }else{
       newTask = new NewTask({
       target: event.target.parentNode.querySelector('.list-Task'),
       props: { inputValue : inputValue1},
       });
     }
+    setFalsePicks();
     await fetch('/api/tasks/addTask', {
         method: 'POST',body
     });
@@ -236,7 +238,7 @@
 <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
   <label class="title-List font-bold text-2xl" on:click={show}>{name}</label>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
-  <input class="listName-modified" type="text" style="display: none;">
+  <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
   <button on:click={saveList} style="display: none;">Done</button>
   <ul class="ul-listTasks"></ul>
     <li class="li-newtask">
@@ -250,26 +252,26 @@
         {#if task}
         <div>
           <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
-          <label class="label-task ml-2" for="task" on:click={showTasks}>{task.taskName}</label>
-          <input class="task-modified "type="text" style="display: none;">
-          <button on:click={saveTask} style="display: none;">Done</button>
+          <label class="label-task ml-2"  for="task"  on:click={showTasks}>{task.taskName} </label>
+          <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
+          <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask} style="display: none;">Done</button>
           {#if task.date}
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.date}</span></i>
-          <button name="save" type="button" on:click={(event) => saveCalendar(event, true)} hidden>Save</button>
+          <button  class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, true)} hidden>Save</button>
           {/if}
           {#if task.dates}
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.dates}</span></i>
-          <button name="save" type="button" on:click={(event) => saveCalendar(event, false)} hidden>Save</button>
+          <button  class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, false)} hidden>Save</button>
           {/if}
         </div>
         {/if}
         {/each}
       </ul>
     </li>
-</div>
+</div> 
 
 <style>
-  input:checked + label {
+  input:checked + label, input:checked + label + i {
       text-decoration: line-through;
   }
 </style>

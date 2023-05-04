@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import OptionsDate from './OptionsDate.svelte';
-    export let showRadioButtons = false;
+    let showRadioButtons = false;
 
     function handleClick() {
         showRadioButtons = !showRadioButtons;
@@ -17,7 +17,7 @@
 </script>
 
 <div class="date-input-container">
-    <input type="text" placeholder="Select a date…" class="input rounded-[2PX] w-1 px-1 py-1 mt-2 text-sm" on:click={handleClick} class:hidden={showRadioButtons} />
+    <input type="text" placeholder="Select a date…" class="input rounded-[2PX] w-2 px-1 py-1 mt-2 text-sm" on:click={handleClick} class:hidden={showRadioButtons} />
 
     {#if showRadioButtons}
         <OptionsDate/>
