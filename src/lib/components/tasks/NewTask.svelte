@@ -3,6 +3,8 @@
 	import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
     export let inputValue = '';
+    export let containsDate = false;
+    export let dateValue = '';
     let user: User;
     async function save(event) {
         const parent = this.parentElement;
@@ -63,12 +65,15 @@
 <div style="margin-bottom:2px;">
     <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
     <label class="label-task ml-2" for="task" on:click={show}>{inputValue}</label>
-    <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm "type="text" style="display: none;">
-    <button  class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={save} style="display: none;">Done</button>
+    <input class="task-modified "type="text" style="display: none;">
+    <button on:click={save} style="display: none;">Done</button>
+    {#if containsDate}
+        <i class="mi mi-calendar"><span class="u-sr-only">{dateValue}</span></i>
+    {/if}
 </div>
 
 <style>
-    input:checked + label {
+    input:checked + label,input:checked + label + i  {
         text-decoration: line-through;
     }
 </style>
