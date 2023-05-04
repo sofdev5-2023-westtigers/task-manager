@@ -13,6 +13,9 @@
   let taskList = [];
   $: setTaskList(inputValue);
   export let inputValueListName = '';
+
+  let prevDate;
+  let prevDates;
   
   async function addNewTask(event) {
     if (name) {
@@ -185,41 +188,34 @@
         labels[0].style.display = "none";
     }
 
-    async function saveCalendar(event, singleDate) {
-    if (singleDate) {
-      let oldDate = event.target.parentNode.querySelector('span');
-      let oldDateValue = oldDate.textContent;
-      
+    async function saveCalendar(event) {
+      let oldDateElem = event.target.parentNode.querySelector('span');
+      let oldDate = oldDateElem.textContent;
       const body = new FormData();
-      body.append('userId', user.userId.toString());
-      body.append('oldDates', '');
-      body.append('dates', '');
-      body.append('oldDate', oldDateValue);
-      body.append('date', date);
-      const result = await fetch('/api/tasks/addTask', {
-      method: 'PUT', body
-      });
 
-      oldDate.textContent = date;
-    }
-    else {
-      let oldDates = event.target.parentNode.querySelector('span');
-      let oldDatesValue = oldDates.textContent;
+      body.append('userId', user.userId.toString());
+
+      if (date !== prevDate && dates === prevDates) {
+        body.append('date', date);
+        body.append('dates', '');
+        oldDateElem.textContent = date;
+      } else if (date === prevDate && dates !== prevDates) {
+        body.append('date', '');
+        body.append('dates', String(dates));
+        oldDateElem.textContent = String(dates);
+      }
       
-      const body = new FormData();
-      body.append('userId', user.userId.toString());
-      body.append('oldDates', oldDatesValue);
-      body.append('dates', String(dates));
-      body.append('oldDate', '');
-      body.append('date', '');
-      const result = await fetch('/api/tasks/addTask', {
-      method: 'PUT', body
-      });
+      if (!oldDate.includes("-")) {
+        body.append('oldDate', oldDate);
+        body.append('oldDates', '');
+      } else {
+        body.append('oldDate', '');       
+        body.append('oldDates', oldDate);
+      }
 
-      oldDates.textContent = String(dates);
-      console.log("oldDatesValue", oldDatesValue);
-      console.log("dates",String(dates));
-    }
+      const result = await fetch('/api/tasks/addTask', {
+        method: 'PUT', body
+      });
 
     const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
     datepickTask?.setAttribute('hidden', true);
@@ -232,6 +228,9 @@
     datepickTask?.removeAttribute('hidden');
     const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
     saveButton?.removeAttribute('hidden');
+
+    prevDate = date;
+    prevDates = dates;
   }
 </script>
 
@@ -261,11 +260,11 @@
           <button on:click={saveTask} style="display: none;">Done</button>
           {#if task.date}
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.date}</span></i>
-          <button name="save" type="button" on:click={(event) => saveCalendar(event, true)} hidden>Save</button>
+          <button name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
           {/if}
           {#if task.dates}
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.dates}</span></i>
-          <button name="save" type="button" on:click={(event) => saveCalendar(event, false)} hidden>Save</button>
+          <button name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
           {/if}
         </div>
         {/if}

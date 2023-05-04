@@ -24,12 +24,12 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 
   const resultDates = await tasks.updateOne(
       { userId: body.get('userId'), dates:  body.get('oldDates') },
-      { $set: { dates: listCalendar.dates !== "" ? listCalendar.dates : null } }
+      { $set: { date: listCalendar.date !== "" ? listCalendar.date : null, dates: listCalendar.dates !== "" ? listCalendar.dates : null } }
     );
 
   const resultDate = await tasks.updateOne(
       { userId: body.get('userId'), date:  body.get('oldDate') },
-      { $set: { date: listCalendar.date !== "" ? listCalendar.date : null } }
+      { $set: { date: listCalendar.date !== "" ? listCalendar.date : null, dates: listCalendar.dates !== "" ? listCalendar.dates : null } }
     );
   
   const updatedList = await tasks.findOne({ taskName: list.taskName});
