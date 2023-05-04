@@ -241,13 +241,13 @@
   <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
   <button on:click={saveList} style="display: none;">Done</button>
   <ul class="ul-listTasks"></ul>
-    <li class="li-newtask">
+    <li class="li-newtask list-none">
       <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
       <div class="datepick-select" hidden>
         <DatePick/>
       </div>
       <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={(event) => createTask(event)}>Add</button>
-      <ul class="list-Task mt-2">
+      <ul class="list-Task mt-2 list-none">
         {#each inputValue as task}
         {#if task}
         <div>
