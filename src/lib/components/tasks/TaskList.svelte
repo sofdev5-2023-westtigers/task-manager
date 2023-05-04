@@ -168,6 +168,9 @@
         });
         const task = await result.json();
         console.log(task);
+
+        labels[0].style.display = "inline";
+        console.log("label", labels[0]);
     }
 
     function showTasks() {
@@ -178,6 +181,8 @@
         inputs[1].value = labels[0].textContent
         buttons[0].style.display = "inline";
         inputs[1].style.display = "inline";
+
+        labels[0].style.display = "none";
     }
 
     async function saveCalendar(event, singleDate) {
