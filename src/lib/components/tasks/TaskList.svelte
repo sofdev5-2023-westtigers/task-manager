@@ -213,6 +213,8 @@
         body.append('oldDates', oldDate);
       }
 
+      body.append('modifyDate', 'true');
+
       const result = await fetch('/api/tasks/addTask', {
         method: 'PUT', body
       });
