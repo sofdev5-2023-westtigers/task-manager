@@ -3,6 +3,8 @@
 	import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
     export let inputValue = '';
+    export let containsDate = false;
+    export let dateValue = '';
     let user: User;
     async function save(event) {
         const parent = this.parentElement;
@@ -65,10 +67,13 @@
     <label class="label-task ml-2" for="task" on:click={show}>{inputValue}</label>
     <input class="task-modified "type="text" style="display: none;">
     <button on:click={save} style="display: none;">Done</button>
+    {#if containsDate}
+        <i class="mi mi-calendar"><span class="u-sr-only">{dateValue}</span></i>
+    {/if}
 </div>
 
 <style>
-    input:checked + label {
+    input:checked + label,input:checked + label + i  {
         text-decoration: line-through;
     }
 </style>
