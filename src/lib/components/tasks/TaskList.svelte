@@ -238,7 +238,7 @@
 <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
   <label class="title-List font-bold text-2xl" on:click={show}>{name}</label>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
-  <input class="listName-modified" type="text" style="display: none;">
+  <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
   <button on:click={saveList} style="display: none;">Done</button>
   <ul class="ul-listTasks"></ul>
     <li class="li-newtask">
@@ -252,16 +252,16 @@
         {#if task}
         <div>
           <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
-          <label class="label-task ml-2" for="task" on:click={showTasks}>{task.taskName}</label>
-          <input class="task-modified "type="text" style="display: none;">
-          <button on:click={saveTask} style="display: none;">Done</button>
+          <label class="label-task ml-2"  for="task"  on:click={showTasks}>{task.taskName} </label>
+          <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
+          <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask} style="display: none;">Done</button>
           {#if task.date}
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.date}</span></i>
-          <button name="save" type="button" on:click={(event) => saveCalendar(event, true)} hidden>Save</button>
+          <button  class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, true)} hidden>Save</button>
           {/if}
           {#if task.dates}
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.dates}</span></i>
-          <button name="save" type="button" on:click={(event) => saveCalendar(event, false)} hidden>Save</button>
+          <button  class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, false)} hidden>Save</button>
           {/if}
         </div>
         {/if}
