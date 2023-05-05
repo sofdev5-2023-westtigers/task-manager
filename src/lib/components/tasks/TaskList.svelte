@@ -192,27 +192,6 @@
 
       body.append('userId', user.userId.toString());
 
-      body.append('oldDates', '');
-      body.append('dates', '');
-      body.append('oldDate', oldDateValue);
-      body.append('date', date);
-      const result = await fetch('/api/tasks/addTask', {
-      method: 'PUT', body
-      });
-
-      oldDate.textContent = date;
-    }
-    else {
-      let oldDates = event.target.parentNode.querySelector('span');
-      let oldDatesValue = oldDates.textContent;
-      
-      const body = new FormData();
-      body.append('userId', user.userId.toString());
-      body.append('oldDates', oldDatesValue);
-      body.append('dates', dates.toString());
-      body.append('oldDate', '');
-      body.append('date', '');
-
 
       if (date !== prevDate && dates === prevDates) {
         body.append('date', date);
@@ -237,10 +216,6 @@
       const result = await fetch('/api/tasks/addTask', {
         method: 'PUT', body
       });
-
-
-      oldDates.textContent = dates;
-    }
 
     const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
     datepickTask?.setAttribute('hidden', true);
