@@ -144,10 +144,7 @@
         const labels = parent.querySelectorAll('label');
         const buttons = parent.querySelectorAll('button');
         const oldValue = labels[0].textContent;
-        // console.log("holT")
-        // console.log(inputs[0].value)
-        // console.log(inputs[1].value)
-        // console.log(oldValue)
+        let oldChecked = true;
         if (inputs[1].value == "") {
             inputs[1].value = labels[0].textContent;
         } else {
@@ -160,11 +157,15 @@
         const inputValueTask = inputElement.value;
         const checkbox = event.target.parentNode.querySelector('.checkbox-task');
         const isChecked = checkbox.checked;
+        if (isChecked) {
+          oldChecked = false;
+        }
         // console.log(isChecked, "ho")
         const body = new FormData();
         body.append('userId', user.userId.toString());
         body.append('taskNameOld', oldValue);
         body.append('taskName', inputValueTask);
+        body.append('isCompletedOld', oldChecked.toString());
         body.append('isCompleted', isChecked.toString());
         const result = await fetch('/api/tasks/addTask', {
         method: 'PUT', body
