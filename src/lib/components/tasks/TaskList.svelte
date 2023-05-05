@@ -7,13 +7,15 @@
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
   import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
   
-  
   export let name = '';
   export let inputValue = [];
   let user: User;
   let taskList = [];
   $: setTaskList(inputValue);
   export let inputValueListName = '';
+
+  let prevDate;
+  let prevDates;
   
   async function addNewTask(event) {
     if (name) {
@@ -169,6 +171,9 @@
         });
         const task = await result.json();
         console.log(task);
+
+        labels[0].style.display = "inline";
+        console.log("label", labels[0]);
     }
 
     function showTasks() {
@@ -179,41 +184,40 @@
         inputs[1].value = labels[0].textContent
         buttons[0].style.display = "inline";
         inputs[1].style.display = "inline";
+
+        labels[0].style.display = "none";
     }
 
-    async function saveCalendar(event, singleDate) {
-    if (singleDate) {
-      let oldDate = event.target.parentNode.querySelector('span');
-      let oldDateValue = oldDate.textContent;
-      
+    async function saveCalendar(event) {
+      let oldDateElem = event.target.parentNode.querySelector('span');
+      let oldDate = oldDateElem.textContent;
       const body = new FormData();
-      body.append('userId', user.userId.toString());
-      body.append('oldDates', '');
-      body.append('dates', '');
-      body.append('oldDate', oldDateValue);
-      body.append('date', selectedDate);
-      const result = await fetch('/api/tasks/addTask', {
-      method: 'PUT', body
-      });
 
-      oldDate.textContent = selectedDate;
-    }
-    else {
-      let oldDates = event.target.parentNode.querySelector('span');
-      let oldDatesValue = oldDates.textContent;
+      body.append('userId', user.userId.toString());
+
+      if (date !== prevDate && dates === prevDates) {
+        body.append('date', date);
+        body.append('dates', '');
+        oldDateElem.textContent = date;
+      } else if (date === prevDate && dates !== prevDates) {
+        body.append('date', '');
+        body.append('dates', String(dates));
+        oldDateElem.textContent = String(dates);
+      }
       
-      const body = new FormData();
-      body.append('userId', user.userId.toString());
-      body.append('oldDates', oldDatesValue);
-      body.append('dates', selectedDatesValue);
-      body.append('oldDate', '');
-      body.append('date', '');
-      const result = await fetch('/api/tasks/addTask', {
-      method: 'PUT', body
-      });
+      if (!oldDate.includes("-")) {
+        body.append('oldDate', oldDate);
+        body.append('oldDates', '');
+      } else {
+        body.append('oldDate', '');       
+        body.append('oldDates', oldDate);
+      }
 
-      oldDates.textContent = selectedDatesValue;
-    }
+      body.append('modifyDate', 'true');
+
+      const result = await fetch('/api/tasks/addTask', {
+        method: 'PUT', body
+      });
 
     const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
     datepickTask?.setAttribute('hidden', true);
@@ -224,10 +228,11 @@
   function showCalendar(event) {
     const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
     datepickTask?.removeAttribute('hidden');
-    // const saveButton = event.target.parentNode.parentNode.querySelector('button');
     const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
-    console.log("saveButton",saveButton);
     saveButton?.removeAttribute('hidden');
+
+    prevDate = date;
+    prevDates = dates;
   }
 </script>
 
@@ -257,11 +262,11 @@
           <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask} style="display: none;">Done</button>
           {#if task.date}
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.date}</span></i>
-          <button  class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, true)} hidden>Save</button>
+          <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
           {/if}
           {#if task.dates}
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.dates}</span></i>
-          <button  class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, false)} hidden>Save</button>
+          <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
           {/if}
         </div>
         {/if}
