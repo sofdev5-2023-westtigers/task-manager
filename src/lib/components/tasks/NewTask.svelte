@@ -2,9 +2,12 @@
     import { onMount } from 'svelte';
 	import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
+  import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
     export let inputValue = '';
     export let containsDate = false;
     export let dateValue = '';
+    let prevDate;
+    let prevDates;
     let user: User;
     async function save(event) {
         const parent = this.parentElement;
@@ -56,6 +59,52 @@
         buttons[0].style.display = "inline";
         inputs[1].style.display = "inline";
     }
+    async function saveCalendar(event) {
+      let oldDateElem = event.target.parentNode.querySelector('span');
+      let oldDate = oldDateElem.textContent;
+      const body = new FormData();
+
+      body.append('userId', user.userId.toString());
+
+      if (date !== prevDate && dates === prevDates) {
+        body.append('date', date);
+        body.append('dates', '');
+        oldDateElem.textContent = date;
+      } else if (date === prevDate && dates !== prevDates) {
+        body.append('date', '');
+        body.append('dates', String(dates));
+        oldDateElem.textContent = String(dates);
+      }
+      
+      if (!oldDate.includes("-")) {
+        body.append('oldDate', oldDate);
+        body.append('oldDates', '');
+      } else {
+        body.append('oldDate', '');       
+        body.append('oldDates', oldDate);
+      }
+
+      body.append('modifyDate', 'true');
+
+      const result = await fetch('/api/tasks/addTask', {
+        method: 'PUT', body
+      });
+
+    const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
+    datepickTask?.setAttribute('hidden', true);
+    const saveButton = event.target;
+    saveButton?.setAttribute('hidden', true);
+  }
+
+  function showCalendar(event) {
+    const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
+    datepickTask?.removeAttribute('hidden');
+    const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
+    saveButton?.removeAttribute('hidden');
+
+    prevDate = date;
+    prevDates = dates;
+  }
 </script>
 
 <svelte:head>
@@ -65,10 +114,15 @@
 <div style="margin-bottom:2px;">
     <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
     <label class="label-task ml-2" for="task" on:click={show}>{inputValue}</label>
-    <input class="task-modified "type="text" style="display: none;">
-    <button on:click={save} style="display: none;">Done</button>
-    {#if containsDate}
-        <i class="mi mi-calendar"><span class="u-sr-only">{dateValue}</span></i>
+    <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm "type="text" style="display: none;">
+    <button class="buttonDoneTaskbox bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={save} style="display: none;">Done</button>
+    {#if showPickDate}
+    <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{date}</span></i>
+    <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
+    {/if}
+    {#if showPickDates}
+    <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{dates}</span></i>
+    <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
     {/if}
 </div>
 
