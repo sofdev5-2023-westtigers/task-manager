@@ -45,7 +45,7 @@
       body.append('userId',user.userId.toString());
       body.append('taskName', inputValue1);
       body.append('listName', name);
-      body.append('isCompleted', true.toString());
+      body.append('isCompleted', false.toString());
 
       if(showPickDate == true){
         newTask = new NewTask({
