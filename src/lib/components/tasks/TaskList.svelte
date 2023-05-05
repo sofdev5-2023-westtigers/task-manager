@@ -7,6 +7,7 @@
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
   import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
   import { saveTask, showTasks, saveCalendar, showCalendar, formatDate } from "./TaskEdit";
+  import { goto } from '$app/navigation';
   
   export let name = '';
   export let inputValue = [];
@@ -36,6 +37,11 @@
 			user = data;
 		});
 	});
+
+  const handleClick = () => {
+    const url = `/todo-lists/${name}`;
+    goto(url, { target: '_blank' });
+  };
 
   async function createTask(event) {
       const inputElement = event.target.parentNode.querySelector('.input-nameTask');
@@ -136,7 +142,8 @@
 </svelte:head>
 
 <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
-  <label class="title-List font-bold text-2xl" on:click={show}>{name}</label>
+  <!-- on:click={show} -->
+  <label class="title-List font-bold text-2xl" on:click={handleClick}>{name}</label>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
   <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
   <button on:click={saveList} style="display: none;">Done</button>
