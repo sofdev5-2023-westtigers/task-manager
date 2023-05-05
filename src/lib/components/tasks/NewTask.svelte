@@ -4,7 +4,9 @@
 	import type { User } from '$lib/auth/User';
     export let inputValue = '';
     export let containsDate = false;
+    export let containsDates = false;
     export let dateValue = '';
+    export let datesValue = '';
     let user: User;
     async function save(event) {
         const parent = this.parentElement;
@@ -69,6 +71,9 @@
     <button on:click={save} style="display: none;">Done</button>
     {#if containsDate}
         <i class="mi mi-calendar"><span class="u-sr-only">{dateValue}</span></i>
+    {/if}
+    {#if containsDates}
+        <i class="mi mi-calendar"><span class="u-sr-only">{datesValue}</span></i>
     {/if}
 </div>
 
