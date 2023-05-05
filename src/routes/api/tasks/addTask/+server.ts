@@ -3,7 +3,7 @@ import { json, type RequestHandler } from "@sveltejs/kit";
 
 export const POST : RequestHandler = (async ({request,locals}) => {
     const body = await request.formData();
-    const list = {userId: body.get('userId'), taskName: body.get('taskName'), listName: body.get('listName'), isCompleted: body.get('isCompleted'),
+    const list = {userId: body.get('userId'), taskName: body.get('taskName'), listName: body.get('listName'), isCompleted: body.get('isCompleted') === 'true',
                     date: body.get('date'), dates: body.get('dates')};
     const result = await tasks.insertOne(list);
     const insertedList = await tasks.findOne({_id : result.insertedId});
@@ -19,7 +19,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 
   const result = await tasks.updateOne(
       { userId: body.get('userId'), taskName:  body.get('taskNameOld'), isCompleted: "false" || "true"},
-      { $set: { taskName: list.taskName, isCompleted: list.isCompleted}}
+      { $set: { taskName: list.taskName, isCompleted: list.isCompleted  === 'true'}}
     );
 
   const resultDates = await tasks.updateOne(
