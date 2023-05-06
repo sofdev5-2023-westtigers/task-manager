@@ -11,9 +11,9 @@ function parseDate(date) {
 function parseDates(dates) {
     if (dates !== null) {
         let dateStr = String(dates);
-        let a = dateStr.split('-').map(dateString => dateString.trim());
-        let b = a.map(dateString => new Date(dateString));
-        return b;
+        let strList = dateStr.split('-').map(dateString => dateString.trim());
+        let dateList = strList.map(dateString => new Date(dateString));
+        return dateList;
     }
     return null;
 }
