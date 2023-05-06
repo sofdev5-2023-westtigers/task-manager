@@ -39,22 +39,20 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
         { $set: { taskName: list.taskName, isCompleted: list.isCompleted  === 'true'}}
     );
 
-  if (body.get('modifyDate') === "true") {
 
+    if (body.get('modifyDate') === "true") {
     const resultDates = await tasks.updateOne(
-        { userId: body.get('userId'), dates:  body.get('oldDates') },
-        { $set: { date: listCalendar.date !== "" ? listCalendar.date : null, dates: listCalendar.dates !== "" ? listCalendar.dates : null } }
+        { userId: body.get('userId'), dates:  parseDates(body.get('oldDates')) },
+        { $set: { date: listCalendar.date !== "" ? parseDate(listCalendar.date) : null, dates: listCalendar.dates !== "" ? parseDates(listCalendar.dates) : null } }
       );
 
     const resultDate = await tasks.updateOne(
-        { userId: body.get('userId'), date:  body.get('oldDate') },
-        { $set: { date: listCalendar.date !== "" ? listCalendar.date : null, dates: listCalendar.dates !== "" ? listCalendar.dates : null } }
+        { userId: body.get('userId'), date:  parseDate(body.get('oldDate')) },
+        { $set: { date: listCalendar.date !== "" ? parseDate(listCalendar.date) : null, dates: listCalendar.dates !== "" ? parseDates(listCalendar.dates) : null } }
       );
   }
 
   const updatedList = await tasks.findOne({ taskName: list.taskName});
-  
-  console.log(updatedList, locals);
   
   return json(updatedList);
 };
