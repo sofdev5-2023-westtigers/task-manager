@@ -100,10 +100,7 @@
         const labels = parent.querySelectorAll('label');
         const buttons = parent.querySelectorAll('button');
         const oldList = labels[0].textContent;
-        console.log("holdL")
-        console.log(inputs[0].value)
-        console.log(inputs[1].value)
-        console.log(oldList)
+
         if (inputs[0].value == "") {
             inputs[0].value = labels[0].textContent;
         } else {
@@ -115,7 +112,7 @@
         buttons[1].style.display = "none";
         const inputElement = event.target.parentNode.querySelector('.listName-modified');
         const inputValueListName = inputElement.value;
-        console.log(inputValueListName)
+
         const body = new FormData();
         body.append('userId', user.userId.toString());
         body.append('listNameOld', oldList);
@@ -124,7 +121,6 @@
         method: 'PUT', body
         });
         const task = await result.json();
-        console.log(task);
     }
 
   function updateCalendar(event) {

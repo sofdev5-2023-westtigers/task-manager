@@ -21,8 +21,6 @@ export async function saveTask(event, user) {
     if (isChecked) {
         oldChecked = false;
     }
-    console.log(isChecked, "ho")
-    console.log("old", oldChecked)
     const body = new FormData();
     body.append('userId', user.userId.toString());
     body.append('taskNameOld', oldValue);
