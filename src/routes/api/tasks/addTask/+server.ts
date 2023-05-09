@@ -1,22 +1,6 @@
 import { tasks } from "$db/tasks";
 import { json, type RequestHandler } from "@sveltejs/kit";
-
-function parseDate(date) {
-    if (date !== null) {
-        return new Date(String(date));
-    }
-    return null;
-}
-
-function parseDates(dates) {
-    if (dates !== null) {
-        let dateStr = String(dates);
-        let strList = dateStr.split('-').map(dateString => dateString.trim());
-        let dateList = strList.map(dateString => new Date(dateString));
-        return dateList;
-    }
-    return null;
-}
+import { parseDate, parseDates } from "./DateParse";
 
 export const POST : RequestHandler = (async ({request,locals}) => {
     const body = await request.formData();
