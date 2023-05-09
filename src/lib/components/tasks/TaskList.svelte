@@ -148,6 +148,7 @@
         // console.log(inputs[0].value)
         // console.log(inputs[1].value)
         // console.log(oldValue)
+         let oldChecked = false;
         if (inputs[1].value == "") {
             inputs[1].value = labels[0].textContent;
         } else {
@@ -160,11 +161,16 @@
         const inputValueTask = inputElement.value;
         const checkbox = event.target.parentNode.querySelector('.checkbox-task');
         const isChecked = checkbox.checked;
-        // console.log(isChecked, "ho")
+        if (isChecked) {
+          oldChecked = false;
+        } 
+        console.log(isChecked, "ho")
+        console.log("old", oldChecked)
         const body = new FormData();
         body.append('userId', user.userId.toString());
         body.append('taskNameOld', oldValue);
         body.append('taskName', inputValueTask);
+        body.append('isCompletedOld', oldChecked.toString());
         body.append('isCompleted', isChecked.toString());
         const result = await fetch('/api/tasks/addTask', {
         method: 'PUT', body
@@ -263,17 +269,22 @@
         {#each inputValue as task}
         {#if task}
         <div>
-          <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+          {#if JSON.parse(task.isCompleted)}
+            <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" checked>
+          {:else}
+            <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+          {/if}
           <label class="label-task ml-2"  for="task"  on:click={showTasks}>{task.taskName} </label>
           <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
-          <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask} style="display: none;">Done</button>
+          <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask} style="display: none;">Done</button>
           {#if task.date}
+
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{formatDate(task.date)}</span></i>
-          <button  class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
+          <button  class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
           {/if}
           {#if task.dates}
           <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.dates.map(dateString => formatDate(dateString)).join("-")}</span></i>
-          <button  class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
+          <button  class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
           {/if}
         </div>
         {/if}
