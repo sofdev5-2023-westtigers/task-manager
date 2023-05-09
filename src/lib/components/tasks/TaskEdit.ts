@@ -1,5 +1,5 @@
 export async function saveTask(event, user) {
-    const parent = this.parentElement;
+    const parent = event.target.parentElement;
     const inputs = parent.querySelectorAll('input');
     const labels = parent.querySelectorAll('label');
     const buttons = parent.querySelectorAll('button');
