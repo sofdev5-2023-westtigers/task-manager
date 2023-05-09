@@ -1,10 +1,11 @@
 import { tasks } from "$db/tasks";
 import { json, type RequestHandler } from "@sveltejs/kit";
+import { parseDate, parseDates } from "./DateParse";
 
 export const POST : RequestHandler = (async ({request,locals}) => {
     const body = await request.formData();
-    const list = {userId: body.get('userId'), taskName: body.get('taskName'), listName: body.get('listName'), isCompleted: body.get('isCompleted'),
-                    date: body.get('date'), dates: body.get('dates')};
+    const list = {userId: body.get('userId'), taskName: body.get('taskName'), listName: body.get('listName'), isCompleted: body.get('isCompleted') === 'true',
+        date: parseDate(body.get('date')), dates: parseDates(body.get('dates'))};
     const result = await tasks.insertOne(list);
     const insertedList = await tasks.findOne({_id : result.insertedId});
 
@@ -22,22 +23,20 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
       { $set: { taskName: list.taskName, isCompleted: list.isCompleted == "true" ? "true":"false"}}
     );
 
-  if (body.get('modifyDate') === "true") {
 
+    if (body.get('modifyDate') === "true") {
     const resultDates = await tasks.updateOne(
-        { userId: body.get('userId'), dates:  body.get('oldDates') },
-        { $set: { date: listCalendar.date !== "" ? listCalendar.date : null, dates: listCalendar.dates !== "" ? listCalendar.dates : null } }
+        { userId: body.get('userId'), dates:  parseDates(body.get('oldDates')) },
+        { $set: { date: listCalendar.date !== "" ? parseDate(listCalendar.date) : null, dates: listCalendar.dates !== "" ? parseDates(listCalendar.dates) : null } }
       );
 
     const resultDate = await tasks.updateOne(
-        { userId: body.get('userId'), date:  body.get('oldDate') },
-        { $set: { date: listCalendar.date !== "" ? listCalendar.date : null, dates: listCalendar.dates !== "" ? listCalendar.dates : null } }
+        { userId: body.get('userId'), date:  parseDate(body.get('oldDate')) },
+        { $set: { date: listCalendar.date !== "" ? parseDate(listCalendar.date) : null, dates: listCalendar.dates !== "" ? parseDates(listCalendar.dates) : null } }
       );
   }
 
   const updatedList = await tasks.findOne({ taskName: list.taskName});
-  
-  console.log(updatedList, locals);
   
   return json(updatedList);
 };

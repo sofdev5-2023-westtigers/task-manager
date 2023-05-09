@@ -8,8 +8,7 @@ export function setTaskList(taskList){
             if (task.date) {
                 addNewEventTask(task.taskName,task.date,task.date);
             }else if(task.dates){
-                let date = convertDatesFormat(task.dates);
-                addNewEventTask(task.taskName, date[0], date[1]);
+                addNewEventTask(task.taskName, task.dates[0], task.dates[1]);
             }
             taskListV.push(task._id);
         }
@@ -45,8 +44,4 @@ function convertDateFormat(dateStr) {
     var day = parts[1];
     var newDateStr = year + "-" + month + "-" + day;
     return newDateStr;
-}
-
-export function convertDatesFormat(dateStr) {
-    return dateStr.split("-");
 }

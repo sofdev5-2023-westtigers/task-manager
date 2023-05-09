@@ -240,6 +240,13 @@
     prevDate = date;
     prevDates = dates;
   }
+
+  function formatDate(dateString) {
+    dateString = dateString.slice(0,10);
+    const parts = dateString.split("-");
+    const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
+    return formattedDate;
+  }
 </script>
 
 <svelte:head>
@@ -271,12 +278,13 @@
           <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
           <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask} style="display: none;">Done</button>
           {#if task.date}
-          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.date}</span></i>
-          <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
+
+          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{formatDate(task.date)}</span></i>
+          <button  class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
           {/if}
           {#if task.dates}
-          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.dates}</span></i>
-          <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
+          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.dates.map(dateString => formatDate(dateString)).join("-")}</span></i>
+          <button  class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
           {/if}
         </div>
         {/if}
