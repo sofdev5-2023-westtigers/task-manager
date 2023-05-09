@@ -20,9 +20,8 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 
   const result = await tasks.updateOne(
       { userId: body.get('userId'), taskName:  body.get('taskNameOld')},
-      { $set: { taskName: list.taskName, isCompleted: list.isCompleted == "true" ? "true":"false"}}
+      { $set: { taskName: list.taskName, isCompleted: list.isCompleted == "true"}}
     );
-
 
     if (body.get('modifyDate') === "true") {
     const resultDates = await tasks.updateOne(
