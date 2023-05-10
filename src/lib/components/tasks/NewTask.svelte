@@ -16,17 +16,12 @@
         const labels = parent.querySelectorAll('label');
         const buttons = parent.querySelectorAll('button');
         const oldValue = labels[0].textContent;
-        // console.log("holTNew")
-        // console.log(inputs[0].value)
-        // console.log(inputs[1].value)
-        // console.log(oldValue)
         let oldChecked = true;
         if (inputs[1].value == "") {
             inputs[1].value = labels[0].textContent;
         } else {
             labels[0].textContent = inputs[1].value;
         }
-        
         
         buttons[0].style.display = "none";
         inputs[1].style.display = "none";
@@ -37,14 +32,13 @@
         if (!isChecked) {
           oldChecked = false;
         }
-        console.log(isChecked, "hi")
         const body = new FormData();
         body.append('userId', user.userId.toString());
         body.append('taskNameOld', oldValue);
         body.append('taskName', inputValue);
         body.append('isCompletedOld', oldChecked.toString());
         body.append('isCompleted', isChecked.toString());
-        const result = await fetch('/api/tasks/addTask', {
+        const result = await fetch('/api/tasks/updateTasks', {
         method: 'PUT', body
         });
         const task = await result.json();
@@ -92,7 +86,7 @@
 
       body.append('modifyDate', 'true');
 
-      const result = await fetch('/api/tasks/addTask', {
+      const result = await fetch('/api/tasks/updateTasks', {
         method: 'PUT', body
       });
 

@@ -27,7 +27,7 @@ export async function saveTask(event, user) {
     body.append('taskName', inputValueTask);
     body.append('isCompletedOld', oldChecked.toString());
     body.append('isCompleted', isChecked.toString());
-    const result = await fetch('/api/tasks/addTask', {
+    const result = await fetch('/api/tasks/updateTasks', {
         method: 'PUT', body
     });
     const task = await result.json();
@@ -76,7 +76,7 @@ export async function saveCalendar(event, user, date, dates, prevDate, prevDates
 
     body.append('modifyDate', 'true');
 
-    const result = await fetch('/api/tasks/addTask', {
+    const result = await fetch('/api/tasks/updateTasks', {
         method: 'PUT', body
     });
 

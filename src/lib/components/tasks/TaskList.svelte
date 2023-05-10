@@ -117,7 +117,7 @@
         body.append('userId', user.userId.toString());
         body.append('listNameOld', oldList);
         body.append('listName', inputValueListName);
-        const result = await fetch('/api/tasks/addList', {
+        const result = await fetch('/api/tasks/updateList', {
         method: 'PUT', body
         });
         const task = await result.json();
