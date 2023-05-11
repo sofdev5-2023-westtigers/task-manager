@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { Registry } from '$lib/auth/Registry';
-    import DatePick from '$calendar/DatePick.svelte';
-	import type { User } from '$lib/auth/User';
-    import NewTask from './NewTask.svelte';
-    import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
-    import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
-    import { goto } from '$app/navigation';
-	import { fetchTasks } from './ListDB';
-
+  import { onMount } from 'svelte';
+  import { Registry } from '$lib/auth/Registry';
+  import DatePick from '$calendar/DatePick.svelte';
+  import type { User } from '$lib/auth/User';
+  import NewTask from './NewTask.svelte';
+  import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
+  import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
+  import { saveTask, showTasks, saveCalendar, showCalendar, formatDate } from "./TaskEdit";
+  import { goto } from '$app/navigation';
+  
   export let name = '';
   export let inputValue = [];
   let user: User;
@@ -20,7 +20,6 @@
   let prevDates;
   
   async function addNewTask(event) {
-    console.log(fetchTasks(name));
     if (name) {
       const body = new FormData();
       body.append('listName', name);
@@ -90,19 +89,7 @@
     const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
     inputNameTask1?.setAttribute('hidden', true);
   }
-  function save() {
-        const parent = this.parentElement;
-        const inputs = parent.querySelectorAll('input');
-        const labels = parent.querySelectorAll('label');
-        const buttons = parent.querySelectorAll('button');
-        if (inputs[0].value == "") {
-            inputs[0].value = labels[0].textContent;
-        } else {
-            labels[0].textContent = inputs[0].value;
-        }
-        buttons[1].style.display = "none";
-        inputs[0].style.display = "none";
-    }
+
     function show() {
         const parent = this.parentElement;
         const inputs = parent.querySelectorAll('input');
@@ -119,10 +106,7 @@
         const labels = parent.querySelectorAll('label');
         const buttons = parent.querySelectorAll('button');
         const oldList = labels[0].textContent;
-        console.log("holdL")
-        console.log(inputs[0].value)
-        console.log(inputs[1].value)
-        console.log(oldList)
+
         if (inputs[0].value == "") {
             inputs[0].value = labels[0].textContent;
         } else {
@@ -134,105 +118,19 @@
         buttons[1].style.display = "none";
         const inputElement = event.target.parentNode.querySelector('.listName-modified');
         const inputValueListName = inputElement.value;
-        console.log(inputValueListName)
+
         const body = new FormData();
         body.append('userId', user.userId.toString());
         body.append('listNameOld', oldList);
         body.append('listName', inputValueListName);
-        const result = await fetch('/api/tasks/addList', {
+        const result = await fetch('/api/tasks/updateList', {
         method: 'PUT', body
         });
         const task = await result.json();
-        console.log(task);
     }
 
-    async function saveTask(event) {
-        const parent = this.parentElement;
-        const inputs = parent.querySelectorAll('input');
-        const labels = parent.querySelectorAll('label');
-        const buttons = parent.querySelectorAll('button');
-        const oldValue = labels[0].textContent;
-        if (inputs[1].value == "") {
-            inputs[1].value = labels[0].textContent;
-        } else {
-            labels[0].textContent = inputs[1].value;
-        }
-        
-        buttons[0].style.display = "none";
-        inputs[1].style.display = "none";
-        const inputElement = event.target.parentNode.querySelector('.task-modified');
-        const inputValueTask = inputElement.value;
-        const checkbox = event.target.parentNode.querySelector('.checkbox-task');
-        const isChecked = checkbox.checked;
-        const body = new FormData();
-        body.append('userId', user.userId.toString());
-        body.append('taskNameOld', oldValue);
-        body.append('taskName', inputValueTask);
-        body.append('isCompleted', isChecked.toString());
-        const result = await fetch('/api/tasks/addTask', {
-        method: 'PUT', body
-        });
-        const task = await result.json();
-        console.log(task);
-
-        labels[0].style.display = "inline";
-        console.log("label", labels[0]);
-    }
-
-    function showTasks() {
-        const parent = this.parentElement;
-        const inputs = parent.querySelectorAll('input');
-        const labels = parent.querySelectorAll('label');
-        const buttons = parent.querySelectorAll('button');
-        inputs[1].value = labels[0].textContent
-        buttons[0].style.display = "inline";
-        inputs[1].style.display = "inline";
-
-        labels[0].style.display = "none";
-    }
-
-    async function saveCalendar(event) {
-      let oldDateElem = event.target.parentNode.querySelector('span');
-      let oldDate = oldDateElem.textContent;
-      const body = new FormData();
-
-      body.append('userId', user.userId.toString());
-
-      if (date !== prevDate && dates === prevDates) {
-        body.append('date', date);
-        body.append('dates', '');
-        oldDateElem.textContent = date;
-      } else if (date === prevDate && dates !== prevDates) {
-        body.append('date', '');
-        body.append('dates', String(dates));
-        oldDateElem.textContent = String(dates);
-      }
-      
-      if (!oldDate.includes("-")) {
-        body.append('oldDate', oldDate);
-        body.append('oldDates', '');
-      } else {
-        body.append('oldDate', '');       
-        body.append('oldDates', oldDate);
-      }
-
-      body.append('modifyDate', 'true');
-
-      const result = await fetch('/api/tasks/addTask', {
-        method: 'PUT', body
-      });
-
-    const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
-    datepickTask?.setAttribute('hidden', true);
-    const saveButton = event.target;
-    saveButton?.setAttribute('hidden', true);
-  }
-
-  function showCalendar(event) {
-    const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
-    datepickTask?.removeAttribute('hidden');
-    const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
-    saveButton?.removeAttribute('hidden');
+  function updateCalendar(event) {
+    showCalendar(event);
 
     prevDate = date;
     prevDates = dates;
@@ -244,6 +142,7 @@
 </svelte:head>
 
 <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
+  <!-- on:click={show} -->
   <label class="title-List font-bold text-2xl" on:click={handleClick}>{name}</label>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
   <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
@@ -259,17 +158,22 @@
         {#each inputValue as task}
         {#if task}
         <div>
-          <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+          {#if JSON.parse(task.isCompleted)}
+            <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" checked>
+          {:else}
+            <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+          {/if}
           <label class="label-task ml-2"  for="task"  on:click={showTasks}>{task.taskName} </label>
           <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
-          <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask} style="display: none;">Done</button>
+          <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
           {#if task.date}
-          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.date}</span></i>
-          <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
+
+          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{formatDate(task.date)}</span></i>
+          <button  class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates)} hidden>Save</button>
           {/if}
           {#if task.dates}
-          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{task.dates}</span></i>
-          <button class="buttonDoneTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
+          <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{task.dates.map(dateString => formatDate(dateString)).join("-")}</span></i>
+          <button  class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates)} hidden>Save</button>
           {/if}
         </div>
         {/if}
