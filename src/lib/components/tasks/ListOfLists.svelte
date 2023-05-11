@@ -56,18 +56,17 @@
 </script>
 
 <div class="toDoList bg-[#675D50] rounded-[10PX] p-4 mb-4" style="display: flex; justify-content: space-between;">
-  <button class="button-NewList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" hidden on:click={handleNewListClick} style="margin-right: auto;">New List</button>
   <h1 class="title-ToDoList text-center text-4xl text-gray-800 font-bold" style="margin: auto; flex-grow: 1;">To-do List</h1>
   <button class="bg-[#ABC4AA] text-white px-4 py-2 rounded-md ml-auto" style="margin-left: auto;" on:click={logout}>Log Out</button>
 </div>
 
-<div class="listTasks" id="listsTask">
-  <div style="float: left; width: 60%;">
-    <div id="addNewList" class="addNewList mt-2" style=" margin-left:30px;  margin-bottom:20px;">
-      <input class="text-nameList border-gray-300 bg-gray-100 rounded-[20PX] w-3/3 px-4 py-2" type="text" name="name" placeholder="Name List....">
+<div class="listTasks">
+  <div class="w-full sm:w-3/5">
+    <div id="addNewList" class="addNewList mt-2 mb-4 sm:mb-0 flex items-center justify-center sm:justify-start" style="padding-left: 100px; padding-right: 100px">
+      <input class="text-nameList border-gray-300 bg-gray-100 rounded-[20PX] w-full sm:w-auto px-4 py-2 mr-2 sm:mr-4" type="text" name="name" placeholder="Name List...">
       <button class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" type="button" on:click={createList}>Add List</button>
     </div>
-    <div id="tasklist" class="taskList mt-2" style="margin-left:30px; width:150%">
+    <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">
       {#each listTasks as list}
         <TaskList key={list.id} name={list.name} />
       {/each}
@@ -78,12 +77,13 @@
       {/each}
     </div>
   </div>
-  <div class="calendarTaskComp" style="float: right; margin-right: 50px; width: 37%">
+  <!-- <div class="calendarTaskComp" style="float: right; margin-right: 50px; width: 37%">
     {#each groupedTasks as group}
       {#if groupedTasks[groupedTasks.length - 1]._id === group._id }
         <CalendarTask tasksEvents={tasksListEvents}/>
       {/if}
     {/each}
   </div>
-  <div></div>
+  <div>
+  </div> -->
 </div>
