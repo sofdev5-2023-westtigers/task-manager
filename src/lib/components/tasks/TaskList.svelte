@@ -135,7 +135,7 @@
 	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
 </svelte:head>
 
-<div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
+<div class="list bg-[#A9907E] rounded-[10PX] p-4 mb-4">
   <label class="title-List font-bold text-2xl" on:click={show}>{name}</label>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
   <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
