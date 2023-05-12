@@ -77,13 +77,4 @@
       {/each}
     </div>
   </div>
-  <!-- <div class="calendarTaskComp" style="float: right; margin-right: 50px; width: 37%">
-    {#each groupedTasks as group}
-      {#if groupedTasks[groupedTasks.length - 1]._id === group._id }
-        <CalendarTask tasksEvents={tasksListEvents}/>
-      {/if}
-    {/each}
-  </div>
-  <div>
-  </div> -->
 </div>

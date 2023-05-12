@@ -8,7 +8,7 @@
   import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
   import { saveTask, showTasks, saveCalendar, showCalendar, formatDate } from "./TaskEdit";
   import { goto } from '$app/navigation';
-  
+
   export let name = '';
   export let inputValue = [];
   let user: User;
