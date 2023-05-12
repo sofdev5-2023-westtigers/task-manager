@@ -22,6 +22,9 @@
 	async function fetchTasks() {
   		const res = await fetch(`/api/tasks/getTasks?userId=${userId}&listName=${data.id}`);
 		groupedTasks = await res.json();
+		console.log(groupedTasks);
+		console.log(userId);
+		console.log(data.id);
 	}
 
 
