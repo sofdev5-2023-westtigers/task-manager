@@ -4,15 +4,16 @@
   import DatePick from '$calendar/DatePick.svelte';
   import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
-  import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
-  import {setTaskList } from "$calendarTasks/CalendarTaskFunction.ts";
+  import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions';
+  import {setTaskList } from "$calendarTasks/CalendarTaskFunction";
   import {formatDate } from "./TaskEdit";
   import { goto } from '$app/navigation';
 	import CalendarTask from '../calendarTask/CalendarTask.svelte';
   
   export let name = '';
   export let inputValue = [];
-  let calendarTasks = setTaskList(inputValue);
+  // let calendarTasks = setTaskList(inputValue);
+  // console.log(inputValue)
   let user: User;
   let isAddNewTask  = false;
   
@@ -141,13 +142,6 @@
           </ul>
         </li>
     </div> 
-  </div>
-
-  <div>
-    <div class="calendarTaskComp" style="float: right; margin-right: 35px; width: 37%">
-      <CalendarTask tasksEvents={calendarTasks}/>
-    </div>
-    <div></div>
   </div>
 </div>
 
