@@ -15,19 +15,15 @@
 onMount(async() => {
 	Registry.auth.checkParams();
 	Registry.auth.getUser().subscribe((data: User) => {
-		  user = data;
+		user = data;
 		fetchTasks(user.userId?.toString());
 	});
 });
 
 async function fetchTasks(userId : string | undefined) {
-	  const res = await fetch(`/api/tasks/getTasks?userId=${userId}&listName=${data.id}`);
+	const res = await fetch(`/api/tasks/getTasks?userId=${userId}&listName=${data.id}`);
 	groupedTasks = await res.json();
 	setTaskList(groupedTasks);
-	console.log(groupedTasks);
-	console.log(userId);
-	console.log(data.id);
-	console.log(tasksListEvents);
 }
 
 
@@ -36,6 +32,5 @@ async function fetchTasks(userId : string | undefined) {
 <AuthGuard manual={true}>
 	<div slot="authed">
 		<List name={data.id} inputValue={groupedTasks}/>
-		<CalendarTask tasksEvents={tasksListEvents}/>
 	</div>
 </AuthGuard>
