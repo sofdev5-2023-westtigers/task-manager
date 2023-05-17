@@ -1,10 +1,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-	import { Registry } from '$lib/auth/Registry';
-	import type { User } from '$lib/auth/User';
-    import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions.ts';
+    import { Registry } from '$lib/auth/Registry';
+    import type { User } from '$lib/auth/User';
+    import {date, dates, showPickDate, showPickDates} from '$calendar/CalendarOptions.ts';
     export let inputValue = '';
     export let containsDate = false;
+    export let containsDates = false;
     export let dateValue = '';
     let user: User;
     let prevDate;
@@ -116,12 +117,12 @@
     <label class="label-task ml-2" for="task" on:click={show}>{inputValue}</label>
     <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
     <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={save} style="display: none;">Done</button>
-    {#if showPickDate}
-        <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{date}</span></i>
+    {#if showPickDate || containsDate}
+        <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDate? dateValue : date}</span></i>
         <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
     {/if}
-    {#if showPickDates}
-        <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{dates}</span></i>
+    {#if showPickDates  || containsDates}
+        <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDates? dateValue : dates}</span></i>
         <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
     {/if}
 </div>
