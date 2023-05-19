@@ -185,7 +185,9 @@
     </li>
   </div>
 {:else}
-  <TaskBoard />
+<div class="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">
+  <TaskBoard name={name} boardMode={boardMode} inputValue={inputValue}/>
+</div>
 {/if}
 
 <style>
