@@ -3,14 +3,15 @@
   import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
   import TaskList from "./TaskList.svelte";
-  import CalendarTask from "$calendarTasks/CalendarTask.svelte";
-  import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction.ts";
+  import TaskBoard from "./TaskBoard.svelte";
+  import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
+
   let tasksList2 = [];
   $:tasksList2 = tasksListEvents; 
 
   let user: User;
 
-  let isToggled;
+  let isToggled = false;
 
   onMount(async() => {
     Registry.auth.getUser().subscribe((data: User) => {
@@ -81,13 +82,31 @@
     </div>
     <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">
       {#each listTasks as list}
-        <TaskList key={list.id} name={list.name} boardMode={isToggled}/>
-      {/each}
-      {#each groupedTasks as group}
-        {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
-          <TaskList name={group._id.listName} inputValue={group.tasks} boardMode={isToggled}/>
+        {#if !isToggled}
+        <TaskList key={list.id} name={list.name}/>
+        {:else}
+        <TaskBoard name={list.name}/>
         {/if}
       {/each}
+    {#if !isToggled}
+    <div class="flex flex-col">
+      {#each groupedTasks as group}
+        {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
+        <TaskList name={group._id.listName} inputValue={group.tasks}/>
+        {/if}
+      {/each}
+    </div>
+    {:else}
+    <div class="flex flex-row flex-nowrap justify-between justify-items-center flex-shrink">
+      {#each groupedTasks as group}
+        {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
+          <div class="flex-item">
+            <TaskBoard name={group._id.listName} inputValue={group.tasks}/>
+          </div> 
+        {/if}
+      {/each}
+    </div>
+    {/if}
     </div>
   </div>
 </div>
