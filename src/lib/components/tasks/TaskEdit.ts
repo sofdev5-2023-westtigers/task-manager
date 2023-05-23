@@ -16,7 +16,7 @@ export async function saveTask(event, user) {
     inputs[1].style.display = "none";
     const inputElement = event.target.parentNode.querySelector('.task-modified');
     const inputValueTask = inputElement.value;
-    const checkbox = event.target.parentNode.querySelector('.checkbox-task');
+    const checkbox = event.target.parentNode.querySelector('.checkbox');
     const isChecked = checkbox.checked;
     if (isChecked) {
         oldChecked = false;

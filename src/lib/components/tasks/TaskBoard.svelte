@@ -40,25 +40,16 @@
 
 <!-- To-do -->
 <div class="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">
-	<!-- <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task...."> -->
-	<!-- <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}>Add task</button> -->
-    <!-- <div class="datepick-select" hidden>
-      <DatePick/>
-    </div> -->
 	<div class="bg-white rounded px-2 py-2">
 		<!-- board category header -->
 		<div class="flex flex-row justify-between items-center mb-2 mx-1">
 			<div class="flex items-center">
 				<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick}>{name}</label>
 			</div>
-			<!-- <div class="flex items-center text-gray-300">
-				<p class="text-2xl">+</p>
-			</div> -->
 		</div>
 		<!-- board card -->
 		<ul class="list-Task mt-2 list-none">
 		{#each inputValue as task}
-			<!-- <TaskCard name={task.taskName} isCompleted={task.isCompleted} taskDate={task.date} taskDates={task.dates}/> -->
 			{#if task}
               {#if !task.dates && !task.date}
               <TaskCard  name={task.taskName} isCompleted={task.isCompleted}/>
@@ -75,10 +66,8 @@
 		<div class="flex flex-col text-gray-300 mt-2 px-1">
 			<button class="button-AddTask px-1 py-1 mt-2 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}> + 	 New</button>
 			<div class="flex-col" >
-				<input class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] w-8 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
-    			<!-- <div class="datepick-select text-black border-black rounded-[20PX] " hidden> -->
+				<input class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
      	 			<DatePick/>
-    			<!-- </div> -->
 				<button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,true)}>Add</button>
 			</div>
 		</div>
