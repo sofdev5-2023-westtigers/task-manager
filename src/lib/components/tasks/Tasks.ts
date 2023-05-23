@@ -1,4 +1,5 @@
 import NewTask from "./NewTask.svelte";
+import TaskCard from './TaskCard.svelte';
 
 export async function addNewTask(event, name) {
     if (name) {
@@ -13,7 +14,7 @@ export async function addNewTask(event, name) {
     }
 }
 
-export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList) {
+export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,isToggled) {
     const inputElement = event.target.parentNode.querySelector('.input-nameTask');
 
     const inputValue1 = inputElement.value;
@@ -27,22 +28,46 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
     body.append('isCompleted', false.toString());
 
     if(showPickDate == true){
-        newTask = new NewTask({
-            target: event.target.parentNode.querySelector('.list-Task'),
-            props: { inputValue : inputValue1, containsDate : true ,dateValue : date },
-        });
+        if(!isToggled) {
+            newTask = new NewTask({
+                target: event.target.parentNode.querySelector('.list-Task'),
+                props: { inputValue : inputValue1, containsDate : true ,dateValue : date },
+            });
+        } else {
+            newTask = new TaskCard({
+                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                props: { name : inputValue1, isCompleted : false, containsDate : true ,dateValue : date},
+            });
+        }
+        
         body.append('date', date);
     }else if(showPickDates == true){
-        newTask = new NewTask({
-            target: event.target.parentNode.querySelector('.list-Task'),
-            props: { inputValue : inputValue1, containsDate : true , dateValue : dates },
-        });
+        if(!isToggled) {
+            newTask = new NewTask({
+                target: event.target.parentNode.querySelector('.list-Task'),
+                props: { inputValue : inputValue1, containsDates : true , dateValue : dates },
+            });
+        } else {
+            newTask = new TaskCard({
+                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                props: { name : inputValue1, isCompleted : false, containsDates : true, dateValue : dates},
+            });
+        }
+        
         body.append('dates', dates);
     }else{
-        newTask = new NewTask({
-            target: event.target.parentNode.querySelector('.list-Task'),
-            props: { inputValue : inputValue1},
-        });
+        if(!isToggled) {
+            newTask = new NewTask({
+                target: event.target.parentNode.querySelector('.list-Task'),
+                props: { inputValue : inputValue1},
+            });
+        } else {
+            newTask = new TaskCard({
+                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                props: { name : inputValue1, isCompleted : false},
+            });
+        }
+        
     }
     setFalsePicks();
     await fetch('/api/tasks/addTask', {

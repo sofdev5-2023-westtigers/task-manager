@@ -2,10 +2,12 @@
 	import { onMount } from 'svelte';
 	import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
-	import NewTask from './NewTask.svelte';
 	import {date,dates,showPickDate,showPickDates,setFalsePicks} from '$calendar/CalendarOptions';
 	import { setTaskList } from '$calendarTasks/CalendarTaskFunction';
 	import { saveTask, showTasks, saveCalendar, showCalendar, formatDate } from './TaskEdit';
+	import DatePick from '$calendar/DatePick.svelte';
+	import {addNewTask, createTask, saveList} from './Tasks'
+	import TaskCard from './TaskCard.svelte';
 	import { goto } from '$app/navigation';
 
 	export let name = '';
@@ -13,7 +15,6 @@
 	let user: User;
 	let taskList: any[] = [];
 	$: setTaskList(inputValue);
-	export let inputValueListName = '';
 
 	let prevDate;
 	let prevDates;
@@ -39,67 +40,47 @@
 
 <!-- To-do -->
 <div class="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">
+	<!-- <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task...."> -->
+	<!-- <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}>Add task</button> -->
+    <!-- <div class="datepick-select" hidden>
+      <DatePick/>
+    </div> -->
 	<div class="bg-white rounded px-2 py-2">
 		<!-- board category header -->
 		<div class="flex flex-row justify-between items-center mb-2 mx-1">
 			<div class="flex items-center">
 				<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick}>{name}</label>
 			</div>
-			<div class="flex items-center text-gray-300">
-				<p class="mr-2 text-2xl">---</p>
+			<!-- <div class="flex items-center text-gray-300">
 				<p class="text-2xl">+</p>
-			</div>
+			</div> -->
 		</div>
 		<!-- board card -->
+		<ul class="list-Task mt-2 list-none">
 		{#each inputValue as task}
-			<div class="grid grid-rows-1 gap-2">
-				<div class="p-2 rounded shadow-sm border-gray-100 border-2">
-					<div class="form-control">
-						<label class="cursor-pointer label">
-							<span class="label-text">{task.taskName}</span>
-
-							{#if JSON.parse(task.isCompleted)}
-								<input class="checkbox checkbox-accent" type="checkbox" name="task" checked />
-							{:else}
-								<input class="checkbox checkbox-accent" type="checkbox" name="task" />
-							{/if}
-						</label>
-					</div>
-
-					{#if task.date}
-						<i class="mi mi-calendar"
-							><span class="u-sr-only" on:click={(event) => updateCalendar(event)}
-								>{formatDate(task.date)}</span
-							></i
-						>
-						<button
-							class="buttonDoneDate bg-[#c4bcbc] text-gray-600 px-1 py-1 rounded-md text-sm"
-							name="save"
-							type="button"
-							on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates)}
-							hidden>Save</button
-						>
-					{/if}
-					{#if task.dates}
-						<i class="mi mi-calendar"
-							><span class="u-sr-only" on:click={(event) => updateCalendar(event)}
-								>{task.dates.map((dateString) => formatDate(dateString)).join('-')}</span
-							></i
-						>
-						<button
-							class="buttonDoneDates bg-[#c4bcbc] text-gray-600 px-1 py-1 rounded-md text-sm"
-							name="save"
-							type="button"
-							on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates)}
-							hidden>Save</button
-						>
-					{/if}
-				</div>
-			</div>
+			<!-- <TaskCard name={task.taskName} isCompleted={task.isCompleted} taskDate={task.date} taskDates={task.dates}/> -->
+			{#if task}
+              {#if !task.dates && !task.date}
+              <TaskCard  name={task.taskName} isCompleted={task.isCompleted}/>
+              {/if}
+              {#if task.date}
+              <TaskCard  name={task.taskName} containsDate={true} dateValue={formatDate(task.date)} isCompleted={task.isCompleted}/>
+              {/if}
+              {#if task.dates}
+              <TaskCard  name={task.taskName} containsDates={true} isCompleted={task.isCompleted} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")}/>
+              {/if}
+            {/if}
 		{/each}
-		<div class="flex flex-row items-center text-gray-300 mt-2 px-1">
-			<p class="rounded mr-2 text-2xl">+</p>
-			<p class="pt-1 rounded text-sm">New</p>
+		</ul>
+		<div class="flex flex-col text-gray-300 mt-2 px-1">
+			<button class="button-AddTask px-1 py-1 mt-2 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}> + 	 New</button>
+			<div class="flex-col" >
+				<input class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] w-8 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
+    			<!-- <div class="datepick-select text-black border-black rounded-[20PX] " hidden> -->
+     	 			<DatePick/>
+    			<!-- </div> -->
+				<button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,true)}>Add</button>
+			</div>
 		</div>
 	</div>
 </div>

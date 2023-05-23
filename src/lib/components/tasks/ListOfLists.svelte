@@ -80,14 +80,7 @@
         </label>
       </div>
     </div>
-    <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">
-      {#each listTasks as list}
-        {#if !isToggled}
-        <TaskList key={list.id} name={list.name}/>
-        {:else}
-        <TaskBoard name={list.name}/>
-        {/if}
-      {/each}
+    <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">      
     {#if !isToggled}
     <div class="flex flex-col">
       {#each groupedTasks as group}
@@ -95,6 +88,9 @@
         <TaskList name={group._id.listName} inputValue={group.tasks}/>
         {/if}
       {/each}
+      {#each listTasks as list}
+          <TaskList key={list.id} name={list.name}/>
+        {/each}
     </div>
     {:else}
     <div class="flex flex-row flex-nowrap justify-between justify-items-center flex-shrink">
@@ -105,6 +101,9 @@
           </div> 
         {/if}
       {/each}
+      {#each listTasks as list}
+        <TaskBoard name={list.name}/>
+        {/each}
     </div>
     {/if}
     </div>
