@@ -102,7 +102,9 @@
         {/if}
       {/each}
       {#each listTasks as list}
+      <div class="flex-item">
         <TaskBoard name={list.name}/>
+      </div>
         {/each}
     </div>
     {/if}
