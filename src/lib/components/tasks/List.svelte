@@ -9,6 +9,7 @@
   import {formatDate } from "./TaskEdit";
   import { goto } from '$app/navigation';
 	import CalendarTask from '../calendarTask/CalendarTask.svelte';
+  import Cronometer from "../cronometer/Cronometer.svelte";
   
   export let name = '';
   export let inputValue = [];
@@ -115,6 +116,7 @@
     <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
       <label class="title-List font-bold text-2xl">{name}</label>
       <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
+      <Cronometer />
       <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
       <button on:click={saveList} style="display: none;">Done</button>
       <ul class="ul-listTasks"></ul>
