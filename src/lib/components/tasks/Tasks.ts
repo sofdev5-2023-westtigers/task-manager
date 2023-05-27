@@ -14,10 +14,12 @@ export async function addNewTask(event, name) {
     }
 }
 
-export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,isToggled) {
+export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,isToggled) {    
     const inputElement = event.target.parentNode.querySelector('.input-nameTask');
 
     const inputValue1 = inputElement.value;
+
+    if (inputValue1) {
 
     let newTask = null;
 
@@ -83,6 +85,8 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
     datepickTask?.setAttribute('hidden', true);
     const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
     inputNameTask1?.setAttribute('hidden', true);
+
+    }
 }
 
 export async function saveList(event, user) {
