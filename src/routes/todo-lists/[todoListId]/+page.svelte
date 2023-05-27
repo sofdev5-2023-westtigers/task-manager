@@ -3,8 +3,6 @@
 	import { onMount } from 'svelte';
 	import { Registry } from '$lib/auth/Registry';
 	import AuthGuard from '$lib/auth/AuthGuard.svelte';
-	import CalendarTask from "$calendarTasks/CalendarTask.svelte";
-	import { tasksListEvents } from '$calendarTasks/CalendarTaskFunction';
 	import {setTaskList } from '$calendarTasks/CalendarTaskFunction';
 	import type { User } from '$lib/auth/User';
 
