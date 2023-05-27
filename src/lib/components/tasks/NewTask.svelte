@@ -2,7 +2,9 @@
     import { onMount } from 'svelte';
     import { Registry } from '$lib/auth/Registry';
     import type { User } from '$lib/auth/User';
+    import Cronometer from "../cronometer/Cronometer.svelte";
     import {date, dates, showPickDate, showPickDates} from '$calendar/CalendarOptions.ts';
+    import 'flowbite';
     export let inputValue = '';
     export let containsDate = false;
     export let containsDates = false;
@@ -112,9 +114,9 @@
 	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
 </svelte:head>
 
-<div style="margin-bottom:2px;">
+<div style="margin-bottom:2px;" class="mt-2">
     <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
-    <label class="label-task ml-2" for="task" on:click={show}>{inputValue}</label>
+    <label class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
     <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
     <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={save} style="display: none;">Done</button>
     {#if showPickDate || containsDate}
@@ -125,6 +127,7 @@
         <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDates? dateValue : dates}</span></i>
         <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
     {/if}
+    <Cronometer />
 </div>
 
 <style>
