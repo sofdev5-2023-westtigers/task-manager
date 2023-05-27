@@ -3,12 +3,15 @@
   import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
   import TaskList from "./TaskList.svelte";
-  import CalendarTask from "$calendarTasks/CalendarTask.svelte";
-  import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction.ts";
+  import TaskBoard from "./TaskBoard.svelte";
+  import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
+
   let tasksList2 = [];
   $:tasksList2 = tasksListEvents; 
 
   let user: User;
+
+  let isToggled = false;
 
   onMount(async() => {
     Registry.auth.getUser().subscribe((data: User) => {
@@ -53,6 +56,11 @@
       nameInput.value = '';
     }
   }
+
+  function toggle() {
+    isToggled = !isToggled;
+    console.log("isToggled", isToggled);
+  }
 </script>
 
 <div class="toDoList bg-[#675D50] rounded-[10PX] p-4 mb-4" style="display: flex; justify-content: space-between;">
@@ -65,16 +73,41 @@
     <div id="addNewList" class="addNewList mt-2 mb-4 sm:mb-0 flex items-center justify-center sm:justify-start" style="padding-left: 100px; padding-right: 100px">
       <input class="text-nameList border-gray-300 bg-gray-100 rounded-[20PX] w-full sm:w-auto px-4 py-2 mr-2 sm:mr-4" type="text" name="name" placeholder="Name List...">
       <button class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" type="button" on:click={createList}>Add List</button>
+      <div class="form-control">
+        <label class="label cursor-pointer">
+          <input type="checkbox" class="toggle ml-2 mr-2" on:click={toggle}/>
+          <span class="label-text">Board Mode</span>
+        </label>
+      </div>
     </div>
-    <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">
-      {#each listTasks as list}
-        <TaskList key={list.id} name={list.name} />
-      {/each}
+    <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">      
+    {#if !isToggled}
+    <div class="flex flex-col">
       {#each groupedTasks as group}
         {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
-          <TaskList name={group._id.listName} inputValue={group.tasks} />
+        <TaskList name={group._id.listName} inputValue={group.tasks}/>
         {/if}
       {/each}
+      {#each listTasks as list}
+          <TaskList key={list.id} name={list.name}/>
+        {/each}
+    </div>
+    {:else}
+    <div class="flex flex-row flex-nowrap justify-between justify-items-center flex-shrink">
+      {#each groupedTasks as group}
+        {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
+          <div class="flex-item">
+            <TaskBoard name={group._id.listName} inputValue={group.tasks}/>
+          </div> 
+        {/if}
+      {/each}
+      {#each listTasks as list}
+      <div class="flex-item">
+        <TaskBoard name={list.name}/>
+      </div>
+        {/each}
+    </div>
+    {/if}
     </div>
   </div>
 </div>
