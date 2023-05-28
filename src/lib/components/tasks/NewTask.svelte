@@ -26,25 +26,32 @@
         
         buttons[0].style.display = "none";
         inputs[1].style.display = "none";
-        const inputElement = event.target.parentNode.querySelector('.task-modified');
-        const inputValue = inputElement.value;
-        const checkbox = event.target.parentNode.querySelector('.checkbox-task');
-        const isChecked = checkbox.checked;
-        if (!isChecked) {
-          oldChecked = false;
+
+        try {
+            const inputElement = event.target.parentNode.querySelector('.task-modified');
+            const inputValue = inputElement.value;
+            const checkbox = event.target.parentNode.querySelector('.checkbox-task');
+            const isChecked = checkbox.checked;
+            if (!isChecked) {
+                oldChecked = false;
+            }
+            const body = new FormData();
+            body.append('userId', user.userId.toString());
+            body.append('taskNameOld', oldValue);
+            body.append('taskName', inputValue);
+            body.append('isCompletedOld', oldChecked.toString());
+            body.append('isCompleted', isChecked.toString());
+            const result = await fetch('/api/tasks/updateTasks', {
+                method: 'PUT', body
+            });
+            const task = await result.json();
+            console.log(task);
         }
-        const body = new FormData();
-        body.append('userId', user.userId.toString());
-        body.append('taskNameOld', oldValue);
-        body.append('taskName', inputValue);
-        body.append('isCompletedOld', oldChecked.toString());
-        body.append('isCompleted', isChecked.toString());
-        const result = await fetch('/api/tasks/updateTasks', {
-        method: 'PUT', body
-        });
-        const task = await result.json();
-        console.log(task);
+        catch (error) {
+            console.log("error updating task");
+        }
     }
+
     onMount(() => {
         Registry.auth.getUser().subscribe((data: User) => {
             user = data;
