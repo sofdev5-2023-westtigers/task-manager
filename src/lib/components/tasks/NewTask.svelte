@@ -11,7 +11,6 @@
   export let dateValue = '';
   export let isTimeChronometer = false;
   export let timeChronometer : number = 0;
-  console.log("asdf");
   let user: User;
   let prevDate;
   let prevDates;

@@ -40,6 +40,7 @@
   function reanudar() {
     running = true;
     if (running) {
+      asignarValorTime(timeChr);
       reanudarCronometro((updatedMinutes, updatedSeconds) => {
         minutes = updatedMinutes;
         seconds = updatedSeconds;
