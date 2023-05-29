@@ -16,7 +16,8 @@ const config = {
 			$lib: 'src/lib',
 			$calendar: 'src/lib/components/calendar',
 			$calendarTasks: 'src/lib/components/calendarTask',
-			$db: 'src/db'
+			$db: 'src/db',
+			$stadistics: 'src/lib/components/stadistics'
 		}
 	}
 };

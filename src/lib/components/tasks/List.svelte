@@ -9,6 +9,7 @@
   import {formatDate } from "./TaskEdit";
   import { goto } from '$app/navigation';
 	import CalendarTask from '../calendarTask/CalendarTask.svelte';
+	import Header from '../header/Header.svelte';
   
   export let name = '';
   export let inputValue = [];
@@ -30,6 +31,11 @@
 		});
 	});
 
+  const handleClick = () => {
+    const url = `/todo-lists/${name}/stadisticsList`;
+    goto(url, { target: '_blank' });
+  };
+
   async function createTask(event) {
       const inputElement = event.target.parentNode.querySelector('.input-nameTask');
 
@@ -42,23 +48,24 @@
       body.append('taskName', inputValue1);
       body.append('listName', name);
       body.append('isCompleted', false.toString());
+      body.append('timeChronometer', '0');
 
       if(showPickDate == true){
         newTask = new NewTask({
         target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1,dateValue : date },
+        props: { inputValue : inputValue1,dateValue : date, isTimeChronometer: true },
         });
         body.append('date', date);
       }else if(showPickDates == true){
         newTask = new NewTask({
         target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1, dateValue : dates },
+        props: { inputValue : inputValue1, dateValue : dates, isTimeChronometer: true  },
         });
         body.append('dates', dates);
       }else{
         newTask = new NewTask({
         target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1},
+        props: { inputValue : inputValue1, isTimeChronometer: true },
         });
       }
       setFalsePicks();
@@ -105,16 +112,21 @@
 	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
 </svelte:head>
 
-<div class="toDoList bg-[#675D50] rounded-[10PX] p-4 mb-4" style="display: flex; justify-content: space-between;">
-  <h1 class="title-ToDoList text-center text-4xl text-gray-800 font-bold" style="margin: auto; flex-grow: 1;">To-do List</h1>
-  <button class="bg-[#ABC4AA] text-white px-4 py-2 rounded-md ml-auto" style="margin-left: auto;">Log Out</button>
-</div>
-
+<Header/>
 <div>
   <div style="float: left; width: 60%; margin-left:20px">
     <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
-      <label class="title-List font-bold text-2xl">{name}</label>
-      <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask}>Add task</button>
+      <label class="title-List font-bold text-3xl">{name}</label>
+      <div class="dropdown dropdown-bottom mx-8 flex justify-end">
+        <html data-theme="cupcake">
+        </html>
+        <label tabindex="0" class="btn m-1 text-xs" style="margin-top:-30px; width: 16%">Options</label>
+        <ul tabindex="0" class=" dropdown-content menu p-2 shadow rounded-box w-52">
+          <li on:click={addNewTask}><a>Add Task</a></li>
+          <li><a on:click={handleClick}>See Stadistics</a></li>
+          <li><a href="/todo-lists">Return to Lists</a></li>
+        </ul>
+      </div>
       <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
       <button on:click={saveList} style="display: none;">Done</button>
       <ul class="ul-listTasks"></ul>
@@ -128,13 +140,13 @@
             {#each inputValue as task}
             {#if task}
               {#if !task.dates && !task.date}
-              <NewTask  inputValue={task.taskName}/>
+              <NewTask  inputValue={task.taskName} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
               {#if task.date}
-              <NewTask  inputValue={task.taskName} containsDate={true} dateValue={formatDate(task.date)}/>
+              <NewTask  inputValue={task.taskName} containsDate={true} dateValue={formatDate(task.date)} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
               {#if task.dates}
-              <NewTask  inputValue={task.taskName} containsDates={true} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")}/>
+              <NewTask  inputValue={task.taskName} containsDates={true} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
             {/if}
             {/each}
@@ -142,7 +154,7 @@
         </li>
     </div> 
   </div>
-    <div class="calendarTaskComp" style="float: right; margin-right: 35px; width: 37%">
+    <div class="calendarTaskComp" style="margin-right: 35px; margin-top:3px">
       {#each inputValue as task}
       {#if inputValue[inputValue.length - 1]._id === task._id }
           <CalendarTask tasksEvents={tasksListEvents}/>
@@ -150,4 +162,3 @@
       {/each}
     </div>
 </div>
-
