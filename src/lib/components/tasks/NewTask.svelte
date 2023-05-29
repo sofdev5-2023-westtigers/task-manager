@@ -117,7 +117,7 @@ function showCalendar(event) {
 </svelte:head>
 
 <div style="margin-bottom:2px;" class="mt-2">
-  <input class="checkbox-task form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+  <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
   <label class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
   <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
   <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={save} style="display: none;">Done</button>
