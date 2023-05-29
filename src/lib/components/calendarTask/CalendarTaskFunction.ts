@@ -29,7 +29,7 @@ export function addNewEventTask(newTaskTitle, dateStart, dateEnd){
     tasksListEvents.push(event);
 }
 
-function generateColorRandom() {
+export function generateColorRandom() {
     let color = "#";
     for (let i = 0; i < 6; i++) {
       color += Math.floor(Math.random() * 16).toString(16);
@@ -37,7 +37,11 @@ function generateColorRandom() {
     return color;
 }
 
-function convertDateFormat(dateStr) {
+export function convertDateFormat(dateStr) {
+    if (dateStr === "") {
+      throw new Error("Invalid date format");
+    }
+  
     var parts = dateStr.split("/");
     var year = parts[2];
     var month = parts[0];

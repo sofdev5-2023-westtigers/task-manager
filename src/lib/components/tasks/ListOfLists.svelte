@@ -3,6 +3,7 @@
   import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
   import TaskList from "./TaskList.svelte";
+	import Header from "../header/Header.svelte";
   import TaskBoard from "./TaskBoard.svelte";
   import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
 
@@ -19,10 +20,6 @@
     });
   });
 
-  let logout = () => {
-      Registry.auth.logout();
-    };
-    
   let groupedTasks = [];
   async function fetchTasks() {
     const res = await fetch('/api/tasks/getList');
@@ -63,10 +60,7 @@
   }
 </script>
 
-<div class="toDoList bg-[#675D50] rounded-[10PX] p-4 mb-4" style="display: flex; justify-content: space-between;">
-  <h1 class="title-ToDoList text-center text-4xl text-gray-800 font-bold" style="margin: auto; flex-grow: 1;">To-do List</h1>
-  <button class="bg-[#ABC4AA] text-white px-4 py-2 rounded-md ml-auto" style="margin-left: auto;" on:click={logout}>Log Out</button>
-</div>
+<Header/>
 
 <div class="listTasks">
   <div class="w-full sm:w-3/5">
