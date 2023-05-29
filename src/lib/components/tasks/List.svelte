@@ -7,7 +7,6 @@
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions';
   import {setTaskList, tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
   import {formatDate } from "./TaskEdit";
-  import Stadistic from "../stadistics/Stadistic.svelte";
   import { goto } from '$app/navigation';
 	import CalendarTask from '../calendarTask/CalendarTask.svelte';
 	import Header from '../header/Header.svelte';
@@ -49,23 +48,24 @@
       body.append('taskName', inputValue1);
       body.append('listName', name);
       body.append('isCompleted', false.toString());
+      body.append('timeChronometer', '0');
 
       if(showPickDate == true){
         newTask = new NewTask({
         target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1,dateValue : date },
+        props: { inputValue : inputValue1,dateValue : date, isTimeChronometer: true },
         });
         body.append('date', date);
       }else if(showPickDates == true){
         newTask = new NewTask({
         target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1, dateValue : dates },
+        props: { inputValue : inputValue1, dateValue : dates, isTimeChronometer: true  },
         });
         body.append('dates', dates);
       }else{
         newTask = new NewTask({
         target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1},
+        props: { inputValue : inputValue1, isTimeChronometer: true },
         });
       }
       setFalsePicks();
@@ -140,13 +140,13 @@
             {#each inputValue as task}
             {#if task}
               {#if !task.dates && !task.date}
-              <NewTask  inputValue={task.taskName}/>
+              <NewTask  inputValue={task.taskName} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
               {#if task.date}
-              <NewTask  inputValue={task.taskName} containsDate={true} dateValue={formatDate(task.date)}/>
+              <NewTask  inputValue={task.taskName} containsDate={true} dateValue={formatDate(task.date)} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
               {#if task.dates}
-              <NewTask  inputValue={task.taskName} containsDates={true} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")}/>
+              <NewTask  inputValue={task.taskName} containsDates={true} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
             {/if}
             {/each}

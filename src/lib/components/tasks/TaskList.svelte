@@ -55,6 +55,7 @@
       body.append('taskName', inputValue1);
       body.append('listName', name);
       body.append('isCompleted', false.toString());
+      body.append('timeChronometer', '0');
 
       if(showPickDate == true){
         newTask = new NewTask({

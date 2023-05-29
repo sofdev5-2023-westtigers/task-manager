@@ -1,16 +1,14 @@
-<script>
+<script lang="ts">
   import TableStadistic from "./TableStadistic.svelte"
-  import AreaChart from "./AreaChart.svelte";
 	import Header from "../header/Header.svelte";
 	import BarChartV from "./BarChartV.svelte";
 	import DonutChart from "./DonutChart.svelte";
-  import { onMount } from "svelte";
 	import PieChart from "./PieChart.svelte";
   import { goto } from '$app/navigation';
 
-  export let nameList;
+  export let nameList = '';
+  export let tasks = [];
 
-  let isAreaChart = false;
   let isBarChartV = false;
   let isDonutChart = false;
   let isPieChart = true;
@@ -20,32 +18,33 @@
     goto(url, { target: '_blank' });
   };
 
-  function chooseGraphBarH() {
-      isAreaChart = true;
-      isBarChartV = false;
-      isDonutChart = false;
-      isPieChart = false;
-  }
-
   function chooseGraphBarV() {
-      isAreaChart = false;
       isBarChartV = true;
       isDonutChart = false;
       isPieChart = false;
   }
 
   function chooseGraphPieChart() {
-    isAreaChart = false;
     isBarChartV = false;
     isDonutChart = false;
     isPieChart = true;
   }
 
   function chooseGraphDonutChart() {
-      isAreaChart = false;
       isBarChartV = false;
       isDonutChart = true;
       isPieChart = false;
+  }
+
+  function taskComplete() : number{
+    let numberTaskCOmplete = 0;
+    tasks.forEach(element => {
+      if (element.isCompleted === true) {
+        numberTaskCOmplete += 1;
+      }
+    });
+
+    return numberTaskCOmplete;
   }
 </script>
 
@@ -62,10 +61,6 @@
       <span class="label-text">Bar Chart Vertical</span>
     </div>
     <div class="form-control">
-      <input type="radio" name="radio-10" class="radio checked:bg-gray-800 mt-3"  on:change={chooseGraphBarH}/>
-      <span class="label-text">Bar Chart Horizontal</span>
-    </div>
-    <div class="form-control">
       <input type="radio" name="radio-10" class="radio checked:bg-gray-800 mt-3" on:change={chooseGraphPieChart}/>
       <span class="label-text">Pie Chart</span> 
     </div>
@@ -75,34 +70,40 @@
     </div>
   </div>
   <div id="containerCharts" style="float: right; width: 78%; margin-right: 80px;">
-    {#if isAreaChart}
-      <div id="containerCharts" style="margin-top: 190px;">
-        <AreaChart/>
-      </div>
+    {#each tasks as task}
+    {#if tasks[tasks.length - 1]._id === task._id }
+      {#if isBarChartV}
+        <div id="containerCharts" style="margin-top: 190px;">
+          <BarChartV/>
+        </div>
+      {/if}
+      {#if isDonutChart}
+        <DonutChart/>
+      {/if}
+      {#if isPieChart}
+        <PieChart/>
+      {/if}
     {/if}
-    {#if isBarChartV}
-    <div id="containerCharts" style="margin-top: 190px;">
-      <BarChartV/>
-    </div>
-    {/if}
-    {#if isDonutChart}
-      <DonutChart/>
-    {/if}
-    {#if isPieChart}
-      <PieChart/>
-    {/if}
+  {/each}
   </div>
 </div>
-
-
 
 <div id="containerTable"  style="float: left; margin-left: 20px; margin-top: 10px;">
   <button class="btn btn-outline btn-secundary" on:click={handleClick}>Return List</button>
 </div>
 
-<div id="containerTable"  style="float: left; margin-top: 290px; margin-left: -30px;">
-
-  <TableStadistic/>
+<div id="containerTable"  style="float: left; margin-top: 100px; margin-left: -30px;">
+  <div class="stats shadow ml-40">
+    <div class="stat">
+      <div class="stat-title">General Report For {nameList}</div>
+      <div class="stat-value">Total Task: {tasks.length}</div>
+      {#each tasks as task}
+          {#if tasks[tasks.length - 1]._id === task._id }
+            <div class="stat-desc">Task Complete: {taskComplete()}/{tasks.length}</div>
+            <div class="radial-progress mt-3 mb-9" style="--value:{(taskComplete() * 100) / tasks.length}; --size:12rem; --thickness: 2rem;">{(taskComplete() * 100) / tasks.length}%</div>
+            {/if}
+      {/each}
+    </div>
+  </div>
+  <TableStadistic dataTask={tasks}/>
 </div>
-
-

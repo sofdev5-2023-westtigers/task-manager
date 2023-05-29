@@ -4,6 +4,7 @@
 	import AuthGuard from '$lib/auth/AuthGuard.svelte';
 	import type { User } from '$lib/auth/User';
 	import Stadistic from '$lib/components/stadistics/Stadistic.svelte';
+	import {trasformDataDonutChart, trasformDataPieChart, trasformDataBarChart } from '$stadistics/transformData';
 
     export let data;
 	let user: User;
@@ -20,13 +21,15 @@
 	async function fetchTasks(userId : string | undefined) {
 		const res = await fetch(`/api/tasks/getTasks?userId=${userId}&listName=${data.id}`);
 		groupedTasks = await res.json();
-		console.log(groupedTasks);
+		trasformDataPieChart(groupedTasks);
+		trasformDataDonutChart(groupedTasks);
+		trasformDataBarChart(groupedTasks);
 	}
 
 </script>
 
 <AuthGuard manual={true}>
 	<div slot="authed">
-		<Stadistic nameList={data.id}/>
+		<Stadistic nameList={data.id} tasks={groupedTasks}/>
 	</div>
 </AuthGuard>
