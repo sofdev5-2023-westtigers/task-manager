@@ -12,7 +12,8 @@
 
   let user: User;
 
-  let isToggled = false;
+  let isToggled : Boolean;
+  isToggled = localStorage.getItem('isToggled') === 'true';
 
   onMount(async() => {
     Registry.auth.getUser().subscribe((data: User) => {
@@ -57,6 +58,7 @@
   function toggle() {
     isToggled = !isToggled;
     console.log("isToggled", isToggled);
+    localStorage.setItem('isToggled', isToggled.toString());
   }
 </script>
 
@@ -67,12 +69,21 @@
     <div id="addNewList" class="addNewList mt-2 mb-4 sm:mb-0 flex items-center justify-center sm:justify-start" style="padding-left: 100px; padding-right: 100px">
       <input class="text-nameList border-gray-300 bg-gray-100 rounded-[20PX] w-full sm:w-auto px-4 py-2 mr-2 sm:mr-4" type="text" name="name" placeholder="Name List...">
       <button class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" type="button" on:click={createList}>Add List</button>
-      <div class="form-control">
-        <label class="label cursor-pointer">
-          <input type="checkbox" class="toggle ml-2 mr-2" on:click={toggle}/>
-          <span class="label-text">Board Mode</span>
-        </label>
-      </div>
+      {#if !isToggled}
+        <div class="form-control">
+          <label class="label cursor-pointer">
+            <input type="checkbox" class="toggle ml-2 mr-2" on:click={toggle}/>
+            <span class="label-text">Board Mode</span>
+          </label>
+        </div>
+      {:else}
+        <div class="form-control">
+          <label class="label cursor-pointer">
+            <input type="checkbox" class="toggle ml-2 mr-2" on:click={toggle} checked/>
+            <span class="label-text">Board Mode</span>
+          </label>
+        </div>
+      {/if}
     </div>
     <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">      
     {#if !isToggled}
