@@ -16,39 +16,46 @@
   let prevDates;
 
   async function save(event) {
-      const parent = this.parentElement;
-      const inputs = parent.querySelectorAll('input');
-      const labels = parent.querySelectorAll('label');
-      const buttons = parent.querySelectorAll('button');
-      const oldValue = labels[0].textContent;
-      let oldChecked = true;
-      if (inputs[1].value == "") {
-          inputs[1].value = labels[0].textContent;
-      } else {
-          labels[0].textContent = inputs[1].value;
+      try {
+          const parent = this.parentElement;
+          const inputs = parent.querySelectorAll('input');
+          const labels = parent.querySelectorAll('label');
+          const buttons = parent.querySelectorAll('button');
+          const oldValue = labels[0].textContent;
+          let oldChecked = true;
+          if (inputs[1].value == "") {
+              inputs[1].value = labels[0].textContent;
+          } else {
+              labels[0].textContent = inputs[1].value;
+          }
+
+          buttons[0].style.display = "none";
+          inputs[1].style.display = "none";
+          const inputElement = event.target.parentNode.querySelector('.task-modified');
+          const inputValue = inputElement.value;
+          const checkbox = event.target.parentNode.querySelector('.checkbox-task');
+          const isChecked = checkbox.checked;
+          if (!isChecked) {
+              oldChecked = false;
+          }
+          const body = new FormData();
+          body.append('userId', user.userId.toString());
+          body.append('taskNameOld', oldValue);
+          body.append('taskName', inputValue);
+          body.append('isCompletedOld', oldChecked.toString());
+          body.append('isCompleted', isChecked.toString());
+          const result = await fetch('/api/tasks/updateTasks', {
+              method: 'PUT', body
+          });
+          const task = await result.json();
+          console.log(task);
+      } catch (error) {
+          console.log("error was found");
+          // Expected output: ReferenceError: nonExistentFunction is not defined
+          // (Note: the exact output may be browser-dependent)
       }
-      
-      buttons[0].style.display = "none";
-      inputs[1].style.display = "none";
-      const inputElement = event.target.parentNode.querySelector('.task-modified');
-      const inputValue = inputElement.value;
-      const checkbox = event.target.parentNode.querySelector('.checkbox-task');
-      const isChecked = checkbox.checked;
-      if (!isChecked) {
-        oldChecked = false;
-      }
-      const body = new FormData();
-      body.append('userId', user.userId.toString());
-      body.append('taskNameOld', oldValue);
-      body.append('taskName', inputValue);
-      body.append('isCompletedOld', oldChecked.toString());
-      body.append('isCompleted', isChecked.toString());
-      const result = await fetch('/api/tasks/updateTasks', {
-      method: 'PUT', body
-      });
-      const task = await result.json();
-      console.log(task);
   }
+
   onMount(() => {
       Registry.auth.getUser().subscribe((data: User) => {
           user = data;
@@ -118,9 +125,9 @@ function showCalendar(event) {
 
 <div style="margin-bottom:2px;" class="mt-2">
   <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
-  <label class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
-  <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
-  <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={save} style="display: none;">Done</button>
+  <label data-testid="label-name" class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
+  <input data-testid="input-name" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
+  <button data-testid="button-name" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={save} style="display: none;">Done</button>
   {#if showPickDate || containsDate}
       <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDate? dateValue : date}</span></i>
       <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
