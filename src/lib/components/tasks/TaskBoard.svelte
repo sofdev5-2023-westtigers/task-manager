@@ -40,13 +40,9 @@
 
 <!-- To-do -->
 <div class="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">
-	<div class="bg-white rounded px-2 py-2">
+	<div data-testid="content-element" class="bg-white rounded px-2 py-2">
 		<!-- board category header -->
-		<div class="flex flex-row justify-between items-center mb-2 mx-1">
-			<div class="flex items-center">
-				<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick}>{name}</label>
-			</div>
-		</div>
+		<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick}>{name}</label>
 		<!-- board card -->
 		<ul class="list-Task mt-2 list-none">
 		{#each inputValue as task}
@@ -66,9 +62,9 @@
 		<div class="flex flex-col text-gray-300 mt-2 px-1">
 			<button class="button-AddTask px-1 py-1 mt-2 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}> + 	 New</button>
 			<div class="flex-col" >
-				<input class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
+				<input data-testid="input-name-task" class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
      	 			<DatePick/>
-				<button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,true)}>Add</button>
+				<button  data-testid="button-add" class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,true)}>Add</button>
 			</div>
 		</div>
 	</div>

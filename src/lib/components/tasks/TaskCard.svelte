@@ -36,13 +36,13 @@
 
 <div class="grid grid-rows-1 gap-2">
     <div class="p-2 rounded shadow-sm border-gray-100 border-2">
-        <div class="flex flex-row place-items-center justify-between form-control">
-            <input type="text" hidden>
+        <div data-testid="content" class="flex flex-row place-items-center justify-between form-control">
+            <input data-testid="input" type="text" hidden>
             <label class="label-text" on:click={showTasks} >{name}</label>
-            <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
-            <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
+            <input data-testid="input-edit" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
+            <button data-testid="button-done" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
             <label class="cursor-pointer label">
-                {#if JSON.parse(isCompleted.toString())}
+                {#if isCompleted}
                     <input class="checkbox checkbox-accent" type="checkbox" name="task" checked />
                 {:else}
                     <input class="checkbox checkbox-accent" type="checkbox" name="task" />
@@ -57,7 +57,7 @@
             <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{containsDates? dateValue : dates}</span></i>
             <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates)} hidden>Save</button>
         {/if}
-        <div class="datepick-select" hidden>
+        <div data-testid="datepick" class="datepick-select" hidden>
             <DatePick/>
         </div>
     </div>
