@@ -140,13 +140,13 @@
             {#each inputValue as task}
             {#if task}
               {#if !task.dates && !task.date}
-              <NewTask  inputValue={task.taskName} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
+              <NewTask  inputValue={task.taskName} isChecked={JSON.parse(task.isCompleted)} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
               {#if task.date}
-              <NewTask  inputValue={task.taskName} containsDate={true} dateValue={formatDate(task.date)} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
+              <NewTask  inputValue={task.taskName} isChecked={JSON.parse(task.isCompleted)} containsDate={true} dateValue={formatDate(task.date)} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
               {#if task.dates}
-              <NewTask  inputValue={task.taskName} containsDates={true} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
+              <NewTask  inputValue={task.taskName} isChecked={JSON.parse(task.isCompleted)} containsDates={true} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
             {/if}
             {/each}
