@@ -5,11 +5,12 @@
 
   let running = false;
   export let nameTask : string;
+  export let nameList : string;
   export let userlog : User;
   export let timeChr : number = 0;
-  asignarValorTime(timeChr);
   let minutes : number = parseTimeMin(timeChr);
   let seconds : number = parseTimeSec(timeChr);
+  let isFirstTime : boolean = true;
 
   function iniciar() {
     running = true;
@@ -17,6 +18,9 @@
     seconds = 0;
 
     if (running) {
+      if (isFirstTime) {
+        isFirstTime = false;
+      }
       iniciarCronometro((updatedMinutes, updatedSeconds) => {
         minutes = updatedMinutes;
         seconds = updatedSeconds;
@@ -26,21 +30,28 @@
 
   async function pausar() {
     pausarCronometro();
-    //const body = new FormData();
-    //body.append('userId', userlog.userId.toString());
-    //body.append('modifyChronometerTime', "true");
-    //body.append('oldTimeChronometer',timeChr.toString());
-    //body.append('timeChronometer',timeChro.toString());
-    //const result = await fetch('/api/tasks/updateTasks', {
-    //  method: 'PUT', body
-    //});
+    const body = new FormData();
+    body.append('userId', userlog.userId.toString());
+    body.append('taskName', nameTask);
+    body.append('listName', nameList);
+    body.append('modifyChronometerTime', "true");
+    body.append('oldTimeChronometer',timeChr.toString());
+    body.append('timeChronometer',timeChro.toString());
+    const result = await fetch('/api/tasks/updateTasks', {
+      method: 'PUT', body
+    });
     running = false;
+
   }
 
   function reanudar() {
     running = true;
     if (running) {
-      asignarValorTime(timeChr);
+      if(isFirstTime){
+        asignarValorTime(timeChr, null);
+        isFirstTime = false;
+      }
+
       reanudarCronometro((updatedMinutes, updatedSeconds) => {
         minutes = updatedMinutes;
         seconds = updatedSeconds;
