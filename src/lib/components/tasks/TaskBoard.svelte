@@ -59,8 +59,8 @@
             {/if}
 		{/each}
 		</ul>
-		<div class="flex flex-col text-gray-300 mt-2 px-1">
-			<button class="button-AddTask px-1 py-1 mt-2 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}> + 	 New</button>
+		<div class="flex flex-col mt-2 px-1">
+			<button class="button-AddTask text-gray-400 px-1 py-1 mt-2 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}> + 	 New</button>
 			<div class="flex-col" >
 				<input data-testid="input-name-task" class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
      	 			<DatePick/>

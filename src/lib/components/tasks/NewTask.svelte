@@ -4,16 +4,21 @@
   import type { User } from '$lib/auth/User';
   import Cronometer from "../cronometer/Cronometer.svelte";
   import {date, dates, showPickDate, showPickDates} from '$calendar/CalendarOptions.ts';
+  import {saveTask} from "./TaskEdit";
+  import DatePick from "../calendar/DatePick.svelte";
 
   export let inputValue = '';
+  export let nameList = '';
   export let containsDate = false;
   export let containsDates = false;
   export let dateValue = '';
   export let isTimeChronometer = false;
   export let timeChronometer : number = 0;
+  export let isChecked = false;
   let user: User;
   let prevDate;
   let prevDates;
+
 
   async function save(event) {
       try {
@@ -55,7 +60,6 @@
           // (Note: the exact output may be browser-dependent)
       }
   }
-
   onMount(() => {
       Registry.auth.getUser().subscribe((data: User) => {
           user = data;
@@ -124,10 +128,14 @@ function showCalendar(event) {
 </svelte:head>
 
 <div style="margin-bottom:2px;" class="mt-2">
-  <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+    {#if isChecked}
+        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" checked>
+    {:else}
+        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+    {/if}
   <label data-testid="label-name" class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
   <input data-testid="input-name" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
-  <button data-testid="button-name" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={save} style="display: none;">Done</button>
+  <button data-testid="button-name" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
   {#if showPickDate || containsDate}
       <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDate? dateValue : date}</span></i>
       <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
@@ -137,8 +145,11 @@ function showCalendar(event) {
       <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
   {/if}
   {#if isTimeChronometer}
-      <Cronometer nameTask={inputValue} timeChr={timeChronometer} userlog={user}/>
+      <Cronometer nameTask={inputValue} nameList={nameList} timeChr={timeChronometer} userlog={user}/>
   {/if}
+    <div data-testid="datepick" class="datepick-select" hidden>
+        <DatePick/>
+    </div>
 </div>
 
 <style>

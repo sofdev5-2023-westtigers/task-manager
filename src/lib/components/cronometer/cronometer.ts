@@ -3,9 +3,9 @@ let tiempoInicial: number | null = null;
 let tiempoPausado: number | null = null;
 export let timeChro: number;
 
-
-export function asignarValorTime(timeNew : number){
-    tiempoInicial = timeNew;
+export function asignarValorTime(timeNew : number, tiempoReanudar : number | null){
+  tiempoInicial = timeNew;
+  tiempoPausado = tiempoReanudar;
 }
 
 export function parseTimeMin(timeChr : number) {
