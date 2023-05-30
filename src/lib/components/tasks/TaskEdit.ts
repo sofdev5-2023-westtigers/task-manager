@@ -1,40 +1,45 @@
 export async function saveTask(event, user) {
-    const parent = event.target.parentElement;
-    const inputs = parent.querySelectorAll('input');
-    const labels = parent.querySelectorAll('label');
-    const buttons = parent.querySelectorAll('button');
-    const oldValue = labels[0].textContent;
+    try {
+        const parent = event.target.parentElement;
+        const inputs = parent.querySelectorAll('input');
+        const labels = parent.querySelectorAll('label');
+        const buttons = parent.querySelectorAll('button');
+        const oldValue = labels[0].textContent;
 
-    let oldChecked = false;
-    if (inputs[1].value == "") {
-        inputs[1].value = labels[0].textContent;
-    } else {
-        labels[0].textContent = inputs[1].value;
+        let oldChecked = false;
+        if (inputs[1].value == "") {
+            inputs[1].value = labels[0].textContent;
+        } else {
+            labels[0].textContent = inputs[1].value;
+        }
+
+        buttons[0].style.display = "none";
+        inputs[1].style.display = "none";
+        const inputElement = event.target.parentNode.querySelector('.task-modified');
+        const inputValueTask = inputElement.value;
+        const checkbox = event.target.parentNode.querySelector('.checkbox');
+        const isChecked = checkbox.checked;
+        if (isChecked) {
+            oldChecked = false;
+        }
+        const body = new FormData();
+        body.append('userId', user.userId.toString());
+        body.append('taskNameOld', oldValue);
+        body.append('taskName', inputValueTask);
+        body.append('isCompletedOld', oldChecked.toString());
+        body.append('isCompleted', isChecked.toString());
+        const result = await fetch('/api/tasks/updateTasks', {
+            method: 'PUT', body
+        });
+        const task = await result.json();
+        console.log(task);
+
+        labels[0].style.display = "inline";
+        console.log("label", labels[0]);
     }
-
-    buttons[0].style.display = "none";
-    inputs[1].style.display = "none";
-    const inputElement = event.target.parentNode.querySelector('.task-modified');
-    const inputValueTask = inputElement.value;
-    const checkbox = event.target.parentNode.querySelector('.checkbox');
-    const isChecked = checkbox.checked;
-    if (isChecked) {
-        oldChecked = false;
+    catch (error) {
+        console.log("handled save error");
     }
-    const body = new FormData();
-    body.append('userId', user.userId.toString());
-    body.append('taskNameOld', oldValue);
-    body.append('taskName', inputValueTask);
-    body.append('isCompletedOld', oldChecked.toString());
-    body.append('isCompleted', isChecked.toString());
-    const result = await fetch('/api/tasks/updateTasks', {
-        method: 'PUT', body
-    });
-    const task = await result.json();
-    console.log(task);
-
-    labels[0].style.display = "inline";
-    console.log("label", labels[0]);
 }
 
 export function showTasks() {
