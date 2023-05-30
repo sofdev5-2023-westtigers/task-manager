@@ -8,6 +8,7 @@
   import { saveTask, showTasks, saveCalendar, showCalendar, formatDate } from "./TaskEdit";
   import { goto } from '$app/navigation';
   import {addNewTask, createTask, saveList} from './Tasks'
+	import { nameList, setNameList } from './TaskList';
 
   export let name = '';
   export let inputValue = [];
@@ -26,6 +27,7 @@
 	});
 
   const handleClick = () => {
+    setNameList(name);
     const url = `/todo-lists/${name}`;
     goto(url, { target: '_blank' });
   };
