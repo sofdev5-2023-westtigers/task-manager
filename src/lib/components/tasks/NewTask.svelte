@@ -8,6 +8,7 @@
   import DatePick from "../calendar/DatePick.svelte";
 
   export let inputValue = '';
+  export let nameList = '';
   export let containsDate = false;
   export let containsDates = false;
   export let dateValue = '';
@@ -103,7 +104,7 @@ function showCalendar(event) {
       <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
   {/if}
   {#if isTimeChronometer}
-      <Cronometer nameTask={inputValue} timeChr={timeChronometer} userlog={user}/>
+      <Cronometer nameTask={inputValue} nameList={nameList} timeChr={timeChronometer} userlog={user}/>
   {/if}
     <div data-testid="datepick" class="datepick-select" hidden>
         <DatePick/>
