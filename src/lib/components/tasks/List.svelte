@@ -112,8 +112,9 @@
 	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
 </svelte:head>
 
-<Header/>
-<div>
+  <Header/>
+
+<div style="padding-top:80px;">
   <div style="float: left; width: 60%; margin-left:20px">
     <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
       <label class="title-List font-bold text-3xl">{name}</label>
@@ -140,13 +141,13 @@
             {#each inputValue as task}
             {#if task}
               {#if !task.dates && !task.date}
-              <NewTask  inputValue={task.taskName} nameList={task.listName} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
+              <NewTask  inputValue={task.taskName} nameList={task.listName} isChecked={JSON.parse(task.isCompleted)} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
               {#if task.date}
-              <NewTask  inputValue={task.taskName} nameList={task.listName} containsDate={true} dateValue={formatDate(task.date)} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
+              <NewTask  inputValue={task.taskName} nameList={task.listName} isChecked={JSON.parse(task.isCompleted)} containsDate={true} dateValue={formatDate(task.date)} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
               {#if task.dates}
-              <NewTask  inputValue={task.taskName} nameList={task.listName} containsDates={true} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
+              <NewTask  inputValue={task.taskName} nameList={task.listName} isChecked={JSON.parse(task.isCompleted)} containsDates={true} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")} timeChronometer={task.timeChronometer} isTimeChronometer={true}/>
               {/if}
             {/if}
             {/each}

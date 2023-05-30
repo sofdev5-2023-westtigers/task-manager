@@ -52,7 +52,7 @@
 
 <Header/>
 
-<div id="containerCharts"  style="float: right;">
+<div id="containerCharts"  style="float: right; padding-top:80px;">
   <div style="margin-left: 400px; font-size: 34px; font-weight: bold; color: black;" class="stat-value">overview</div>
 
   <div id="containerRadioOptions" style="float: left; margin-top:300px; margin-left: -118px;">
@@ -88,11 +88,11 @@
   </div>
 </div>
 
-<div id="containerTable"  style="float: left; margin-left: 20px; margin-top: 10px;">
+<div id="containerTable"  style="float: left; margin-left: 20px; margin-top: 10px; padding-top:80px;">
   <button class="btn btn-outline btn-secundary" on:click={handleClick}>Return List</button>
 </div>
 
-<div id="containerTable"  style="float: left; margin-top: 100px; margin-left: -30px;">
+<div id="containerTable"  style="float: left; margin-top: 100px; margin-left: -30px; padding-top:80px;">
   <div class="stats shadow ml-40">
     <div class="stat">
       <div class="stat-title">General Report For {nameList}</div>
