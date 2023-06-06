@@ -15,14 +15,14 @@
   
     let prevDate : any;
     let prevDates : any;
-  
+
     onMount(() => {
-          Registry.auth.getUser().subscribe((data: User) => {
-              user = data;
-          });
-      });
-  
-    function updateCalendar(event) {
+            Registry.auth.getUser().subscribe((data: User) => {
+                user = data;
+            });
+        });
+
+    function updateCalendar(event: MouseEvent & { currentTarget: EventTarget & HTMLSpanElement; }) {
         showCalendar(event);
         prevDate = date;
         prevDates = dates;
@@ -40,14 +40,15 @@
             <input data-testid="input" type="text" hidden>
             <label class="label-text" on:click={showTasks} >{name}</label>
             <input data-testid="input-edit" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
-            <button data-testid="button-done" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
-            <label class="cursor-pointer label">
+            <button data-testid="button-done" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={() => saveTask(event, user)} style="display: none;">Done</button>
+            
                 {#if isCompleted}
-                    <input class="checkbox checkbox-accent" type="checkbox" name="task" checked />
+                    <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)} checked />
                 {:else}
-                    <input class="checkbox checkbox-accent" type="checkbox" name="task" />
+                    <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)}/>
                 {/if}
-            </label>
+            
+
         </div>
         {#if containsDate}
             <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{containsDate? dateValue : date}</span></i>

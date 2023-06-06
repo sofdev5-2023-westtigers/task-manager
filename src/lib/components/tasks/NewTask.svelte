@@ -41,6 +41,7 @@
           const checkbox = event.target.parentNode.querySelector('.checkbox-task');
           const isChecked = checkbox.checked;
           if (!isChecked) {
+              console.log('isChecked ', checkbox.checked);
               oldChecked = false;
           }
           const body = new FormData();
@@ -129,9 +130,9 @@ function showCalendar(event) {
 
 <div style="margin-bottom:2px;" class="mt-2">
     {#if isChecked}
-        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" checked>
+        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task"  on:change={saveTask(event, user)} checked>
     {:else}
-        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox"  on:change={saveTask(event, user)} name="task">
     {/if}
   <label data-testid="label-name" class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
   <input data-testid="input-name" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
