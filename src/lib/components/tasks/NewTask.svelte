@@ -15,10 +15,10 @@
   export let isTimeChronometer = false;
   export let timeChronometer : number = 0;
   export let isChecked = false;
+
   let user: User;
   let prevDate;
   let prevDates;
-
 
   async function save(event) {
       try {
@@ -62,10 +62,10 @@
       }
   }
   onMount(() => {
-      Registry.auth.getUser().subscribe((data: User) => {
-          user = data;
+    Registry.auth.getUser().subscribe((data: User) => {
+        user = data;
+    });
   });
-});
 
   function show() {
       const parent = this.parentElement;
@@ -76,6 +76,7 @@
       buttons[0].style.display = "inline";
       inputs[1].style.display = "inline";
   }
+
   async function saveCalendar(event) {
     let oldDateElem = event.target.parentNode.querySelector('span');
     let oldDate = oldDateElem.textContent;
@@ -111,17 +112,17 @@
   datepickTask?.setAttribute('hidden', true);
   const saveButton = event.target;
   saveButton?.setAttribute('hidden', true);
-}
+  }
 
-function showCalendar(event) {
-  const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
-  datepickTask?.removeAttribute('hidden');
-  const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
-  saveButton?.removeAttribute('hidden');
+  function showCalendar(event) {
+    const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
+    datepickTask?.removeAttribute('hidden');
+    const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
+    saveButton?.removeAttribute('hidden');
 
-  prevDate = date;
-  prevDates = dates;
-}
+    prevDate = date;
+    prevDates = dates;
+  }
 </script>
 
 <svelte:head>
