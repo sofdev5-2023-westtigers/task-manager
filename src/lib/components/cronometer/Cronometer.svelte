@@ -1,4 +1,3 @@
-<!-- Cronometro.svelte -->
 <script lang="ts">
   import type { User } from '$lib/auth/User';
   import {timeChro, parseTimeSec, parseTimeMin,asignarValorTime , iniciarCronometro, pausarCronometro, reanudarCronometro } from './cronometer';

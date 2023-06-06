@@ -4,7 +4,6 @@
   import DatePick from '$calendar/DatePick.svelte';
   import type { User } from '$lib/auth/User';
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions';
-  import {setTaskList } from "$calendarTasks/CalendarTaskFunction";
   import { saveTask, showTasks, saveCalendar, showCalendar, formatDate } from "./TaskEdit";
   import { goto } from '$app/navigation';
   import {addNewTask, createTask, saveList} from './Tasks'
@@ -13,7 +12,6 @@
   export let inputValue = [];
   let user: User;
   let taskList = [];
-  $: setTaskList(inputValue);
   export let inputValueListName = '';
 
   let prevDate;
