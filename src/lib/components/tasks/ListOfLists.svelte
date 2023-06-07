@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { Registry } from '$lib/auth/Registry';
+	import { onMount } from "svelte";
+  import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
 	import TaskList from './TaskList.svelte';
 	import Header from '../header/Header.svelte';
@@ -54,43 +54,31 @@
 			nameError = '';
 			showAlert = false;
 
-			const body = new FormData();
-			body.append('listName', name);
-			await fetch('/api/tasks/addList', {
-				method: 'POST',
-				body
-			});
-			const buttonNewList = document.querySelector('.button-NewList');
-			const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
-			buttonNewList?.removeAttribute('hidden');
-			buttonSortFil?.removeAttribute('hidden');
-			addNewList.setAttribute('hidden', true);
-			listTasks = [...listTasks, { name, id: Date.now() }];
-			nameInput.value = '';
-		}
-	}
-	function toggle() {
-		fetchTasks();
-		isToggled = !isToggled;
-		localStorage.setItem('isToggled', isToggled.toString());
-	}
+      const body = new FormData();
+      body.append('listName', name);
+      await fetch('/api/tasks/addList', {
+        method: 'POST',body
+      });
+      const buttonNewList = document.querySelector('.button-NewList');
+      const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
+      buttonNewList?.removeAttribute('hidden');
+      buttonSortFil?.removeAttribute('hidden');
+      addNewList.setAttribute('hidden', true);
+      listTasks = [...listTasks, { name, id: Date.now() }];
+      nameInput.value = '';
+    }
+
+  function toggle() {
+    fetchTasks();
+    isToggled = !isToggled;
+    localStorage.setItem('isToggled', isToggled.toString());
+  }
 </script>
 
-<Header />
+<Header/>
 <div class="alert alert-error">
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		class="stroke-current shrink-0 h-6 w-6"
-		fill="none"
-		viewBox="0 0 24 24"
-		><path
-			stroke-linecap="round"
-			stroke-linejoin="round"
-			stroke-width="2"
-			d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-		/></svg
-	>
-	<span>Error! Task failed successfully.</span>
+  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+  <span>Error! Task failed successfully.</span>
 </div>
 <div class="listTasks" style="padding-top:80px;">
   <div class="w-full sm:w-3/5">
