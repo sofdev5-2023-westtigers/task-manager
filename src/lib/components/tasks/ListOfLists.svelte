@@ -1,4 +1,4 @@
-<script lang="ts">  
+<script lang="ts">
 	import { onMount } from "svelte";
   import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
@@ -8,7 +8,7 @@
   import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
 
   let tasksList2 = [];
-  $:tasksList2 = tasksListEvents; 
+  $:tasksList2 = tasksListEvents;
 
   let user: User;
 
@@ -34,28 +34,33 @@
       const addNewList = document.querySelector('.addNewList');
       addNewList?.removeAttribute('hidden');
   }
-  
-  async function createList() {
-    const nameInput = event.target.parentNode.querySelector('.text-nameList');
-    const name = nameInput.value.trim();
-    const addNewList = document.querySelector('.addNewList');
-    if (name) {
-      const body = new FormData();
-      body.append('listName', name);
-      await fetch('/api/tasks/addList', {
-        method: 'POST',body
-      });
-      const buttonNewList = document.querySelector('.button-NewList');
-      const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
-      buttonNewList?.removeAttribute('hidden');
-      buttonSortFil?.removeAttribute('hidden');
-      addNewList.setAttribute('hidden', true);
-      listTasks = [...listTasks, { name, id: Date.now() }];
-      nameInput.value = '';
+    async function createList() {
+      const nameInput = event.target.parentNode.querySelector('.text-nameList');
+      const name = nameInput.value.trim();
+      const addNewList = document.querySelector('.addNewList');
+      if (name) {
+        const body = new FormData();
+        body.append('listName', name);
+        const response = await fetch('/api/tasks/addList', {
+          method: 'POST', body
+        });
+        if (response.ok) {
+          const buttonNewList = document.querySelector('.button-NewList');
+          const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
+          buttonNewList?.removeAttribute('hidden');
+          buttonSortFil?.removeAttribute('hidden');
+          addNewList.setAttribute('hidden', true);
+          listTasks = [...listTasks, { name, id: Date.now() }];
+          nameInput.value = '';
+        } else {
+          const data = await response.json();
+          console.log(data.error);
+        }
+      }
     }
-  }
 
-  function toggle() {
+
+    function toggle() {
     isToggled = !isToggled;
     console.log("isToggled", isToggled);
     localStorage.setItem('isToggled', isToggled.toString());
@@ -63,7 +68,10 @@
 </script>
 
 <Header/>
-
+<div class="alert alert-error">
+  <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+  <span>Error! Task failed successfully.</span>
+</div>
 <div class="listTasks" style="padding-top:80px;">
   <div class="w-full sm:w-3/5">
     <div id="addNewList" class="addNewList mt-2 mb-4 sm:mb-0 flex items-center justify-center sm:justify-start" style="padding-left: 100px; padding-right: 100px">
