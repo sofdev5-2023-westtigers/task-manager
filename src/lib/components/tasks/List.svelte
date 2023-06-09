@@ -5,7 +5,7 @@
   import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions';
-  import {setTaskList, tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
+  import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
   import {formatDate } from "./TaskEdit";
   import { goto } from '$app/navigation';
 	import CalendarTask from '../calendarTask/CalendarTask.svelte';
@@ -13,10 +13,9 @@
   
   export let name = '';
   export let inputValue = [];
-  setTaskList(inputValue);
   let user: User;
   let isAddNewTask  = false;
-  
+
   async function addNewTask() {
     if (name) {
       const body = new FormData();
