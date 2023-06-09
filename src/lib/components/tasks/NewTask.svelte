@@ -15,10 +15,10 @@
   export let isTimeChronometer = false;
   export let timeChronometer : number = 0;
   export let isChecked = false;
+
   let user: User;
   let prevDate;
   let prevDates;
-
 
   async function save(event) {
       try {
@@ -41,6 +41,7 @@
           const checkbox = event.target.parentNode.querySelector('.checkbox-task');
           const isChecked = checkbox.checked;
           if (!isChecked) {
+              console.log('isChecked ', checkbox.checked);
               oldChecked = false;
           }
           const body = new FormData();
@@ -61,10 +62,10 @@
       }
   }
   onMount(() => {
-      Registry.auth.getUser().subscribe((data: User) => {
-          user = data;
+    Registry.auth.getUser().subscribe((data: User) => {
+        user = data;
+    });
   });
-});
 
   function show() {
       const parent = this.parentElement;
@@ -75,6 +76,7 @@
       buttons[0].style.display = "inline";
       inputs[1].style.display = "inline";
   }
+
   async function saveCalendar(event) {
     let oldDateElem = event.target.parentNode.querySelector('span');
     let oldDate = oldDateElem.textContent;
@@ -110,17 +112,17 @@
   datepickTask?.setAttribute('hidden', true);
   const saveButton = event.target;
   saveButton?.setAttribute('hidden', true);
-}
+  }
 
-function showCalendar(event) {
-  const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
-  datepickTask?.removeAttribute('hidden');
-  const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
-  saveButton?.removeAttribute('hidden');
+  function showCalendar(event) {
+    const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
+    datepickTask?.removeAttribute('hidden');
+    const saveButton = event.target.parentNode.parentNode.querySelector('[name="save"]');
+    saveButton?.removeAttribute('hidden');
 
-  prevDate = date;
-  prevDates = dates;
-}
+    prevDate = date;
+    prevDates = dates;
+  }
 </script>
 
 <svelte:head>
@@ -129,9 +131,9 @@ function showCalendar(event) {
 
 <div style="margin-bottom:2px;" class="mt-2">
     {#if isChecked}
-        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" checked>
+        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task"  on:change={saveTask(event, user)} checked>
     {:else}
-        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox"  on:change={saveTask(event, user)} name="task">
     {/if}
   <label data-testid="label-name" class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
   <input data-testid="input-name" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">

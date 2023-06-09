@@ -5,6 +5,8 @@
   import TaskList from "./TaskList.svelte";
 	import Header from "../header/Header.svelte";
   import TaskBoard from "./TaskBoard.svelte";
+  import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
+	import { saveTask } from "./TaskEdit";
 
   let tasksList2 = [];
 
@@ -54,8 +56,8 @@
   }
 
   function toggle() {
+    fetchTasks();
     isToggled = !isToggled;
-    console.log("isToggled", isToggled);
     localStorage.setItem('isToggled', isToggled.toString());
   }
 </script>

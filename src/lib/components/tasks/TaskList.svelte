@@ -57,9 +57,9 @@
         {#if task}
           <div>
             {#if JSON.parse(task.isCompleted)}
-              <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" checked>
+              <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" on:change={() => saveTask(event, user)} checked>
             {:else}
-              <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task">
+              <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" on:change={() => saveTask(event, user)}>
             {/if}
             <label class="label-task ml-2"  for="task"  on:click={showTasks}>{task.taskName} </label>
             <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
