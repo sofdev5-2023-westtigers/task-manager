@@ -117,7 +117,7 @@
 <div style="padding-top:80px;">
   <div style="float: left; width: 60%; margin-left:20px">
     <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
-      <label class="title-List font-bold text-3xl">{name}</label>
+      <label class="title-List font-bold text-3xl" style="white-space: pre-line;">{name.replace(/(.{22})/g, "$&\n")}</label>
       <div class="dropdown dropdown-bottom mx-8 flex justify-end">
         <html data-theme="cupcake">
         </html>

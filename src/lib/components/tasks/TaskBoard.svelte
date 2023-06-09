@@ -14,6 +14,7 @@
 	export let inputValue: any[] = [];
 	let user: User;
 	let taskList: any[] = [];
+	let indexBeforeLine = 20;
 	$: setTaskList(inputValue);
 
 	let prevDate;
@@ -42,29 +43,37 @@
 <div class="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">
 	<div data-testid="content-element" class="bg-white rounded px-2 py-2">
 		<!-- board category header -->
-		<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick}>{name}</label>
+		<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick}>
+			{#each Array.from(name).reduce((acc, char, index) => (index % indexBeforeLine === 0 ? [...acc, '\n'] : acc).concat(char), []) as line}
+				{#if line === '\n'}
+					<br/>
+				{:else}
+					{line}
+				{/if}
+			{/each}
+		</label>
 		<!-- board card -->
 		<ul class="list-Task mt-2 list-none">
-		{#each inputValue as task}
-			{#if task}
-              {#if !task.dates && !task.date}
-              <TaskCard  name={task.taskName} isCompleted={task.isCompleted}/>
-              {/if}
-              {#if task.date}
-              <TaskCard  name={task.taskName} containsDate={true} dateValue={formatDate(task.date)} isCompleted={task.isCompleted}/>
-              {/if}
-              {#if task.dates}
-              <TaskCard  name={task.taskName} containsDates={true} isCompleted={task.isCompleted} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")}/>
-              {/if}
-            {/if}
-		{/each}
+			{#each inputValue as task}
+				{#if task}
+					{#if !task.dates && !task.date}
+						<TaskCard name={task.taskName} isCompleted={task.isCompleted}/>
+					{/if}
+					{#if task.date}
+						<TaskCard name={task.taskName} containsDate={true} dateValue={formatDate(task.date)} isCompleted={task.isCompleted}/>
+					{/if}
+					{#if task.dates}
+						<TaskCard name={task.taskName} containsDates={true} isCompleted={task.isCompleted} dateValue={task.dates.map(dateString => formatDate(dateString)).join("-")}/>
+					{/if}
+				{/if}
+			{/each}
 		</ul>
 		<div class="flex flex-col mt-2 px-1">
-			<button class="button-AddTask text-gray-400 px-1 py-1 mt-2 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}> + 	 New</button>
-			<div class="flex-col" >
+			<button class="button-AddTask text-gray-400 px-1 py-1 mt-2 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}> + New</button>
+			<div class="flex-col">
 				<input data-testid="input-name-task" class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
-     	 			<DatePick/>
-				<button  data-testid="button-add" class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,true)}>Add</button>
+				<DatePick/>
+				<button data-testid="button-add" class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,true)}>Add</button>
 			</div>
 		</div>
 	</div>
