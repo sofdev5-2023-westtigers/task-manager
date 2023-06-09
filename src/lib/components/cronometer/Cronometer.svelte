@@ -1,7 +1,6 @@
-<!-- Cronometro.svelte -->
 <script lang="ts">
   import type { User } from '$lib/auth/User';
-  import {timeChro, parseTimeSec, parseTimeMin,asignarValorTime , iniciarCronometro, pausarCronometro, reanudarCronometro } from './cronometer';
+  import {parseTimeSec, parseTimeMin } from './cronometer';
 
   let running = false;
   export let nameTask : string;
@@ -10,54 +9,62 @@
   export let timeChr : number = 0;
   let minutes : number = parseTimeMin(timeChr);
   let seconds : number = parseTimeSec(timeChr);
-  let isFirstTime : boolean = true;
+  let intervalId: number | null = null;
+  let tiempoInicial: number | null = timeChr;
+  let tiempoPausado: number | null = null;
+  let timeChro: number;
 
-  function iniciar() {
+  function iniciar(): void {
     running = true;
-    minutes = 0;
-    seconds = 0;
-
-    if (running) {
-      if (isFirstTime) {
-        isFirstTime = false;
-      }
-      iniciarCronometro((updatedMinutes, updatedSeconds) => {
-        minutes = updatedMinutes;
-        seconds = updatedSeconds;
-      });;
-    }
+    if (intervalId === null) {
+    tiempoInicial = Date.now();
+    intervalId = setInterval(() => {
+      const tiempoTranscurrido = Date.now() - (tiempoInicial || 0);
+      seconds = Math.floor(tiempoTranscurrido / 1000) % 60;
+      minutes = Math.floor(tiempoTranscurrido / 1000 / 60);
+      timeChro = tiempoTranscurrido;
+    }, 1000);
   }
+}
 
   async function pausar() {
-    pausarCronometro();
-    const body = new FormData();
-    body.append('userId', userlog.userId.toString());
-    body.append('taskName', nameTask);
-    body.append('listName', nameList);
-    body.append('modifyChronometerTime', "true");
-    body.append('oldTimeChronometer',timeChr.toString());
-    body.append('timeChronometer',timeChro.toString());
-    const result = await fetch('/api/tasks/updateTasks', {
-      method: 'PUT', body
-    });
+    if (intervalId !== null) {
+      clearInterval(intervalId);
+      intervalId = null;
+      tiempoPausado = Date.now();
+
+      const body = new FormData();
+      body.append('userId', userlog.userId.toString());
+      body.append('taskName', nameTask);
+      body.append('listName', nameList);
+      body.append('modifyChronometerTime', "true");
+      body.append('oldTimeChronometer',timeChr.toString());
+      body.append('timeChronometer',timeChro.toString());
+      const result = await fetch('/api/tasks/updateTasks', {
+        method: 'PUT', body
+      });
     running = false;
-
-  }
-
-  function reanudar() {
-    running = true;
-    if (running) {
-      if(isFirstTime){
-        asignarValorTime(timeChr, null);
-        isFirstTime = false;
-      }
-
-      reanudarCronometro((updatedMinutes, updatedSeconds) => {
-        minutes = updatedMinutes;
-        seconds = updatedSeconds;
-      });;
     }
   }
+
+  function reanudar(): void {
+    running = true;
+    if (intervalId === null) {
+      if (tiempoPausado != null) {
+        const tiempoTranscurrido = tiempoPausado - tiempoInicial;
+        tiempoInicial = Date.now() - tiempoTranscurrido;
+      }else{
+        tiempoInicial = Date.now() - tiempoInicial;
+      }
+
+      intervalId = setInterval(() => {
+        const tiempoTranscurrido = Date.now() - (tiempoInicial || 0);
+        seconds = Math.floor(tiempoTranscurrido / 1000) % 60;
+        minutes = Math.floor(tiempoTranscurrido / 1000 / 60);
+        timeChro = tiempoTranscurrido;
+      }, 1000);
+    }
+}
 </script>
 
 <div>

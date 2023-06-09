@@ -5,10 +5,8 @@
   import TaskList from "./TaskList.svelte";
 	import Header from "../header/Header.svelte";
   import TaskBoard from "./TaskBoard.svelte";
-  import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
 
   let tasksList2 = [];
-  $:tasksList2 = tasksListEvents; 
 
   let user: User;
 
