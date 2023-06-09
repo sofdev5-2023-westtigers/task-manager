@@ -42,7 +42,7 @@
 <div class="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">
 	<div data-testid="content-element" class="bg-white rounded px-2 py-2">
 		<!-- board category header -->
-		<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick}>{name}</label>
+		<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick} style="white-space: pre-line;">{name.replace(/(.{26})/g, "$&\n")}</label>
 		<!-- board card -->
 		<ul class="list-Task mt-2 list-none">
 		{#each inputValue as task}
