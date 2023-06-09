@@ -100,7 +100,7 @@
       {#each tasks as task}
           {#if tasks[tasks.length - 1]._id === task._id }
             <div class="stat-desc">Task Complete: {taskComplete()}/{tasks.length}</div>
-            <div class="radial-progress mt-3 mb-9" style="--value:{(taskComplete() * 100) / tasks.length}; --size:12rem; --thickness: 2rem;">{(taskComplete() * 100) / tasks.length}%</div>
+            <div class="radial-progress mt-3 mb-9" style="--value:{(taskComplete() * 100) / tasks.length}; --size:12rem; --thickness: 2rem;">{((taskComplete() * 100) / tasks.length).toFixed(2)}%</div>
             {/if}
       {/each}
     </div>
