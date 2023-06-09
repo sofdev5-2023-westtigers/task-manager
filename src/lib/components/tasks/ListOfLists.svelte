@@ -11,8 +11,11 @@
   $:tasksList2 = tasksListEvents; 
 
   let user: User;
-
   let isToggled : Boolean;
+  let limitToName = 26;
+  let nameError = '';
+  let showAlert = false;
+
   isToggled = localStorage.getItem('isToggled') === 'true';
 
   onMount(async() => {
@@ -40,6 +43,15 @@
     const name = nameInput.value.trim();
     const addNewList = document.querySelector('.addNewList');
     if (name) {
+
+      if (name.length > limitToName) {
+        nameError = 'List name should not exceed ',limitToName,' characters.';
+        showAlert = true;
+        return;
+      } 
+      nameError = '';
+      showAlert = false;
+
       const body = new FormData();
       body.append('listName', name);
       await fetch('/api/tasks/addList', {
@@ -69,6 +81,11 @@
     <div id="addNewList" class="addNewList mt-2 mb-4 sm:mb-0 flex items-center justify-center sm:justify-start" style="padding-left: 100px; padding-right: 100px">
       <input class="text-nameList border-gray-300 bg-gray-100 rounded-[20PX] w-full sm:w-auto px-4 py-2 mr-2 sm:mr-4" type="text" name="name" placeholder="Name List...">
       <button class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" type="button" on:click={createList}>Add List</button>
+      {#if showAlert && nameError !== ''}
+        <div class="alert mt-2 text-red-500 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          <span class="block sm:inline">{nameError}</span>
+        </div>
+      {/if}
       {#if !isToggled}
         <div class="form-control">
           <label class="label cursor-pointer">
