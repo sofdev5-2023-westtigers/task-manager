@@ -15,12 +15,18 @@
   export let inputValue = [];
   let user: User;
   let isAddNewTask  = false;
+  let isMenuOpen = false;
 
+  function hideMenu() {
+    isMenuOpen = false; // Cambia el estado de isMenuOpen a false cuando se hace clic en cualquier opción
+  }
+ 
   async function addNewTask() {
     if (name) {
       const body = new FormData();
       body.append('listName', name);
       isAddNewTask = true;
+      hideMenu();
     }
   }
 
@@ -113,16 +119,17 @@
 
   <Header/>
 
-<div style="padding-top:80px;">
-  <div style="float: left; width: 60%; margin-left:20px">
-    <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
+<div class=" top justify-center flex flex-wrap" style="padding-top: 100px;">
+  <div style="margin-left:20px; margin-right: 20px ;min-width: 420px">
+    <div class=" w-auto list bg-[#A9907E] rounded-[10PX] max-w-xl p-4 mb-4">
       <label class="title-List font-bold text-3xl">{name}</label>
       <div class="dropdown dropdown-bottom mx-8 flex justify-end">
         <html data-theme="cupcake">
         </html>
-        <label tabindex="0" class="btn m-1 text-xs" style="margin-top:-30px; width: 16%">Options</label>
-        <ul tabindex="0" class=" dropdown-content menu p-2 shadow rounded-box w-52">
-          <li on:click={addNewTask}><a>Add Task</a></li>
+        
+        <label tabindex="0" class="btn m-1 text-xs" style="margin-top:-30px; width: 16%; min-width: 70px" on:click={() => { isMenuOpen = !isMenuOpen; }}>{isMenuOpen ? 'Close' : 'Options'}</label>
+        <ul tabindex="0" class=" menu dropdown-content p-2 rounded-box w-52 bg-success" style={isMenuOpen ? 'display: block' : 'display: none'}>
+          <li on:click={() => { addNewTask(); }}><a>Add Task</a></li>
           <li><a on:click={handleClick}>See Stadistics</a></li>
           <li><a href="/todo-lists">Return to Lists</a></li>
         </ul>
@@ -154,11 +161,13 @@
         </li>
     </div> 
   </div>
-    <div class="calendarTaskComp" style="margin-right: 35px; margin-top:3px">
+  <div style="width: 50%; min-width:fit-content">
+    <div class="calendarTaskComp" style="margin-right: 35px; margin-left: 35px; margin-top:3px; margin-bottom: 30px;">
       {#each inputValue as task}
       {#if inputValue[inputValue.length - 1]._id === task._id }
           <CalendarTask tasksEvents={tasksListEvents}/>
         {/if}
       {/each}
     </div>
+  </div>
 </div>
