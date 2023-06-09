@@ -3,8 +3,7 @@
 	import { Registry } from '$lib/auth/Registry';
 	import type { User } from '$lib/auth/User';
 	import {date,dates,showPickDate,showPickDates,setFalsePicks} from '$calendar/CalendarOptions';
-	import { setTaskList } from '$calendarTasks/CalendarTaskFunction';
-	import { saveTask, showTasks, saveCalendar, showCalendar, formatDate } from './TaskEdit';
+	import { showCalendar, formatDate } from './TaskEdit';
 	import DatePick from '$calendar/DatePick.svelte';
 	import {addNewTask, createTask, saveList} from './Tasks'
 	import TaskCard from './TaskCard.svelte';
@@ -14,7 +13,6 @@
 	export let inputValue: any[] = [];
 	let user: User;
 	let taskList: any[] = [];
-	$: setTaskList(inputValue);
 
 	let prevDate;
 	let prevDates;

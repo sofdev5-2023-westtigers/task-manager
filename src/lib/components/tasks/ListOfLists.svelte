@@ -9,7 +9,6 @@
 	import { saveTask } from "./TaskEdit";
 
   let tasksList2 = [];
-  $:tasksList2 = tasksListEvents; 
 
   let user: User;
 
