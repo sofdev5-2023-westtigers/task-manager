@@ -51,21 +51,20 @@
     <div class="datepick-select" hidden>
       <DatePick/>
     </div>
-    <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList)}>Add</button>
+    <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList, false, false)}>Add</button>
     <ul class="list-Task mt-2 list-none">
       {#each inputValue as task}
         {#if task}
-          <div>
+          <div style="margin-bottom:2px;" class="mt-2">
             {#if JSON.parse(task.isCompleted)}
               <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" on:change={() => saveTask(event, user)} checked>
             {:else}
               <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" on:change={() => saveTask(event, user)}>
             {/if}
-            <label class="label-task ml-2"  for="task"  on:click={showTasks}>{task.taskName} </label>
+            <label class="label-task ml-2 text-xl"  for="task"  on:click={showTasks}>{task.taskName} </label>
             <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
             <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
             {#if task.date}
-
               <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{formatDate(task.date)}</span></i>
               <button  class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates)} hidden>Save</button>
             {/if}
