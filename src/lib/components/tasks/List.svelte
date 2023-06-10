@@ -10,24 +10,16 @@
   import { goto } from '$app/navigation';
 	import CalendarTask from '../calendarTask/CalendarTask.svelte';
 	import Header from '../header/Header.svelte';
+  import {addNewTask, createTask, saveList} from './Tasks';
   
   export let name = '';
   export let inputValue = [];
   let user: User;
-  let isAddNewTask  = false;
   let isMenuOpen = false;
+  let taskList = [];
 
   function hideMenu() {
     isMenuOpen = false; // Cambia el estado de isMenuOpen a false cuando se hace clic en cualquier opción
-  }
- 
-  async function addNewTask() {
-    if (name) {
-      const body = new FormData();
-      body.append('listName', name);
-      isAddNewTask = true;
-      hideMenu();
-    }
   }
 
   onMount(() => {
@@ -40,77 +32,6 @@
     const url = `/todo-lists/${name}/stadisticsList`;
     goto(url, { target: '_blank' });
   };
-
-  async function createTask(event) {
-      const inputElement = event.target.parentNode.querySelector('.input-nameTask');
-
-      const inputValue1 = inputElement.value;
-
-      let newTask = null;
-
-      const body = new FormData();
-      body.append('userId',user.userId.toString());
-      body.append('taskName', inputValue1);
-      body.append('listName', name);
-      body.append('isCompleted', false.toString());
-      body.append('timeChronometer', '0');
-
-      if(showPickDate == true){
-        newTask = new NewTask({
-        target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1,dateValue : date, isTimeChronometer: true },
-        });
-        body.append('date', date);
-      }else if(showPickDates == true){
-        newTask = new NewTask({
-        target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1, dateValue : dates, isTimeChronometer: true  },
-        });
-        body.append('dates', dates);
-      }else{
-        newTask = new NewTask({
-        target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1, isTimeChronometer: true },
-        });
-      }
-      setFalsePicks();
-      await fetch('/api/tasks/addTask', {
-          method: 'POST',body
-      });
-
-      inputValue = [...inputValue, newTask];
-      inputElement.value = '';
-
-      isAddNewTask = false;
-  }
-
-    async function saveList(event) {
-        const parent = this.parentElement;
-        const inputs = parent.querySelectorAll('input');
-        const labels = parent.querySelectorAll('label');
-        const buttons = parent.querySelectorAll('button');
-        const oldList = labels[0].textContent;
-
-        if (inputs[0].value == "") {
-            inputs[0].value = labels[0].textContent;
-        } else {
-            labels[0].textContent = inputs[0].value;
-        }
-
-        inputs[0].style.display = "none";
-        buttons[1].style.display = "none";
-        const inputElement = event.target.parentNode.querySelector('.listName-modified');
-        const inputValueListName = inputElement.value;
-
-        const body = new FormData();
-        body.append('userId', user.userId.toString());
-        body.append('listNameOld', oldList);
-        body.append('listName', inputValueListName);
-        const result = await fetch('/api/tasks/updateList', {
-        method: 'PUT', body
-        });
-        const task = await result.json();
-  }
 </script>
 
 <svelte:head>
@@ -119,30 +40,27 @@
 
   <Header/>
 
-<div class=" top justify-center flex flex-wrap" style="padding-top: 100px;">
-  <div style="margin-left:20px; margin-right: 20px ;min-width: 420px">
-    <div class=" w-auto list bg-[#A9907E] rounded-[10PX] max-w-xl p-4 mb-4">
-      <label class="title-List font-bold text-3xl">{name}</label>
-      <div class="dropdown dropdown-bottom mx-8 flex justify-end">
-        <html data-theme="cupcake">
-        </html>
-        
-        <label tabindex="0" class="btn m-1 text-xs" style="margin-top:-30px; width: 16%; min-width: 70px" on:click={() => { isMenuOpen = !isMenuOpen; }}>{isMenuOpen ? 'Close' : 'Options'}</label>
-        <ul tabindex="0" class=" menu dropdown-content p-2 rounded-box w-52 bg-success" style={isMenuOpen ? 'display: block' : 'display: none'}>
-          <li on:click={() => { addNewTask(); }}><a>Add Task</a></li>
-          <li><a on:click={handleClick}>See Stadistics</a></li>
-          <li><a href="/todo-lists">Return to Lists</a></li>
-        </ul>
-      </div>
-      <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
-      <button on:click={saveList} style="display: none;">Done</button>
-      <ul class="ul-listTasks"></ul>
-        <li class="li-newtask list-none">
-          {#if isAddNewTask}
-            <input id="input-nameTask" class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" type="text" name="item1-textfield" placeholder="Name Task....">
-            <DatePick/>
-            <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" type="button" on:click={(event) => createTask(event)}>Add</button>
-          {/if}
+  <div class=" top justify-center flex flex-wrap" style="padding-top: 100px;">
+    <div style="margin-left:20px; margin-right: 20px ;min-width: 420px">
+      <div class=" w-auto list bg-[#A9907E] rounded-[10PX] max-w-xl p-4 mb-4">
+        <label class="title-List font-bold text-3xl">{name}</label>
+        <button class="btn text-xs" style="margin-left:40px" on:click={ (event) => addNewTask(event, name)}>Add New Task</button>
+        <div class="dropdown dropdown-bottom mx-4">
+          <label tabindex="0" class="btn m-1 text-xs" style="margin-top:-30px; width: 16%; min-width: 70px" on:click={() => { isMenuOpen = !isMenuOpen; }}>{isMenuOpen ? 'Close' : 'Options'}</label>
+          <ul tabindex="0" class=" menu dropdown-content p-2 rounded-box w-52 bg-success" style={isMenuOpen ? 'display: block' : 'display: none'}>
+            <li><a on:click={handleClick}>See Stadistics</a></li>
+            <li><a href="/todo-lists">Return to Lists</a></li>
+          </ul>
+        </div>
+        <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
+        <button on:click={(event) =>saveList(event, user)} style="display: none;">Done</button>
+        <ul class="ul-listTasks"></ul>
+          <li class="li-newtask list-none">
+            <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
+            <div class="datepick-select" hidden>
+              <DatePick/>
+            </div>
+            <button class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm" hidden type="button" on:click={createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList, false, true)}>Add</button>
           <ul class="list-Task mt-2 list-none">
             {#each inputValue as task}
             {#if task}
