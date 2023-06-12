@@ -23,6 +23,12 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
 
     let newTask = null;
 
+    const taskName =inputValue1.trim();
+
+    if (taskName === '') {
+        return json({ error: "Task name cannot be empty or contain only spaces." }, { status: 400 });
+    }
+
     const body = new FormData();
     body.append('userId',user.userId.toString());
     body.append('taskName', inputValue1);
