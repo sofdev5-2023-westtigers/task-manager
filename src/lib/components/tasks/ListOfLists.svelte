@@ -6,7 +6,9 @@
   import Header from "../header/Header.svelte";
   import TaskBoard from "./TaskBoard.svelte";
   import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
+  import { saveTask } from "./TaskEdit";
   import ErrorAlert from "./ErrorAlert.svelte";
+  
   let tasksList2 = [];
   $:tasksList2 = tasksListEvents;
   let errorMessage = '';
@@ -65,10 +67,9 @@
       }
     }
 
-
-    function toggle() {
+  function toggle() {
+    fetchTasks();
     isToggled = !isToggled;
-    console.log("isToggled", isToggled);
     localStorage.setItem('isToggled', isToggled.toString());
   }
 </script>

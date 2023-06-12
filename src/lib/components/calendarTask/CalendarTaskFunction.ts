@@ -1,16 +1,15 @@
 export let tasksListEvents = [];
-let taskListV = [] 
 export let addedEvent = false;
 
 export function setTaskList(taskList){
+    tasksListEvents = [];
     taskList.forEach(task => {
-        if(!taskListV.includes(task._id)){
+        if(!tasksListEvents.includes(task._id)){
             if (task.date) {
                 addNewEventTask(task.taskName,task.date,task.date);
             }else if(task.dates){
                 addNewEventTask(task.taskName, task.dates[0], task.dates[1]);
             }
-            taskListV.push(task._id);
         }
     });
 }
@@ -39,9 +38,9 @@ export function generateColorRandom() {
 
 export function convertDateFormat(dateStr) {
     if (dateStr === "") {
-      throw new Error("Invalid date format");
+        throw new Error("Invalid date format");
     }
-  
+
     var parts = dateStr.split("/");
     var year = parts[2];
     var month = parts[0];
