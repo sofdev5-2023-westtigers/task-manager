@@ -13,10 +13,11 @@
   $:tasksList2 = tasksListEvents;
   let errorMessage = '';
   let user: User;
-  let showError = false;
+  let isToggled : Boolean;
+  let limitToName = 26;
+  let nameError = '';
+  let showAlert = false;
 
-
-  let isToggled : boolean;
   isToggled = localStorage.getItem('isToggled') === 'true';
 
   onMount(async() => {
@@ -38,33 +39,33 @@
       const addNewList = document.querySelector('.addNewList');
       addNewList?.removeAttribute('hidden');
   }
-    async function createList() {
-      const nameInput = event.target.parentNode.querySelector('.text-nameList');
-      const name = nameInput.value.trim();
-      const addNewList = document.querySelector('.addNewList');
-      if (name) {
-        const body = new FormData();
-        body.append('listName', name);
-        const response = await fetch('/api/tasks/addList', {
-          method: 'POST', body
-        });
-        if (response.ok) {
-          const buttonNewList = document.querySelector('.button-NewList');
-          const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
-          buttonNewList?.removeAttribute('hidden');
-          buttonSortFil?.removeAttribute('hidden');
-          addNewList.setAttribute('hidden', String(true));
-          listTasks = [...listTasks, { name, id: Date.now() }];
-          nameInput.value = '';
-        } else {
-          const data = await response.json();
-          errorMessage = data.error;
-          showError = true;
-          setTimeout(() => {
-            showError = false;
-          }, 2000);
-        }
-      }
+  
+  async function createList() {
+    const nameInput = event.target.parentNode.querySelector('.text-nameList');
+    const name = nameInput.value.trim();
+    const addNewList = document.querySelector('.addNewList');
+    if (name) {
+
+      if (name.length > limitToName) {
+        nameError = 'List name should not exceed ',limitToName,' characters.';
+        showAlert = true;
+        return;
+      } 
+      nameError = '';
+      showAlert = false;
+
+      const body = new FormData();
+      body.append('listName', name);
+      await fetch('/api/tasks/addList', {
+        method: 'POST',body
+      });
+      const buttonNewList = document.querySelector('.button-NewList');
+      const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
+      buttonNewList?.removeAttribute('hidden');
+      buttonSortFil?.removeAttribute('hidden');
+      addNewList.setAttribute('hidden', true);
+      listTasks = [...listTasks, { name, id: Date.now() }];
+      nameInput.value = '';
     }
 
   function toggle() {
@@ -85,6 +86,11 @@
       <input class="text-nameList border-gray-300 bg-gray-100 rounded-[20PX] w-full sm:w-auto px-4 py-2 mr-2 sm:mr-4" type="text" name="name" placeholder="Name List...">
 
       <button class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md" type="button" on:click={createList}>Add List</button>
+      {#if showAlert && nameError !== ''}
+        <div class="alert mt-2 text-red-500 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+          <span class="block sm:inline">{nameError}</span>
+        </div>
+      {/if}
       {#if !isToggled}
         <div class="form-control">
           <label class="label cursor-pointer">
