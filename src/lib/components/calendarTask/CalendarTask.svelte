@@ -4,11 +4,10 @@
     import DayGrid from '@event-calendar/day-grid';
     import List from '@event-calendar/list';
     import TimeGridResource from '@event-calendar/resource-time-grid';
-    import Interaction from'@event-calendar/interaction';
     import '@event-calendar/core/index.css';
     export let tasksEvents;
 
-    let plugins = [TimeGrid, DayGrid, List, Interaction, TimeGridResource];
+    let plugins = [TimeGrid, DayGrid, List, TimeGridResource];
     let options = {
         view: 'timeGridWeek',
         height: '800px',
@@ -29,7 +28,7 @@
         },
         dayMaxEvents: true,
         nowIndicator: true,
-        selectable: true,
+        selectable: false,
         selectBackgroundColor: '#ABC4AA'
     };
 </script>
