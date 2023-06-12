@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { Registry } from '$lib/auth/Registry';
 	import AuthGuard from '$lib/auth/AuthGuard.svelte';
-	import {setTaskList } from '$calendarTasks/CalendarTaskFunction';
+	import { setTaskList } from '$calendarTasks/CalendarTaskFunction';
 	import type { User } from '$lib/auth/User';
 
     export let data;
@@ -23,7 +23,6 @@ async function fetchTasks(userId : string | undefined) {
 	groupedTasks = await res.json();
 	setTaskList(groupedTasks);
 }
-
 
 </script>
 

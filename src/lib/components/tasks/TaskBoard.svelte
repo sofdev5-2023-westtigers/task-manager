@@ -11,6 +11,7 @@
 	} from '$calendar/CalendarOptions';
 	import { setTaskList } from '$calendarTasks/CalendarTaskFunction';
 	import { saveTask, showTasks, saveCalendar, showCalendar, formatDate } from './TaskEdit';
+
 	import DatePick from '$calendar/DatePick.svelte';
 	import { addNewTask, createTask, saveList } from './Tasks';
 	import TaskCard from './TaskCard.svelte';
@@ -20,7 +21,6 @@
 	export let inputValue: any[] = [];
 	let user: User;
 	let taskList: any[] = [];
-	$: setTaskList(inputValue);
 
 	let prevDate;
 	let prevDates;
@@ -50,8 +50,7 @@
 	}
 </script>
 
-<!-- To-do -->
-<div class="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">
+<div class=" top justify-center flex flex-wrap" style="padding-top: 100px; padding-left: 100px;">
 	<div data-testid="content-element" class="bg-white rounded px-2 py-2">
 		<!-- board category header -->
 		<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick}

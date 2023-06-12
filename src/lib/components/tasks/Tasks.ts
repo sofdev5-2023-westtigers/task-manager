@@ -14,14 +14,20 @@ export async function addNewTask(event, name) {
     }
 }
 
-export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,isToggled) {    
+export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList, isToggled, isCronometer) {
     const inputElement = event.target.parentNode.querySelector('.input-nameTask');
 
     const inputValue1 = inputElement.value;
 
     if (inputValue1) {
 
-    let newTask = null;
+        let newTask = null;
+
+    const taskName =inputValue1.trim();
+
+    if (taskName === '') {
+        return json({ error: "Task name cannot be empty or contain only spaces." }, { status: 400 });
+    }
 
     const body = new FormData();
     body.append('userId',user.userId.toString());
@@ -34,12 +40,12 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
         if(!isToggled) {
             newTask = new NewTask({
                 target: event.target.parentNode.querySelector('.list-Task'),
-                props: { inputValue : inputValue1, containsDate : true ,dateValue : date },
+                props: { inputValue : inputValue1, containsDate : true ,dateValue : date, isTimeChronometer : isCronometer },
             });
         } else {
             newTask = new TaskCard({
                 target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
-                props: { name : inputValue1, isCompleted : false, containsDate : true ,dateValue : date},
+                props: { name : inputValue1, isCompleted : false, containsDate : true ,dateValue : date, isTimeChronometer : isCronometer},
             });
         }
         
@@ -48,12 +54,12 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
         if(!isToggled) {
             newTask = new NewTask({
                 target: event.target.parentNode.querySelector('.list-Task'),
-                props: { inputValue : inputValue1, containsDates : true , dateValue : dates },
+                props: { inputValue : inputValue1, containsDates : true , dateValue : dates, isTimeChronometer : isCronometer },
             });
         } else {
             newTask = new TaskCard({
                 target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
-                props: { name : inputValue1, isCompleted : false, containsDates : true, dateValue : dates},
+                props: { name : inputValue1, isCompleted : false, containsDates : true, dateValue : dates, isTimeChronometer : isCronometer},
             });
         }
         
@@ -62,30 +68,31 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
         if(!isToggled) {
             newTask = new NewTask({
                 target: event.target.parentNode.querySelector('.list-Task'),
-                props: { inputValue : inputValue1},
+                props: { inputValue : inputValue1, isTimeChronometer : isCronometer},
             });
         } else {
-            newTask = new TaskCard({
-                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
-                props: { name : inputValue1, isCompleted : false},
-            });
+            if (!isToggled) {
+                newTask = new NewTask({
+                    target: event.target.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, inputValue: inputValue1, isTimeChronometer: isCronometer },
+                });
+            } else {
+                newTask = new TaskCard({
+                    target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, name: inputValue1, isCompleted: false, isTimeChronometer: isCronometer },
+                });
+            }
         }
-        
-    }
-    setFalsePicks();
-    await fetch('/api/tasks/addTask', {
-        method: 'POST',body
-    });
 
-    taskList = [...taskList, newTask];
-    inputElement.value = '';
-
-    const inputNameTask = event.target.parentNode.querySelector('.input-nameTask');
-    inputNameTask?.setAttribute('hidden', true);
-    const datepickTask = event.target.parentNode.querySelector('.datepick-select');
-    datepickTask?.setAttribute('hidden', true);
-    const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
-    inputNameTask1?.setAttribute('hidden', true);
+        setFalsePicks();
+        taskList = [...taskList, newTask];
+        inputElement.value = '';
+        const inputNameTask = event.target.parentNode.querySelector('.input-nameTask');
+        inputNameTask?.setAttribute('hidden', true);
+        const datepickTask = event.target.parentNode.querySelector('.datepick-select');
+        datepickTask?.setAttribute('hidden', true);
+        const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
+        inputNameTask1?.setAttribute('hidden', true);
 
     }
 }

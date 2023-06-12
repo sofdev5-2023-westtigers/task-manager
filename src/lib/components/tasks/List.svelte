@@ -5,24 +5,21 @@
   import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions';
-  import {setTaskList, tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
+  import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
   import {formatDate } from "./TaskEdit";
   import { goto } from '$app/navigation';
 	import CalendarTask from '../calendarTask/CalendarTask.svelte';
 	import Header from '../header/Header.svelte';
+  import {addNewTask, createTask, saveList} from './Tasks';
   
   export let name = '';
   export let inputValue = [];
-  setTaskList(inputValue);
   let user: User;
-  let isAddNewTask  = false;
-  
-  async function addNewTask() {
-    if (name) {
-      const body = new FormData();
-      body.append('listName', name);
-      isAddNewTask = true;
-    }
+  let isMenuOpen = false;
+  let taskList = [];
+
+  function hideMenu() {
+    isMenuOpen = false; // Cambia el estado de isMenuOpen a false cuando se hace clic en cualquier opción
   }
 
   onMount(() => {
@@ -35,77 +32,6 @@
     const url = `/todo-lists/${name}/stadisticsList`;
     goto(url, { target: '_blank' });
   };
-
-  async function createTask(event) {
-      const inputElement = event.target.parentNode.querySelector('.input-nameTask');
-
-      const inputValue1 = inputElement.value;
-
-      let newTask = null;
-
-      const body = new FormData();
-      body.append('userId',user.userId.toString());
-      body.append('taskName', inputValue1);
-      body.append('listName', name);
-      body.append('isCompleted', false.toString());
-      body.append('timeChronometer', '0');
-
-      if(showPickDate == true){
-        newTask = new NewTask({
-        target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1,dateValue : date, isTimeChronometer: true },
-        });
-        body.append('date', date);
-      }else if(showPickDates == true){
-        newTask = new NewTask({
-        target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1, dateValue : dates, isTimeChronometer: true  },
-        });
-        body.append('dates', dates);
-      }else{
-        newTask = new NewTask({
-        target: event.target.parentNode.querySelector('.list-Task'),
-        props: { inputValue : inputValue1, isTimeChronometer: true },
-        });
-      }
-      setFalsePicks();
-      await fetch('/api/tasks/addTask', {
-          method: 'POST',body
-      });
-
-      inputValue = [...inputValue, newTask];
-      inputElement.value = '';
-
-      isAddNewTask = false;
-  }
-
-    async function saveList(event) {
-        const parent = this.parentElement;
-        const inputs = parent.querySelectorAll('input');
-        const labels = parent.querySelectorAll('label');
-        const buttons = parent.querySelectorAll('button');
-        const oldList = labels[0].textContent;
-
-        if (inputs[0].value == "") {
-            inputs[0].value = labels[0].textContent;
-        } else {
-            labels[0].textContent = inputs[0].value;
-        }
-
-        inputs[0].style.display = "none";
-        buttons[1].style.display = "none";
-        const inputElement = event.target.parentNode.querySelector('.listName-modified');
-        const inputValueListName = inputElement.value;
-
-        const body = new FormData();
-        body.append('userId', user.userId.toString());
-        body.append('listNameOld', oldList);
-        body.append('listName', inputValueListName);
-        const result = await fetch('/api/tasks/updateList', {
-        method: 'PUT', body
-        });
-        const task = await result.json();
-  }
 </script>
 
 <svelte:head>
@@ -117,7 +43,7 @@
 <div style="padding-top:80px;">
   <div style="float: left; width: 60%; margin-left:20px">
     <div class="list bg-[#A9907E] rounded-[10PX] w-1/2 p-4 mb-4">
-      <label class="title-List font-bold text-3xl">{name}</label>
+      <label class="title-List font-bold text-3xl" style="white-space: pre-line;">{name.replace(/(.{22})/g, "$&\n")}</label>
       <div class="dropdown dropdown-bottom mx-8 flex justify-end">
         <html data-theme="cupcake">
         </html>
@@ -155,11 +81,13 @@
         </li>
     </div> 
   </div>
-    <div class="calendarTaskComp" style="margin-right: 35px; margin-top:3px">
+  <div style="width: 50%; min-width:fit-content">
+    <div class="calendarTaskComp" style="margin-right: 35px; margin-left: 35px; margin-top:3px; margin-bottom: 30px;">
       {#each inputValue as task}
       {#if inputValue[inputValue.length - 1]._id === task._id }
           <CalendarTask tasksEvents={tasksListEvents}/>
         {/if}
       {/each}
     </div>
+  </div>
 </div>
