@@ -14,14 +14,14 @@ export async function addNewTask(event, name) {
     }
 }
 
-export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList,isToggled, isCronometer) {    
+export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList, isToggled, isCronometer) {
     const inputElement = event.target.parentNode.querySelector('.input-nameTask');
 
     const inputValue1 = inputElement.value;
 
     if (inputValue1) {
 
-    let newTask = null;
+        let newTask = null;
 
     const taskName =inputValue1.trim();
 
@@ -71,27 +71,28 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
                 props: { inputValue : inputValue1, isTimeChronometer : isCronometer},
             });
         } else {
-            newTask = new TaskCard({
-                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
-                props: { name : inputValue1, isCompleted : false, isTimeChronometer : isCronometer},
-            });
+            if (!isToggled) {
+                newTask = new NewTask({
+                    target: event.target.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, inputValue: inputValue1, isTimeChronometer: isCronometer },
+                });
+            } else {
+                newTask = new TaskCard({
+                    target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, name: inputValue1, isCompleted: false, isTimeChronometer: isCronometer },
+                });
+            }
         }
-        
-    }
-    setFalsePicks();
-    await fetch('/api/tasks/addTask', {
-        method: 'POST',body
-    });
 
-    taskList = [...taskList, newTask];
-    inputElement.value = '';
-
-    const inputNameTask = event.target.parentNode.querySelector('.input-nameTask');
-    inputNameTask?.setAttribute('hidden', true);
-    const datepickTask = event.target.parentNode.querySelector('.datepick-select');
-    datepickTask?.setAttribute('hidden', true);
-    const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
-    inputNameTask1?.setAttribute('hidden', true);
+        setFalsePicks();
+        taskList = [...taskList, newTask];
+        inputElement.value = '';
+        const inputNameTask = event.target.parentNode.querySelector('.input-nameTask');
+        inputNameTask?.setAttribute('hidden', true);
+        const datepickTask = event.target.parentNode.querySelector('.datepick-select');
+        datepickTask?.setAttribute('hidden', true);
+        const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
+        inputNameTask1?.setAttribute('hidden', true);
 
     }
 }
