@@ -23,48 +23,53 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
 
         let newTask = null;
 
-        const body = new FormData();
-        body.append('userId', user.userId.toString());
-        body.append('taskName', inputValue1);
-        body.append('listName', name);
-        body.append('isCompleted', false.toString());
-        body.append('timeChronometer', '0');
+    const taskName =inputValue1.trim();
 
-        const result = await fetch('/api/tasks/addTask', {
-            method: 'POST', body
-        });
+    if (taskName === '') {
+        return json({ error: "Task name cannot be empty or contain only spaces." }, { status: 400 });
+    }
 
-        const data = await result.json();
-        const taskId = data._id;  
+    const body = new FormData();
+    body.append('userId',user.userId.toString());
+    body.append('taskName', inputValue1);
+    body.append('listName', name);
+    body.append('isCompleted', false.toString());
+    body.append('timeChronometer', '0');
 
-        if (showPickDate == true) {
-            if (!isToggled) {
-                newTask = new NewTask({
-                    target: event.target.parentNode.querySelector('.list-Task'),
-                    props: { id: taskId, inputValue: inputValue1, containsDate: true, dateValue: date, isTimeChronometer: isCronometer },
-                });
-            } else {
-                newTask = new TaskCard({
-                    target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
-                    props: { id: taskId, name: inputValue1, isCompleted: false, containsDate: true, dateValue: date, isTimeChronometer: isCronometer },
-                });
-            }
-
-            body.append('date', date);
-        } else if (showPickDates == true) {
-            if (!isToggled) {
-                newTask = new NewTask({
-                    target: event.target.parentNode.querySelector('.list-Task'),
-                    props: { id: taskId, inputValue: inputValue1, containsDates: true, dateValue: dates, isTimeChronometer: isCronometer },
-                });
-            } else {
-                newTask = new TaskCard({
-                    target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
-                    props: { id: taskId, name: inputValue1, isCompleted: false, containsDates: true, dateValue: dates, isTimeChronometer: isCronometer },
-                });
-            }
-
-            body.append('dates', dates);
+    if(showPickDate == true){
+        if(!isToggled) {
+            newTask = new NewTask({
+                target: event.target.parentNode.querySelector('.list-Task'),
+                props: { inputValue : inputValue1, containsDate : true ,dateValue : date, isTimeChronometer : isCronometer },
+            });
+        } else {
+            newTask = new TaskCard({
+                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                props: { name : inputValue1, isCompleted : false, containsDate : true ,dateValue : date, isTimeChronometer : isCronometer},
+            });
+        }
+        
+        body.append('date', date);
+    }else if(showPickDates == true){
+        if(!isToggled) {
+            newTask = new NewTask({
+                target: event.target.parentNode.querySelector('.list-Task'),
+                props: { inputValue : inputValue1, containsDates : true , dateValue : dates, isTimeChronometer : isCronometer },
+            });
+        } else {
+            newTask = new TaskCard({
+                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                props: { name : inputValue1, isCompleted : false, containsDates : true, dateValue : dates, isTimeChronometer : isCronometer},
+            });
+        }
+        
+        body.append('dates', dates);
+    }else{
+        if(!isToggled) {
+            newTask = new NewTask({
+                target: event.target.parentNode.querySelector('.list-Task'),
+                props: { inputValue : inputValue1, isTimeChronometer : isCronometer},
+            });
         } else {
             if (!isToggled) {
                 newTask = new NewTask({
