@@ -41,7 +41,7 @@
 </svelte:head>
 
 <div class="list bg-[#A9907E] rounded-[10PX] p-4 mb-4">
-  <label class="title-List font-bold text-2xl" on:click={handleClick}>{name}</label>
+  <label class="title-List font-bold text-3xl" on:click={handleClick} style="white-space: pre-line;">{name.replace(/(.{1,36})/g, "$1\n")}</label>
   <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}>Add task</button>
   <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
   <button on:click={saveList(event, user)} style="display: none;">Done</button>
