@@ -39,7 +39,7 @@
 <div class=" top justify-center flex flex-wrap" style="padding-top: 100px; padding-left: 100px;">
 	<div data-testid="content-element" class="bg-white rounded px-2 py-2">
 		<!-- board category header -->
-		<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick} style="white-space: pre-line;">{name.replace(/(.{26})/g, "$&\n")}</label>
+		<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick}>{name}</label>
 		<!-- board card -->
 		<ul class="list-Task mt-2 list-none">
 		{#each inputValue as task}
