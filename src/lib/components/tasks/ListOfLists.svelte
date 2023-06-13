@@ -15,6 +15,7 @@
   isToggled = localStorage.getItem('isToggled') === 'true';
   let limitToName = 26;
   let nameError = '';
+  let errorMessage = '';
   let showAlert = false;
   let showError = false;
   isToggled = localStorage.getItem('isToggled') === 'true';
@@ -34,34 +35,44 @@
       const addNewList = document.querySelector('.addNewList');
       addNewList?.removeAttribute('hidden');
   }
-  
-  async function createList() {
-    const nameInput = event.target.parentNode.querySelector('.text-nameList');
-    const name = nameInput.value.trim();
-    const addNewList = document.querySelector('.addNewList');
-    if (name) {
-      if (name.length > limitToName) {
-        nameError = 'List name should not exceed ',limitToName,' characters.';
-        showAlert = true;
-        return;
-      } 
-      nameError = '';
-      showAlert = false;
-      const body = new FormData();
-      body.append('listName', name);
-      await fetch('/api/tasks/addList', {
-        method: 'POST',body
-      });
-      const buttonNewList = document.querySelector('.button-NewList');
-      const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
-      buttonNewList?.removeAttribute('hidden');
-      buttonSortFil?.removeAttribute('hidden');
-      addNewList.setAttribute('hidden', true);
-      listTasks = [...listTasks, { name, id: Date.now() }];
-      nameInput.value = '';
+
+    async function createList() {
+      const nameInput = event.target.parentNode.querySelector('.text-nameList');
+      const name = nameInput.value.trim();
+      const addNewList = document.querySelector('.addNewList');
+      if (name) {
+        if (name.length > limitToName) {
+          nameError = 'List name should not exceed ',limitToName,' characters.';
+          showAlert = true;
+          return;
+        }
+        nameError = '';
+        showAlert = false;
+        const body = new FormData();
+        body.append('listName', name);
+        const response = await fetch('/api/tasks/addList', {
+          method: 'POST', body
+        });
+        if (response.ok) {
+          const buttonNewList = document.querySelector('.button-NewList');
+          const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
+          buttonNewList?.removeAttribute('hidden');
+          buttonSortFil?.removeAttribute('hidden');
+          addNewList.setAttribute('hidden', String(true));
+          listTasks = [...listTasks, { name, id: Date.now() }];
+          nameInput.value = '';
+        } else {
+          const data = await response.json();
+          errorMessage = data.error;
+          showError = true;
+          setTimeout(() => {
+            showError = false;
+          }, 2000);
+        }
+      }
     }
-  }
-  function toggle() {
+
+    function toggle() {
     fetchTasks();
     isToggled = !isToggled;
     console.log("isToggled", isToggled);
@@ -97,8 +108,12 @@
         </div>
       {/if}
     </div>
-    <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">      
-    {#if !isToggled}
+    <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">
+      <div>{#if showError}
+        <ErrorAlert {errorMessage}/>
+        <br>
+      {/if}</div>
+      {#if !isToggled}
     <div class="flex flex-col">
       {#each groupedTasks as group}
         {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
