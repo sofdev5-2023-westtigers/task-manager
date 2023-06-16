@@ -4,7 +4,7 @@ sgMail.setApiKey(SENDGRID_API_KEY);
 
 export async function GET(): Promise<Response> {
     const msg = {
-        to: "desireeacosta67@gmail.com",
+        to: "email@example.com",
         from: "taskmanager43@gmail.com",
         subject: "Example mail!",
         text: "This is an example mail!",
