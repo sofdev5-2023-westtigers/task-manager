@@ -33,6 +33,7 @@
             <p class="py-6 text-2xl text-[#675D50]">On this platform, you will be able to effectively keep track of your daily tasks in a simple and intuitive way. 
                 With our tool, you will be able to assign responsibilities, set deadlines and track the progress of your tasks.</p>
                 <a href="/todo-lists" class="btn bg-[#ABC4AA] border-none">Continue!</a>
+                <a href="/send-mail" class="btn bg-[#ABC4AA] border-none">Mail!</a>
         </div>
     </div>
 </div>
