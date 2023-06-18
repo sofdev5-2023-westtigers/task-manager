@@ -7,7 +7,7 @@ export const POST : RequestHandler = (async ({request,locals}) => {
     const list = {userId: body.get('userId'), taskName: body.get('taskName'), listName: body.get('listName'), isCompleted: body.get('isCompleted') === 'true',
         date: parseDate(body.get('date')), dates: parseDates(body.get('dates')), timeChronometer: parseInt(body.get('timeChronometer'))};
         
-    const existingTask = await tasks.findOne({ listName:list.listName, taskName: list.taskName});
+    const existingTask = await tasks.findOne({ listName:list.listName, taskName: list.taskName, userId: list.userId});
     if (existingTask) {
         return "error";
     }      
