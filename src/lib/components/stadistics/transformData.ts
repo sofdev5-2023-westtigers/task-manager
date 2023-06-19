@@ -3,26 +3,25 @@ export let dataDonutChart = [];
 export let dataBarChart = [];
 
 export function trasformDataPieChart(dataTask){
-    for (let i = 0; i < dataTask.length; i++) {
-        const newData = {nameTask: dataTask[i].taskName, timeChronometer: dataTask[i].timeChronometer};
-        dataPieChart[i] = newData;
-    }
+    dataPieChart = dataTask
+        .filter(task => task.timeChronometer !== 0)
+        .map(task => ({ nameTask: task.taskName, timeChronometer: task.timeChronometer }));
 }
 
 export function trasformDataDonutChart(dataTask){
-    for (let i = 0; i < dataTask.length; i++) {
-        const newData = {nameTask: dataTask[i].taskName, timeChronometer: dataTask[i].timeChronometer};
-        dataDonutChart[i] = newData;
-    }
+    dataDonutChart = dataTask
+        .filter(task => task.timeChronometer !== 0)
+        .map(task => ({ nameTask: task.taskName, timeChronometer: task.timeChronometer }));
 }
 
 export function trasformDataBarChart(dataTask){
-    for (let i = 0; i < dataTask.length; i++) {
-        const newData = {nameTask: dataTask[i].taskName, timeChronometer: dataTask[i].timeChronometer};
-        dataBarChart[i] = newData;
-    }
+    dataBarChart = dataTask
+        .filter(task => task.timeChronometer !== 0)
+        .map(task => ({ nameTask: task.taskName, timeChronometer: task.timeChronometer }));
+
     transformForPercentage();
 }
+
 
 function transformForPercentage(){
     let totalsum = 0;
