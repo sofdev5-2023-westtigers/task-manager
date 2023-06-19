@@ -2,7 +2,6 @@
   import { scaleLinear, scaleBand } from 'd3';
   import { flip } from 'svelte/animate';
   import {dataBarChart} from './transformData'; // or pass data to component as prop
-
   const marginTop = 20; // top margin, in pixels
   const marginRight = 0; // right margin, in pixels
   const marginBottom = 30; // bottom margin, in pixels
