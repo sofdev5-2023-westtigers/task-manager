@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.postcss';
 	import { onMount } from 'svelte';
 	import { Registry } from '$lib/auth/Registry';
 

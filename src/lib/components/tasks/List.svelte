@@ -11,18 +11,20 @@
 	import CalendarTask from '../calendarTask/CalendarTask.svelte';
 	import Header from '../header/Header.svelte';
   import {addNewTask, createTask, saveList} from './Tasks';
-  
+  // import { GET } from '$mail/+server';
+  import { Button, Modal, Label, Input } from 'flowbite-svelte';
+
+  let modalMembersList = false;
+  let modalAddMembersList = false;
   export let name = '';
   export let inputValue = [];
   let user: User;
   let isMenuOpen = false;
   let taskList = [];
-
-  function hideMenu() {
-    isMenuOpen = false; // Cambia el estado de isMenuOpen a false cuando se hace clic en cualquier opción
-  }
+  let modal: HTMLDialogElement;
 
   onMount(() => {
+    modal = document.getElementById("my_modal_4");
 		Registry.auth.getUser().subscribe((data: User) => {
 			user = data;
 		});
@@ -32,6 +34,18 @@
     const url = `/todo-lists/${name}/stadisticsList`;
     goto(url, { target: '_blank' });
   };
+
+  function openModal() {
+    if (modal) {
+      modal.showModal();
+    }
+  }
+
+  function closeModal() {
+    if (modal) {
+      modal.close();
+    }
+  }
 </script>
 
 <svelte:head>
@@ -51,6 +65,34 @@
             <li><a on:click={handleClick}>See Stadistics</a></li>
             <li><a href="/todo-lists">Return to Lists</a></li>
           </ul>
+          <!-- You can open the modal using ID.showModal() method -->
+          <Button on:click={() => modalMembersList = true}>Default modal</Button>
+          <Modal bind:open={modalMembersList} autoclose>
+            <svelte:fragment slot='header'>
+              <h1 style="margin-right:20px;">members of list</h1>
+              <Button pill={true} outline={true} class="!p-2" size="xl" on:click={() => modalAddMembersList = true}>
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M10 2v16m-8-8h16" stroke="currentColor" stroke-width="2"></path>
+                </svg>
+              </Button>
+              <Modal bind:open={modalAddMembersList} size="xs" autoclose={false} class="w-full">
+                <form class="flex flex-col space-y-6" action="#">
+                  <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add New Member</h3>
+                  <Label class="space-y-2">
+                    <span>Email</span>
+                    <Input type="email" name="email" placeholder="name@company.com" required />
+                  </Label>
+                  <Button type="submit" class="w-full1">Add Member to List</Button>
+                </form>
+              </Modal>
+            </svelte:fragment>
+            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+            </p>
+            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.
+            </p>
+          </Modal>
         </div>
         <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
         <button on:click={(event) =>saveList(event, user)} style="display: none;">Done</button>
