@@ -12,7 +12,7 @@
 	import Header from '../header/Header.svelte';
   import {addNewTask, createTask, saveList} from './Tasks';
   // import { GET } from '$mail/+server';
-  import { Button, Modal, Label, Input } from 'flowbite-svelte';
+  import { Button, Dropdown, DropdownItem, DropdownDivider, Chevron, Modal, Label, Input } from 'flowbite-svelte';
 
   let modalMembersList = false;
   let modalAddMembersList = false;
@@ -35,16 +35,8 @@
     goto(url, { target: '_blank' });
   };
 
-  function openModal() {
-    if (modal) {
-      modal.showModal();
-    }
-  }
-
-  function closeModal() {
-    if (modal) {
-      modal.close();
-    }
+  function submitForm() {
+    fetch("/api/mail/sendmail");
   }
 </script>
 
@@ -58,15 +50,15 @@
     <div style="margin-left:20px; margin-right: 20px ;min-width: 420px">
       <div class=" w-auto list bg-[#A9907E] rounded-[10PX] max-w-xl p-4 mb-4">
         <label class="title-List font-bold text-3xl" style="white-space: pre-line;">{name.replace(/(.{22})/g, "$&\n")}</label>
-        <button class="btn text-xs" style="margin-left:40px" on:click={ (event) => addNewTask(event, name)}>Add New Task</button>
+        <button class="btn text-xs" style="margin-left:40px;margin-right:15px" on:click={() => modalMembersList = true}>+</button>
+        <button class="btn text-xs" on:click={ (event) => addNewTask(event, name)}>Add New Task</button>
         <div class="dropdown dropdown-bottom mx-4">
-          <label tabindex="0" class="btn m-1 text-xs" style="margin-top:-30px; width: 16%; min-width: 70px" on:click={() => { isMenuOpen = !isMenuOpen; }}>{isMenuOpen ? 'Close' : 'Options'}</label>
+          <label tabindex="0" class="btn m-1 text-xs" on:click={() => { isMenuOpen = !isMenuOpen; }}>{isMenuOpen ? 'Close' : 'Options'}</label>
           <ul tabindex="0" class=" menu dropdown-content p-2 rounded-box w-52 bg-success" style={isMenuOpen ? 'display: block' : 'display: none'}>
             <li><a on:click={handleClick}>See Stadistics</a></li>
             <li><a href="/todo-lists">Return to Lists</a></li>
           </ul>
           <!-- You can open the modal using ID.showModal() method -->
-          <Button on:click={() => modalMembersList = true}>Default modal</Button>
           <Modal bind:open={modalMembersList} autoclose>
             <svelte:fragment slot='header'>
               <h1 style="margin-right:20px;">members of list</h1>
@@ -82,7 +74,7 @@
                     <span>Email</span>
                     <Input type="email" name="email" placeholder="name@company.com" required />
                   </Label>
-                  <Button type="submit" class="w-full1">Add Member to List</Button>
+                  <Button type="submit" class="w-full1" on:click={() => submitForm()}>Add Member to List</Button>
                 </form>
               </Modal>
             </svelte:fragment>
