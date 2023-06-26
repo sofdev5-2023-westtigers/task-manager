@@ -1,11 +1,14 @@
+import type { User } from "$lib/auth/User";
 import { getTokenClient } from "./getTokenclient";
+
+export let userMailList: string[] = [];
 
 export async function getClientsList() {
   let json = await getTokenClient();
   // console.log(json);
-  let userslist: any[] = [];
+  let userslist: User[] = [];
 
-  fetch('http://localhost:8080/admin/realms/myrealm/users', {
+  return fetch('http://localhost:8080/admin/realms/myrealm/users', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -21,8 +24,36 @@ export async function getClientsList() {
       // userslist.forEach(element => {
       //   console.log("- " + element.access.view);
 
-      // });
-      // return userslist;
+      // }); 
+      console.log(typeof userslist);
+      
+      return userslist;
     })
     .catch(error => console.error(error));
+}
+
+export async function addUser(email: string) {
+  let userGetList: User[] = await getClientsList();
+  console.log(userGetList);
+  userGetList.forEach(user => {
+    if (!userMailList.includes(email)) {
+      // console.log(user.email);      
+      userMailList.push(user.email);
+      return true;
+    } else {
+      return false;
+    }    
+  });
+}
+
+export async function deleteUser(email: string) {
+  userMailList.forEach(userMail => {
+    if (userMailList.includes(email)) {
+      const index = userMailList.indexOf(email);     
+      userMailList.splice(index, 1);
+      return true;
+    } else {
+      return false;
+    }    
+  });
 }
