@@ -1,6 +1,7 @@
 import type { User } from "$lib/auth/User";
 import { getTokenClient } from "./getTokenclient";
 
+export let usersKeycloakMail: string[] = [];
 export let userMailList: string[] = [];
 
 export async function getClientsList() {
@@ -26,34 +27,40 @@ export async function getClientsList() {
 
       // }); 
       console.log(typeof userslist);
-      
+
       return userslist;
     })
     .catch(error => console.error(error));
 }
 
-export async function addUser(email: string) {
+export async function getMailUsers() {
   let userGetList: User[] = await getClientsList();
   console.log(userGetList);
   userGetList.forEach(user => {
-    if (!userMailList.includes(email)) {
-      // console.log(user.email);      
-      userMailList.push(user.email);
-      return true;
-    } else {
-      return false;
-    }    
+    console.log(user.email);
+    usersKeycloakMail.push(user.email);
+    console.log('User get list:');
+    console.log(usersKeycloakMail);
   });
 }
 
+export async function addUser(email: string) {
+  if (usersKeycloakMail.includes(email)) {
+   userMailList.push(email);
+   console.log("🚀 ~ file: getUserList.ts:50 ~ addUser ~ userMailList:", userMailList)
+   
+   return true;
+  } else {
+    return false;
+  }
+}
+
 export async function deleteUser(email: string) {
-  userMailList.forEach(userMail => {
-    if (userMailList.includes(email)) {
-      const index = userMailList.indexOf(email);     
-      userMailList.splice(index, 1);
-      return true;
-    } else {
-      return false;
-    }    
-  });
+  if (usersKeycloakMail.includes(email)) {
+    const index = usersKeycloakMail.indexOf(email);
+    usersKeycloakMail.splice(index, 1);
+    return true;
+  } else {
+    return false;
+  }
 }
