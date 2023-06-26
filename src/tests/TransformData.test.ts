@@ -7,7 +7,7 @@ import {
   trasformDataPieChart,
   trasformDataDonutChart,
   trasformDataBarChart,
-} from './transformData';
+} from '../lib/components/stadistics/transformData';
 
 test('trasformDataPieChart should transform data correctly for pie chart', () => {
   const dataTask = [
