@@ -10,9 +10,10 @@
   import { goto } from '$app/navigation';
 	import CalendarTask from '../calendarTask/CalendarTask.svelte';
 	import Header from '../header/Header.svelte';
+  import {setMsg, msg} from '$mail/AddMsg';
   import {addNewTask, createTask, saveList} from './Tasks';
-  // import { GET } from '$mail/+server';
-  import { Button, Dropdown, DropdownItem, DropdownDivider, Chevron, Modal, Label, Input } from 'flowbite-svelte';
+
+  import { Button, Modal, Label, Input } from 'flowbite-svelte';
 
   let modalMembersList = false;
   let modalAddMembersList = false;
@@ -21,10 +22,8 @@
   let user: User;
   let isMenuOpen = false;
   let taskList = [];
-  let modal: HTMLDialogElement;
 
   onMount(() => {
-    modal = document.getElementById("my_modal_4");
 		Registry.auth.getUser().subscribe((data: User) => {
 			user = data;
 		});
@@ -36,6 +35,9 @@
   };
 
   function submitForm() {
+    const inputElement = document.getElementById("emailP");
+    const inputValue1 = inputElement?.value;
+    setMsg(inputValue1, "Added to a list!!", "added to a list", "in the task manager app you were added to the list" + name);
     fetch("/api/mail/sendmail");
   }
 </script>
@@ -72,7 +74,7 @@
                   <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add New Member</h3>
                   <Label class="space-y-2">
                     <span>Email</span>
-                    <Input type="email" name="email" placeholder="name@company.com" required />
+                    <Input class="emailP" id="emailP" type="email" name="email" placeholder="name@company.com" required />
                   </Label>
                   <Button type="submit" class="w-full1" on:click={() => submitForm()}>Add Member to List</Button>
                 </form>

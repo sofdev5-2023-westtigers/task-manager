@@ -1,18 +1,12 @@
 import { SENDGRID_API_KEY } from "$env/static/private";
 import sgMail from "@sendgrid/mail";
+import {getMsg} from "./AddMsg";
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 export async function GET(): Promise<Response> {
-    const msg = {
-        to: "email@example.com",
-        from: "taskmanager43@gmail.com",
-        subject: "Example mail!",
-        text: "This is an example mail!",
-        html: "Sendgrid is working",
-    };
-
     try {
-        const output = await sgMail.send(msg);
+        console.log(getMsg());
+        const output = await sgMail.send(getMsg());
         return new Response(JSON.stringify({ body: output }), {
             status: 200,
             headers: { "Content-Type": "application/json" },

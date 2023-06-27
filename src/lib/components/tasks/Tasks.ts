@@ -16,7 +16,6 @@ export async function addNewTask(event, name) {
 
 export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList, isToggled, isCronometer) {
     const inputElement = event.target.parentNode.querySelector('.input-nameTask');
-
     const inputValue1 = inputElement.value;
 
     if (inputValue1) {
