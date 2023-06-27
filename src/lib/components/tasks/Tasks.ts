@@ -84,35 +84,22 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
                     });
                 }
             }
-
-            setFalsePicks();
-            await fetch('/api/tasks/addTask', {
-                method: 'POST',body
-            });
-        
-            taskList = [...taskList, newTask];
-            inputElement.value = '';
-        
-            const inputNameTask = event.target.parentNode.querySelector('.input-nameTask');
-            inputNameTask?.setAttribute('hidden', true);
-            const datepickTask = event.target.parentNode.querySelector('.datepick-select');
-            datepickTask?.setAttribute('hidden', true);
-            const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
-            inputNameTask1?.setAttribute('hidden', true);
-        
-
         }
 
         setFalsePicks();
+        await fetch('/api/tasks/addTask', {
+            method: 'POST',body
+        });
+    
         taskList = [...taskList, newTask];
         inputElement.value = '';
+    
         const inputNameTask = event.target.parentNode.querySelector('.input-nameTask');
         inputNameTask?.setAttribute('hidden', true);
         const datepickTask = event.target.parentNode.querySelector('.datepick-select');
         datepickTask?.setAttribute('hidden', true);
         const inputNameTask1 = event.target.parentNode.querySelector('.button-add');
         inputNameTask1?.setAttribute('hidden', true);
-
     }
 }
 
