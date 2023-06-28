@@ -80,7 +80,7 @@
 
 <div class="listTasks" style="padding-top:80px;">
   <div class="w-full sm:w-3/5">
-    <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">
+    <div id="tasklist" class="taskList mt-2 mx-2">
       <div>{#if showError}
         <ErrorAlert {errorMessage}/>
         <br>
@@ -88,7 +88,7 @@
     <div class="flex flex-row">
       {#each groupedTasks as group}
         {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
-          <div class="flex-item">
+          <div class="flex-item px-2">
             <TaskBoard name={group._id.listName} inputValue={group.tasks}/>
           </div> 
         {/if}
