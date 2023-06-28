@@ -36,7 +36,6 @@
 
 <div class="listTasks" style="padding-top:80px;">
   <div class="w-full sm:w-3/5">
-    <!-- <AddListForm/> -->
     <div id="tasklist" class="taskList mt-2" style="padding-left: 100px; padding-right: 100px">
       <div>{#if showError}
         <ErrorAlert {errorMessage}/>
@@ -51,10 +50,13 @@
         {/if}
       {/each}
       {#each listTasks as list}
-      <div class="flex-item">
+      <div class="flex-item px-2">
         <TaskBoard name={list.name}/>
       </div>
         {/each}
+        <div class=" px-3">
+          <AddListForm/>
+        </div>
     </div>
     </div>
   </div>

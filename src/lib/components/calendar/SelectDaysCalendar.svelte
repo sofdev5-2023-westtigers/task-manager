@@ -25,8 +25,10 @@
   </script>
   
   <DatePicker class="mt-2" datePickerType="range" on:change on:change={handleDateChange}>
-    <DatePickerInput labelText="Start Task" placeholder="mm/dd/yyyy" />
-    <DatePickerInput labelText="End Task" placeholder="mm/dd/yyyy" />
+    <div>
+      <DatePickerInput labelText="Start Task" placeholder="mm/dd/yyyy" style="width: 200px;"/>
+      <DatePickerInput labelText="End Task" placeholder="mm/dd/yyyy" style="width: 200px;"/>
+    </div>
   
     {#if !isDateValid}
       <p style="color: red;">Invalid date</p>

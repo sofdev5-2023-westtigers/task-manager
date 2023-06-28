@@ -4,10 +4,10 @@
     let nameError = '';
     let showAlert = false;
     let showError = false;
-    let isToggled : Boolean;
-    isToggled = localStorage.getItem('isToggled') === 'true';
     let groupedTasks: any[] = [];
     let listTasks: any[] = [];
+    let showForm = false;
+    let listName = '';
 
     async function fetchTasks() {
         const res = await fetch('/api/tasks/getList');
@@ -15,10 +15,10 @@
     }
 
     async function createList() {
-        const nameInput = event.target.parentNode.querySelector('.text-nameList');
+        const nameInput = document.querySelector('.text-nameList');
         const name = nameInput.value.trim();
-        const addNewList = document.querySelector('.addNewList');
-        if (name && addNewList) {
+        console.log(name);
+        if (name) {
             if (name.length > limitToName) {
             nameError = 'List name should not exceed ',limitToName,' characters.';
             showAlert = true;
@@ -36,7 +36,6 @@
             const buttonSortFil = document.querySelector('.button-Filtrar-Ordenar');
             buttonNewList?.removeAttribute('hidden');
             buttonSortFil?.removeAttribute('hidden');
-            addNewList.setAttribute('hidden', String(true));
             listTasks = [...listTasks, { name, id: Date.now() }];
             nameInput.value = '';
             } else {
@@ -48,32 +47,14 @@
             }, 2000);
             }
         }
+        handleHide();
     }
-
-    function toggle() {
-        fetchTasks();
-        isToggled = !isToggled;
-        console.log("isToggled", isToggled);
-        localStorage.setItem('isToggled', isToggled.toString());
-    }
-
-    import { onMount } from 'svelte';
-
-    let showForm = false;
-    let listName = '';
 
     function handleAddList() {
         showForm = true;
     }
 
-    function handleCancel() {
-        showForm = false;
-    }
-
-    function handleOK() {
-        // Controlar el agregar
-        console.log('List Name:', listName);
-
+    function handleHide() {
         showForm = false;
     }
 </script>
@@ -115,15 +96,15 @@
 
 {#if showForm}
     <div
-        class="button-addList px-4 py-2 rounded-md"
+        class="px-4 py-2 rounded-md"
         style="background-color: #F2F2F2; width: 250px; border: 3px solid #D9D9D9;"
     >
         <div class="flex justify-center">
-            <input class="rounded-md text-gray-600" style="border: 3px solid #D9D9D9;" type="text" bind:value={listName} placeholder="List Name" />
+            <input class="text-nameList rounded-md text-gray-600" style="border: 3px solid #D9D9D9;" type="text" bind:value={listName} placeholder="List Name" />
         </div>
         <div class=" mt-2">
-            <button class="rounded-md bg-[#ABC4AA]" style="height: 25px; width: 50px; border: 3px solid #92AD91;" on:click={handleOK}>OK</button>
-            <button class="rounded-md " style="background-color: #EDB491; height: 25px; width: 80px; border: 3px solid #BB9075;" on:click={handleCancel}>CANCEL</button>
+            <button class="button-addList rounded-md bg-[#ABC4AA]" style="height: 25px; width: 50px; border: 3px solid #92AD91;" on:click={createList}>OK</button>
+            <button class="rounded-md " style="background-color: #EDB491; height: 25px; width: 80px; border: 3px solid #BB9075;" on:click={handleHide}>CANCEL</button>
         </div>
     </div>
 {/if}
