@@ -6,7 +6,7 @@ import {
 	setTaskList,
 	addNewEventTask,
 	tasksListEvents
-} from './CalendarTaskFunction';
+} from '../lib/components/calendarTask/CalendarTaskFunction';
 import sinon from 'sinon';
 
 test('convertDateFormat should convert date format correctly', () => {
