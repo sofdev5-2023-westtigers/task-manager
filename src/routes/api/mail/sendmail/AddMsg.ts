@@ -6,13 +6,7 @@ interface Email {
     html: string;
 }
 
-export let msg : Email = { 
-    to: "melmune@gmail.com",
-    from: "wt028615@gmail.com",
-    subject: "Example mail!",
-    text: "This is an example mail!",
-    html: "Sendgrid is working",
-};
+export let msg : Email | null = null;
 
 export async function setMsg(toE : string, subjectE : string, textE : string, htmlE : string){
     const msgNew = {
@@ -24,9 +18,4 @@ export async function setMsg(toE : string, subjectE : string, textE : string, ht
     };
 
     msg = msgNew;
-    console.log(msg);
-}
-
-export function getMsg() : Email{
-    return msg;
 }

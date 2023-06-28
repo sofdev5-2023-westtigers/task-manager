@@ -38,7 +38,14 @@
     const inputElement = document.getElementById("emailP");
     const inputValue1 = inputElement?.value;
     setMsg(inputValue1, "Added to a list!!", "added to a list", "in the task manager app you were added to the list" + name);
-    fetch("/api/mail/sendmail");
+    if (msg !== null) {
+      console.log(msg);
+      fetch("/api/mail/sendmail",{
+        method: "POST",
+        body: JSON.stringify(msg),
+        headers: {'Content-Type':'application/json'}
+      });
+    }
   }
 </script>
 
