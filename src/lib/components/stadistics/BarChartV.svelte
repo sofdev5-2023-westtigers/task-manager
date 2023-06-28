@@ -6,7 +6,7 @@
   const marginRight = 0; // right margin, in pixels
   const marginBottom = 30; // bottom margin, in pixels
   const marginLeft = 50; // left margin, in pixels
-  const width = 754; // width of the chart, in pixels
+  const width = 480; // width of the chart, in pixels
   const height = 300; // height of the chart, in pixels
   const xPadding = 0.2; // padding between bars
   const yFormat = '%'; // unit to display on y-axis ticks
@@ -107,9 +107,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: 50px;
-    margin-left: 8
-    0px;
+    
   }
 
   select{
