@@ -116,6 +116,7 @@
 						showPickDates,
 						setFalsePicks,
 						taskList,
+
 						true
 					), hiddenShowAddTask()}>ADD</button
 					>

@@ -7,7 +7,6 @@
     import TaskBoard from "./TaskBoard.svelte";
     import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
     import ErrorAlert from "./ErrorAlert.svelte";
-    import AddListForm from "./AddListForm.svelte";
     let tasksList2 = [];
     let listTasks: any[] = [];
     $:tasksList2 = tasksListEvents; 
@@ -30,6 +29,51 @@
       groupedTasks = await res.json();
     }
     fetchTasks();
+
+    let limitToName = 26;
+    let showForm = false;
+    let listName = '';
+
+    async function createList() {
+        const nameInput = document.querySelector('.text-nameList');
+        const name = nameInput.value.trim();
+        console.log(name);
+        if (name && nameInput) {
+            if (name.length > limitToName) {
+            nameError = 'List name should not exceed ',limitToName,' characters.';
+            showAlert = true;
+            return;
+            }
+            nameError = '';
+            showAlert = false;
+            const body = new FormData();
+            body.append('listName', name);
+            const response = await fetch('/api/tasks/addList', {
+            method: 'POST', body
+            });
+            if (response.ok) {
+                listTasks = [...listTasks, { name, id: Date.now() }];
+                nameInput.value = '';
+            } else {
+                const data = await response.json();
+                errorMessage = data.error;
+                showError = true;
+                setTimeout(() => {
+                    showError = false;
+                }, 2000);
+            }
+        }
+        handleHide();
+    }
+
+    function handleAddList() {
+        showForm = true;
+    }
+
+    function handleHide() {
+        showForm = false;
+    }
+
 </script>
 
 <Header/>
@@ -55,7 +99,31 @@
       </div>
         {/each}
         <div class=" px-3">
-          <AddListForm/>
+          {#if !showForm}
+              <button
+                  class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md"
+                  type="button"
+                  style="font-weight: bold; width: 250px; font-size:large;"
+                  on:click={handleAddList}>
+                      + Add List
+              </button>
+          {/if}
+
+          {#if showForm}
+              <div
+                  class="px-4 py-2 rounded-md"
+                  style="background-color: #F2F2F2; width: 250px; border: 3px solid #D9D9D9;"
+              >
+                  <div class="flex justify-center">
+                      <input class="text-nameList rounded-md text-gray-600" style="border: 3px solid #D9D9D9;" type="text" bind:value={listName} placeholder="List Name" />
+                  </div>
+                  <div class=" mt-2">
+                      <button class="button-addList rounded-md bg-[#ABC4AA]" style="height: 25px; width: 50px; border: 3px solid #92AD91;" on:click={createList}>OK</button>
+                      <button class="rounded-md " style="background-color: #EDB491; height: 25px; width: 80px; border: 3px solid #BB9075;" on:click={handleHide}>CANCEL</button>
+                  </div>
+              </div>
+          {/if}
+
         </div>
     </div>
     </div>
