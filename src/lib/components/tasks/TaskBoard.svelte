@@ -120,3 +120,13 @@
 		</div>
 	</div>
 </div>
+<style>
+	input:checked + label, input:checked + label + i {
+		text-decoration: line-through;
+	}
+	.list-Task {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+</style>
