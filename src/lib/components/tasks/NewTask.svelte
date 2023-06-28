@@ -129,13 +129,13 @@
 <link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
 </svelte:head>
 
-<div style="margin-bottom:2px;" class="mt-2">
+<div style="margin-bottom:2px;" class="list-item">
     {#if isChecked}
         <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task"  on:change={saveTask(event, user)} checked>
     {:else}
         <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox"  on:change={saveTask(event, user)} name="task">
     {/if}
-  <label data-testid="label-name" class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
+  <label data-testid="label-name" class="label-task ml-2 text-xl list-card-details" for="task" on:click={show}>{inputValue}</label>
   <input data-testid="input-name" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
   <button data-testid="button-name" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
   {#if showPickDate || containsDate}
@@ -155,7 +155,34 @@
 </div>
 
 <style>
-  input:checked + label,input:checked + label + i {
-      text-decoration: line-through;
-  }
+    input:checked + label, input:checked + label + i {
+        text-decoration: line-through;
+    }
+    .list-Task {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .list-item {
+        background-color: #fff;
+        border: 3px solid #c4c3c3;
+        border-radius: 30px;
+        margin: 20px;
+        padding: 6px 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .list-card-details {
+        color: #675D50;
+        font-size: 18px;
+        line-height: 16px;
+        margin-top: 4px;
+        font-family: 'Canva Sans', sans-serif;
+    }
+
+    .js-card-details {
+        display: none;
+    }
 </style>
