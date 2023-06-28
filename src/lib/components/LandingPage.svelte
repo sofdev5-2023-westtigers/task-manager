@@ -1,9 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Registry } from '$lib/auth/Registry';
-    import ListOfLists from "$lib/components/tasks/ListOfLists.svelte";
-
-    let showListOfLists = false;
 
 	onMount(() => {
 		Registry.auth.checkParams();
@@ -29,10 +26,10 @@
     <div class="hero-content flex-col lg:flex-row-reverse">
         <img src="../src/resources/image-removebg-preview.png" class="max-w-sm rounded-lg shadow-2xl"/>
         <div>
-            <h1 class="text-7xl text-[#675D50] font-bold">TASK  MANAGER</h1>
+            <h1 class="text-7xl text-[#675D50] font-bold ">TASK  MANAGER</h1>
             <p class="py-6 text-2xl text-[#675D50]">On this platform, you will be able to effectively keep track of your daily tasks in a simple and intuitive way. 
                 With our tool, you will be able to assign responsibilities, set deadlines and track the progress of your tasks.</p>
-                <a href="/todo-lists" class="btn bg-[#ABC4AA] border-none">Continue!</a>
+                <a href="/todo-lists" class="btn bg-[#ABC4AA] border-none">See Lists</a>
         </div>
     </div>
 </div>
