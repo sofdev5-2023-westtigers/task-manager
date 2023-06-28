@@ -129,7 +129,7 @@
 <link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
 </svelte:head>
 
-<div style="margin-bottom:2px;" class="mt-2">
+<div class=" m-4">
     {#if isChecked}
         <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task"  on:change={saveTask(event, user)} checked>
     {:else}
