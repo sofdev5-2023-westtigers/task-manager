@@ -13,11 +13,26 @@
   let isBarChartV = false;
   let isDonutChart = false;
   let isPieChart = true;
+  let totalTimetasks = 0;
 
   const handleClick = () => {
     const url = `/todo-lists/${nameList}`;
     goto(url, { target: '_blank' });
   };
+
+  function totalTime(): number {
+        let totalTimeInSeconds = 0;
+        console.log(tasks);
+        tasks.forEach(element => {
+            if (element.isCompleted === true) {
+                totalTimeInSeconds += element.timeChronometer / 1000; // Convertir de milisegundos a segundos
+            }
+        });
+        console.log("Total time", totalTimeInSeconds)
+        return totalTimeInSeconds;
+  }
+
+  totalTimetasks = totalTime();
 
   function chooseGraphBarV() {
     isBarChartV = true;
