@@ -8,21 +8,25 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     const list = {userId: body.get('userId'), taskNameOld: body.get('taskNameOld'), taskName: body.get('taskName'), listName: body.get('listName'), isCompletedOld: body.get('isCompletedOld'),isCompleted: body.get('isCompleted')};
     const listTimeChronometer = {userId: body.get('userId'), oldTimeChronometer: body.get('oldTimeChronometer'), timeChronometer: body.get('timeChronometer')};
     const listMembers: String[] = body.getAll('listMembers[]');
+    const newMember = body.get('newMember');
     const users = await getMailUsers();
-
-    const members = listMembers
-        .map(id => users.find(user => user.id === id))
-        .filter(objetoEncontrado => objetoEncontrado !== undefined);
+    
+    const task = await tasks.findOne({ taskName:  body.get('taskNameOld'), userId: body.get('userId')});
+    const members = task.TaskMembers;
+    console.log(members);
+      
+    if(newMember != null){
+      members.push(users.find(user => user.id === newMember));
+      const result2 = await tasks.updateOne(
+        { userId: body.get('userId'), taskName:  body.get('taskNameOld')},
+        { $set: { taskName: list.taskName, TaskMembers: members}}
+      );
+    }
 
     const result = await tasks.updateOne(
         { userId: body.get('userId'), taskName:  body.get('taskNameOld')},
         { $set: { taskName: list.taskName, isCompleted: list.isCompleted == "true"}}
       );
-
-    const result2 = await tasks.updateOne(
-      { userId: body.get('userId'), taskName:  body.get('taskNameOld')},
-      { $set: { taskName: list.taskName, TaskMembers: members}}
-    );
 
       if (body.get('modifyDate') === "true") {
       const resultDates = await tasks.updateOne(
