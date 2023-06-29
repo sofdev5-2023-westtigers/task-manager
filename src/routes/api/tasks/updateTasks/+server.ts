@@ -7,16 +7,16 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     const listCalendar = {userId: body.get('userId'), oldDates: body.get('oldDates'), dates: body.get('dates'), oldDate: body.get('oldDate'), date: body.get('date'), modifyDate: body.get('modifyDate')};
     const list = {userId: body.get('userId'), taskNameOld: body.get('taskNameOld'), taskName: body.get('taskName'), listName: body.get('listName'), isCompletedOld: body.get('isCompletedOld'),isCompleted: body.get('isCompleted')};
     const listTimeChronometer = {userId: body.get('userId'), oldTimeChronometer: body.get('oldTimeChronometer'), timeChronometer: body.get('timeChronometer')};
-    const listMembers: String[] = body.getAll('listMembers[]');
     const newMember = body.get('newMember');
+    const isDelete =  {memberId: body.get}
     const users = await getMailUsers();
     
     const task = await tasks.findOne({ taskName:  body.get('taskNameOld'), userId: body.get('userId')});
     const members = task.TaskMembers;
-    console.log(members);
       
     if(newMember != null){
-      members.push(users.find(user => user.id === newMember));
+      if (users.find(user => user.id === newMember) !== null){}
+      members.push(newMember);
       const result2 = await tasks.updateOne(
         { userId: body.get('userId'), taskName:  body.get('taskNameOld')},
         { $set: { taskName: list.taskName, TaskMembers: members}}

@@ -12,7 +12,7 @@ export const POST : RequestHandler = (async ({request,locals}) => {
     listMembers.forEach((id) => {
         const objetoEncontrado = users.find((user) => user.id === id);
         if (objetoEncontrado) {
-            members.push(objetoEncontrado);
+            members.push(id);
         } else {
             console.log(`El ID "${id}" no existe en la lista de objetos.`);
         }
