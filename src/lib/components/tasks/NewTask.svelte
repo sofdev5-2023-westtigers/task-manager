@@ -93,12 +93,12 @@
       body.append('dates', String(dates));
       oldDateElem.textContent = String(dates);
     }
-
+    
     if (!oldDate.includes("-")) {
       body.append('oldDate', oldDate);
       body.append('oldDates', '');
     } else {
-      body.append('oldDate', '');
+      body.append('oldDate', '');       
       body.append('oldDates', oldDate);
     }
 
@@ -156,9 +156,9 @@
   <!-- check -->
   <div style="margin-right: 20px;">
     {#if isChecked}
-      <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)} checked />
+      <input class="checkbox check-button-task checkbox" type="checkbox" name="task"  on:change={saveTask(event, user)} checked>
   {:else}
-      <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)}/>
+      <input class="check-button-task checkbox" type="checkbox"  on:change={saveTask(event, user)} name="task">
   {/if}
   </div>
 </div>
@@ -172,7 +172,7 @@
     background-color: white;
     border-radius: 10px;
     border: 4px solid;
-    border-color: #D9D9D9;
+    border-color: rgb(161, 161, 161);
     margin-bottom:2px;
     display: inline-flex;
     align-items: center;
@@ -199,9 +199,4 @@
     margin-right: auto;
     margin-left: 5px;
   }
-  .label-task {
-    color: #675D50;
-    font-family: 'Canva Sans', sans-serif;
-  }
-
 </style>
