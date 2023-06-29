@@ -45,15 +45,15 @@
 
 	let isShowNew: boolean = false;
 
-	function hiddenShowAddTask(event: any) {
+	function hiddenShowAddTask() {
 		isShowNew = !isShowNew;
 	}
 </script>
 
-<div class=" top justify-center flex flex-wrap" style="padding-top: 100px; padding-left: 100px;">
-	<div data-testid="content-element" class="bg-white rounded px-2 py-2">
+<div class="rounded-md" style=" width: 250px; border: 3px solid #D9D9D9; background-color: #F2F2F2;">
+	<div data-testid="content-element" class="rounded-md p-4 justify-start">
 		<!-- board category header -->
-		<label class="title-List bg-red-100 rounded font-bold text-2xl" on:click={handleClick} style="white-space: pre-line;">{name.replace(/(.{26})/g, "$&\n")}</label>
+		<label class=" btn-ghost title-List rounded font-bold text-2xl p-2" on:click={handleClick} style="white-space: pre-line;">{name.replace(/(.{26})/g, "$&\n")}</label>
 		<!-- board card -->
 		<ul class="list-Task mt-2 list-none">
 			{#each inputValue as task}
@@ -80,44 +80,51 @@
 				{/if}
 			{/each}
 		</ul>
-		<div class="flex flex-col mt-2 px-1">
+	</div>
+	<div class="flex flex-col justify-center m-2 m-1">
+		{#if !isShowNew}
 			<button
-				class="button-AddTask text-gray-400 px-1 py-1 mt-2 rounded-md text-sm"
+				class=" btn-ghost button-AddTask px-1 py-1 mt-2 rounded-md text-sm"
 				type="button"
-				on:click={(addNewTask(event, name), hiddenShowAddTask(event))}
-			>
-				+ New</button
-			>
-			{#if isShowNew}
-				<div class="flex-col">
-					<input
-						data-testid="input-name-task"
-						class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm"
-						type="text"
-						name="item1-textfield"
-						placeholder="Name Task...."
-					/>
-					<DatePick />
+				on:click={(addNewTask(event, name), hiddenShowAddTask)}>
+				+ New
+			</button>
+		{/if}
+		{#if isShowNew}
+			<div class="flex-col p-2">
+				<input
+					data-testid="input-name-task"
+					class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm"
+					type="text"
+					name="item1-textfield"
+					placeholder="Name Task...."
+				/>
+				<DatePick />
+				<div class=" pt-2">
 					<button
-						data-testid="button-add"
-						class="button-add bg-[#ABC4AA] text-black px-1 py-1 mt-2 rounded-md text-sm"
-						type="button"
-						on:click={createTask(
-							event,
-							user,
-							name,
-							date,
-							dates,
-							showPickDate,
-							showPickDates,
-							setFalsePicks,
-							taskList,
-							true
-						), hiddenShowAddTask(event)}>Add</button
+					data-testid="button-add"
+					class="button-add bg-[#ABC4AA] text-black rounded-md"
+					type="button"
+					style="height: 25px; width: 50px; border: 3px solid #92AD91;"
+					on:click={createTask(
+						event,
+						user,
+						name,
+						date,
+						dates,
+						showPickDate,
+						showPickDates,
+						setFalsePicks,
+						taskList,
+
+						true
+					), hiddenShowAddTask()}>ADD</button
 					>
+					<button class="rounded-md " style="background-color: #EDB491; height: 25px; width: 80px; border: 3px solid #BB9075;" on:click={hiddenShowAddTask}>CANCEL</button>
 				</div>
-			{/if}
-		</div>
+				
+			</div>
+		{/if}
 	</div>
 </div>
 <style>

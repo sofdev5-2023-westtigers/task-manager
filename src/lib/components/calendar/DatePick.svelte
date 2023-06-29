@@ -17,7 +17,7 @@
 </script>
 
 <div class="date-input-container">
-    <input type="text" placeholder="Select a date…" class="input input-bordered mt-2" on:click={handleClick} class:hidden={showRadioButtons} />
+    <input type="text" placeholder="Select a date…" class="input input-bordered mt-2" style="width: 200px;" on:click={handleClick} class:hidden={showRadioButtons} />
     {#if showRadioButtons}
         <OptionsDate/>
     {/if}

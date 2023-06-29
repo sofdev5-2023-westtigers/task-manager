@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {render, screen} from '@testing-library/svelte';
-import TaskCard from './TaskCard.svelte';
+import TaskCard from '../lib/components/tasks/TaskCard.svelte';
 
 describe('TaskCard component background', () => {
 	it('should render with flex-row style', () => {
