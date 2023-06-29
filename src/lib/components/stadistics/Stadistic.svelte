@@ -5,6 +5,7 @@
   import DonutChart from './DonutChart.svelte';
   import PieChart from './PieChart.svelte';
   import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
   export let nameList = '';
   export let tasks: any[] = [];
@@ -19,9 +20,10 @@
     goto(url, { target: '_blank' });
   };
 
+  console.log(tasks);
   function totalTime(): number {
         let totalTimeInSeconds = 0;
-        
+        let a;
         tasks.forEach(element => {
             if (element.isCompleted === true) {
                 totalTimeInSeconds += element.timeChronometer / 1000; // Convertir de milisegundos a segundos
@@ -30,8 +32,6 @@
         console.log("Total time", totalTimeInSeconds)
         return totalTimeInSeconds;
   }
-
-  totalTimetasks = totalTime();
 
   function chooseGraphBarV() {
     isBarChartV = true;
@@ -61,6 +61,7 @@
 
     return numberTaskCOmplete;
   }
+
 </script>
 
 <Header />
@@ -95,8 +96,8 @@
     id="containerTable"
     class="flex justify-center justify-items-center place-content-center place-items-center mt-3"
     >
-      <div class="flex" style="padding-top: 30px">
-        <div class="flex place-items-center rounded-md" style="height: 558px; border: 3px solid #D9D9D9; padding-left: 20px; padding-right: 20px; margin-right: 10px; margin-left: 10px">
+      <div class="flex flex-wrap justify-center" style="padding-top: 30px;">
+        <div class="flex place-items-center rounded-md" style="height: 558px; border: 3px solid #D9D9D9; padding-left: 20px; padding-right: 20px; margin-right: 10px; margin-left: 10px; margin-top: 10px;">
           <div class="stats" style="margin-left: 0px;">
             <div class="stat">
               <div class="stat-title">General Report For {nameList}</div>
@@ -121,7 +122,7 @@
         </div>
 
         
-        <div class = " place-items-center p-5 rounded-md" id="containerCharts" style="float: right; border:3px solid #D9D9D9; margin-left: 10px; margin-right: 10px;">
+        <div class = " place-items-center p-5 rounded-md" id="containerCharts" style="float: right; border:3px solid #D9D9D9; margin-left: 10px; margin-right: 10px; margin-top: 10px">
           {#if totalTime() == 0}
           <span class=" flex place-items-center p-4 mt-4 text-2xl">Spend time in your tasks to see the graphics!</span>
           {:else}
