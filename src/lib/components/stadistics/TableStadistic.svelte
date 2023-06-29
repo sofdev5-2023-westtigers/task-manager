@@ -16,16 +16,16 @@
     <table class="table table-zebra w-full">
         <thead>
             <tr>
-                <th>Nº</th>
-                <th>Name Task</th>
-                <th>Is Task Done?</th>
-                <th>Total Time in Seconds</th>
+                <td class="">Nº</td>
+                <td>Name Task</td>
+                <td>Is Task Done?</td>
+                <td>Total Time in Seconds</td>
             </tr>
         </thead>
         <tbody class="dataValuesTask" id="dataValuesTask">
             {#each dataTask as task, i}
                 <tr>
-                    <th>{i + 1}</th>
+                    <td>{i + 1}</td>
                     <td>{task.taskName}</td>
                     <td>{task.isCompleted === true ? 'Yes' : 'No'}</td>
                     <td>{Math.floor(task.timeChronometer / 1000)}</td> <!-- Mostrar tiempo en segundos -->
@@ -36,7 +36,7 @@
             <tr>
                 {#each dataTask as task, i}
                     {#if i === dataTask.length - 1 }
-                        <th></th>
+                        <td></td>
                         <th></th>
                         <th>Total Seconds</th>
                         <th>{Math.floor(totalTime())}</th> <!-- Mostrar tiempo total en segundos sin decimales -->
