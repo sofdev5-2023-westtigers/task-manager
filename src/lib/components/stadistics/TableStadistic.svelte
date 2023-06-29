@@ -1,15 +1,8 @@
 <script lang="ts">
     export let dataTask = [];
+    export let varchar:string = 'a';
+    export let times;
 
-    function totalTime(): number {
-        let totalTimeInSeconds = 0;
-        dataTask.forEach(element => {
-            if (element.isCompleted === true) {
-                totalTimeInSeconds += element.timeChronometer / 1000; // Convertir de milisegundos a segundos
-            }
-        });
-        return totalTimeInSeconds;
-    }
 </script>
 
 <div class="overflow-x-auto">
@@ -28,7 +21,7 @@
                     <td>{i + 1}</td>
                     <td>{task.taskName}</td>
                     <td>{task.isCompleted === true ? 'Yes' : 'No'}</td>
-                    <td>{Math.floor(task.timeChronometer / 1000)}</td> <!-- Mostrar tiempo en segundos -->
+                    <td>{Math.floor(task.timeChronometer / 1000)}</td>
                 </tr>
             {/each}
         </tbody>
@@ -39,7 +32,7 @@
                         <td></td>
                         <th></th>
                         <th>Total Seconds</th>
-                        <th>{Math.floor(totalTime())}</th> <!-- Mostrar tiempo total en segundos sin decimales -->
+                        <th>{Math.floor(times)}</th>
                     {/if}
                 {/each}
             </tr>

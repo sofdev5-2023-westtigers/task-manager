@@ -5,33 +5,19 @@
   import DonutChart from './DonutChart.svelte';
   import PieChart from './PieChart.svelte';
   import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
 
   export let nameList = '';
   export let tasks: any[] = [];
+  export let totalTimes;
 
   let isBarChartV = false;
   let isDonutChart = false;
   let isPieChart = true;
-  let totalTimetasks = 0;
 
   const handleClick = () => {
     const url = `/todo-lists/${nameList}`;
     goto(url, { target: '_blank' });
   };
-
-  console.log(tasks);
-  function totalTime(): number {
-        let totalTimeInSeconds = 0;
-        let a;
-        tasks.forEach(element => {
-            if (element.isCompleted === true) {
-                totalTimeInSeconds += element.timeChronometer / 1000; // Convertir de milisegundos a segundos
-            }
-        });
-        console.log("Total time", totalTimeInSeconds)
-        return totalTimeInSeconds;
-  }
 
   function chooseGraphBarV() {
     isBarChartV = true;
@@ -53,6 +39,7 @@
 
   function taskComplete(): number {
     let numberTaskCOmplete = 0;
+    
     tasks.forEach((element) => {
       if (element.isCompleted === true) {
         numberTaskCOmplete += 1;
@@ -117,14 +104,14 @@
             </div>
           </div>
           <div class="ml-6">
-            <TableStadistic dataTask={tasks} />
+            <TableStadistic dataTask={tasks} times={totalTimes}/>
           </div>
         </div>
 
         
         <div class = " place-items-center p-5 rounded-md" id="containerCharts" style="float: right; border:3px solid #D9D9D9; margin-left: 10px; margin-right: 10px; margin-top: 10px">
-          {#if totalTime() == 0}
-          <span class=" flex place-items-center p-4 mt-4 text-2xl">Spend time in your tasks to see the graphics!</span>
+          {#if (totalTimes == 0)}
+          <span class=" flex place-items-center p-4 mt-4 text-2xl">Complete your tasks to see the graphics!</span>
           {:else}
           <div class=" pt-2" style="text-align: center;">
             <button class="btn btn-primary btn-radio" data-selected={isBarChartV} on:click={chooseGraphBarV}
