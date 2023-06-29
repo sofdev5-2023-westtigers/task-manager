@@ -40,7 +40,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     let taskAux = await tasks.findOne({ userId: body.get('userId'), taskName: body.get('taskName') });
     let membersList: string[] = taskAux.TaskMembers;
 
-    if (member.isDelete) {
+    if (member.isDelete = 'True') {
       membersList.splice(membersList.indexOf(member.newMember), 1);
     } else if (!(membersList.indexOf(member.newMember, 1) > -1)) {
       membersList.push(member.newMember);

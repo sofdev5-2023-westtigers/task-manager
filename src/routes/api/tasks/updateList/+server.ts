@@ -27,7 +27,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     const membersList: String[] = listAux.listMembers;
     console.log(membersList);
 
-    if (member.isDelete) {
+    if (member.isDelete = 'True') {
       membersList.splice(membersList.indexOf(member.newMember), 1);
     }else if(!(membersList.indexOf(member.newMember, 1) >= 0)){
       membersList.push(member.newMember);
