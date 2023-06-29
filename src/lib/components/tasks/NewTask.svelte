@@ -21,60 +21,60 @@
   let prevDates;
 
   async function save(event) {
-      try {
-          const parent = this.parentElement;
-          const inputs = parent.querySelectorAll('input');
-          const labels = parent.querySelectorAll('label');
-          const buttons = parent.querySelectorAll('button');
-          const oldValue = labels[0].textContent;
-          let oldChecked = true;
-          if (inputs[1].value == "") {
-              inputs[1].value = labels[0].textContent;
-          } else {
-              labels[0].textContent = inputs[1].value;
-          }
-
-          buttons[0].style.display = "none";
-          inputs[1].style.display = "none";
-          const inputElement = event.target.parentNode.querySelector('.task-modified');
-          const inputValue = inputElement.value;
-          const checkbox = event.target.parentNode.querySelector('.checkbox-task');
-          const isChecked = checkbox.checked;
-          if (!isChecked) {
-              console.log('isChecked ', checkbox.checked);
-              oldChecked = false;
-          }
-          const body = new FormData();
-          body.append('userId', user.userId.toString());
-          body.append('taskNameOld', oldValue);
-          body.append('taskName', inputValue);
-          body.append('isCompletedOld', oldChecked.toString());
-          body.append('isCompleted', isChecked.toString());
-          const result = await fetch('/api/tasks/updateTasks', {
-              method: 'PUT', body
-          });
-          const task = await result.json();
-          console.log(task);
-      } catch (error) {
-          console.log("error was found");
-          // Expected output: ReferenceError: nonExistentFunction is not defined
-          // (Note: the exact output may be browser-dependent)
-      }
-  }
-  onMount(() => {
-    Registry.auth.getUser().subscribe((data: User) => {
-        user = data;
-    });
-  });
-
-  function show() {
+    try {
       const parent = this.parentElement;
       const inputs = parent.querySelectorAll('input');
       const labels = parent.querySelectorAll('label');
       const buttons = parent.querySelectorAll('button');
-      inputs[1].value = labels[0].textContent
-      buttons[0].style.display = "inline";
-      inputs[1].style.display = "inline";
+      const oldValue = labels[0].textContent;
+      let oldChecked = true;
+      if (inputs[1].value == "") {
+        inputs[1].value = labels[0].textContent;
+      } else {
+        labels[0].textContent = inputs[1].value;
+      }
+
+      buttons[0].style.display = "none";
+      inputs[1].style.display = "none";
+      const inputElement = event.target.parentNode.querySelector('.task-modified');
+      const inputValue = inputElement.value;
+      const checkbox = event.target.parentNode.querySelector('.checkbox-task');
+      const isChecked = checkbox.checked;
+      if (!isChecked) {
+        console.log('isChecked ', checkbox.checked);
+        oldChecked = false;
+      }
+      const body = new FormData();
+      body.append('userId', user.userId.toString());
+      body.append('taskNameOld', oldValue);
+      body.append('taskName', inputValue);
+      body.append('isCompletedOld', oldChecked.toString());
+      body.append('isCompleted', isChecked.toString());
+      const result = await fetch('/api/tasks/updateTasks', {
+        method: 'PUT', body
+      });
+      const task = await result.json();
+      console.log(task);
+    } catch (error) {
+      console.log("error was found");
+      // Expected output: ReferenceError: nonExistentFunction is not defined
+      // (Note: the exact output may be browser-dependent)
+    }
+  }
+  onMount(() => {
+    Registry.auth.getUser().subscribe((data: User) => {
+      user = data;
+    });
+  });
+
+  function show() {
+    const parent = this.parentElement;
+    const inputs = parent.querySelectorAll('input');
+    const labels = parent.querySelectorAll('label');
+    const buttons = parent.querySelectorAll('button');
+    inputs[1].value = labels[0].textContent
+    buttons[0].style.display = "inline";
+    inputs[1].style.display = "inline";
   }
 
   async function saveCalendar(event) {
@@ -93,12 +93,12 @@
       body.append('dates', String(dates));
       oldDateElem.textContent = String(dates);
     }
-    
+
     if (!oldDate.includes("-")) {
       body.append('oldDate', oldDate);
       body.append('oldDates', '');
     } else {
-      body.append('oldDate', '');       
+      body.append('oldDate', '');
       body.append('oldDates', oldDate);
     }
 
@@ -108,10 +108,10 @@
       method: 'PUT', body
     });
 
-  const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
-  datepickTask?.setAttribute('hidden', true);
-  const saveButton = event.target;
-  saveButton?.setAttribute('hidden', true);
+    const datepickTask = event.target.parentNode.parentNode.parentNode.parentNode.querySelector('.datepick-select');
+    datepickTask?.setAttribute('hidden', true);
+    const saveButton = event.target;
+    saveButton?.setAttribute('hidden', true);
   }
 
   function showCalendar(event) {
@@ -126,7 +126,7 @@
 </script>
 
 <svelte:head>
-<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
+  <link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
 </svelte:head>
 
 <div style="" class="mt-2 card-task">
@@ -136,13 +136,13 @@
     <input data-testid="input-name" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
     <button data-testid="button-name" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
     {#if showPickDate || containsDate}
-        <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDate? dateValue : date}</span></i>
-        <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
+      <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDate? dateValue : date}</span></i>
+      <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
     {/if}
     {#if showPickDates  || containsDates}
       <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDates? dateValue : dates}</span></i>
       <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
-  {/if}
+    {/if}
   </div>
   <!-- chrono -->
   <div>
@@ -151,21 +151,21 @@
     {/if}
   </div>
   <div data-testid="datepick" class="datepick-select" hidden>
-      <DatePick/>
+    <DatePick/>
   </div>
   <!-- check -->
   <div style="margin-right: 20px;">
     {#if isChecked}
       <input class="checkbox check-button-task checkbox" type="checkbox" name="task"  on:change={saveTask(event, user)} checked>
-  {:else}
+    {:else}
       <input class="check-button-task checkbox" type="checkbox"  on:change={saveTask(event, user)} name="task">
-  {/if}
+    {/if}
   </div>
 </div>
 
 <style>
   input:checked + label,input:checked + label + i {
-      text-decoration: line-through;
+    text-decoration: line-through;
   }
 
   .card-task {

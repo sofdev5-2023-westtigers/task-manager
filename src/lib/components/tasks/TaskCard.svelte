@@ -58,4 +58,17 @@
             <DatePick/>
         </div>
     </div>
+
 </div>
+<style>
+    .grid {
+        border: 3px solid #c4c3c3;
+        border-radius: 30px;
+        margin-top: 10px;
+    }
+    .label-text {
+        color: #675D50;
+        font-family: 'Canva Sans', sans-serif;
+    }
+
+</style>
