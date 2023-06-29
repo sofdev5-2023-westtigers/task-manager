@@ -5,7 +5,6 @@
   import DonutChart from './DonutChart.svelte';
   import PieChart from './PieChart.svelte';
   import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
 
   export let nameList = '';
   export let tasks: any[] = [];
@@ -14,25 +13,11 @@
   let isBarChartV = false;
   let isDonutChart = false;
   let isPieChart = true;
-  let totalTimetasks = 0;
 
   const handleClick = () => {
     const url = `/todo-lists/${nameList}`;
     goto(url, { target: '_blank' });
   };
-
-  console.log(tasks);
-  function totalTime(): number {
-        let totalTimeInSeconds = 0;
-        let a;
-        tasks.forEach(element => {
-            if (element.isCompleted === true) {
-                totalTimeInSeconds += element.timeChronometer / 1000; // Convertir de milisegundos a segundos
-            }
-        });
-        console.log("Total time", totalTimeInSeconds)
-        return totalTimeInSeconds;
-  }
 
   function chooseGraphBarV() {
     isBarChartV = true;
