@@ -6,7 +6,7 @@ import { getMailUsers } from "$lib/keycloak/getUserList";
 export const PUT: RequestHandler = async ({ request, locals }) => {
   const body = await request.formData();
   const list = { userId: body.get('userId'), listNameOld: body.get('listNameOld'), listName: body.get('listName') };
-  const member = { newMember: body.get('nemMember'), isDelete: body.get('isDelete') };
+  const member = { newMember: body.get('newMember'), isDelete: body.get('isDelete') };
 
   const result = await tasks.updateMany(
     { listName: body.get('listNameOld') },

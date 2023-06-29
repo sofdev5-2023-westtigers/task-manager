@@ -8,7 +8,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
   const listCalendar = { userId: body.get('userId'), oldDates: body.get('oldDates'), dates: body.get('dates'), oldDate: body.get('oldDate'), date: body.get('date'), modifyDate: body.get('modifyDate') };
   const list = { userId: body.get('userId'), taskNameOld: body.get('taskNameOld'), taskName: body.get('taskName'), listName: body.get('listName'), isCompletedOld: body.get('isCompletedOld'), isCompleted: body.get('isCompleted') };
   const listTimeChronometer = { userId: body.get('userId'), oldTimeChronometer: body.get('oldTimeChronometer'), timeChronometer: body.get('timeChronometer') };
-  const member = { newMember: body.get('nemMember'), isDelete: body.get('isDelete') };
+  const member = { newMember: body.get('newMember'), isDelete: body.get('isDelete') };
 
   const result = await tasks.updateOne(
     { userId: body.get('userId'), taskName: body.get('taskNameOld') },
