@@ -37,11 +37,15 @@
     async function createList() {
         const nameInput = document.querySelector('.text-nameList');
         const name = nameInput.value.trim();
-        console.log(name);
         if (name && nameInput) {
             if (name.length > limitToName) {
             nameError = 'List name should not exceed ',limitToName,' characters.';
-            showAlert = true;
+            errorMessage = nameError;
+            showError = true;
+                setTimeout(() => {
+                    showError = false;
+                }, 2000);
+                listName = "";
             return;
             }
             nameError = '';
@@ -82,7 +86,7 @@
   <div class="w-full sm:w-3/5">
     <div id="tasklist" class="taskList mt-2 mx-2">
       <div>{#if showError}
-        <ErrorAlert {errorMessage}/>
+        <ErrorAlert message={errorMessage}/>
         <br>
       {/if}</div>
     <div class="flex flex-row">
