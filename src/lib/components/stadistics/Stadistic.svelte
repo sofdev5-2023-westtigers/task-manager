@@ -22,7 +22,7 @@
 
   function totalTime(): number {
         let totalTimeInSeconds = 0;
-        console.log(tasks);
+        
         tasks.forEach(element => {
             if (element.isCompleted === true) {
                 totalTimeInSeconds += element.timeChronometer / 1000; // Convertir de milisegundos a segundos
