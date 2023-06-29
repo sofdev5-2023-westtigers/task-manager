@@ -129,33 +129,74 @@
 <link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
 </svelte:head>
 
-<div class=" m-4">
-    {#if isChecked}
-        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task"  on:change={saveTask(event, user)} checked>
-    {:else}
-        <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox"  on:change={saveTask(event, user)} name="task">
+<div style="" class="mt-2 card-task">
+  <!-- name -->
+  <div class="name-label">
+    <label data-testid="label-name" class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
+    <input data-testid="input-name" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
+    <button data-testid="button-name" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
+    {#if showPickDate || containsDate}
+        <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDate? dateValue : date}</span></i>
+        <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
     {/if}
-  <label data-testid="label-name" class="label-task ml-2 text-xl" for="task" on:click={show}>{inputValue}</label>
-  <input data-testid="input-name" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"type="text" style="display: none;">
-  <button data-testid="button-name" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
-  {#if showPickDate || containsDate}
-      <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDate? dateValue : date}</span></i>
-      <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
-  {/if}
-  {#if showPickDates  || containsDates}
+    {#if showPickDates  || containsDates}
       <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDates? dateValue : dates}</span></i>
       <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
   {/if}
-  {#if isTimeChronometer}
+  </div>
+  <!-- chrono -->
+  <div>
+    {#if isTimeChronometer}
       <Cronometer nameTask={inputValue} nameList={nameList} timeChr={timeChronometer} userlog={user}/>
+    {/if}
+  </div>
+  <div data-testid="datepick" class="datepick-select" hidden>
+      <DatePick/>
+  </div>
+  <!-- check -->
+  <div style="margin-right: 20px;">
+    {#if isChecked}
+      <input class="checkbox check-button-task checkbox" type="checkbox" name="task"  on:change={saveTask(event, user)} checked>
+  {:else}
+      <input class="check-button-task checkbox" type="checkbox"  on:change={saveTask(event, user)} name="task">
   {/if}
-    <div data-testid="datepick" class="datepick-select" hidden>
-        <DatePick/>
-    </div>
+  </div>
 </div>
 
 <style>
   input:checked + label,input:checked + label + i {
       text-decoration: line-through;
+  }
+
+  .card-task {
+    background-color: white;
+    border-radius: 10px;
+    border: 4px solid;
+    border-color: rgb(161, 161, 161);
+    margin-bottom:2px;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .check-button-task {
+    border-color: rgb(5, 114, 89);
+    border-width: 3px;
+    margin-left: 35px;
+    border-radius: 0px;
+  }
+
+  .check-button-task:hover {
+    border-color: rgb(2, 178, 137);
+    margin-left: 35px;
+  }
+
+  .name-label {
+    margin-right: auto;
+    margin-left: 5px;
   }
 </style>
