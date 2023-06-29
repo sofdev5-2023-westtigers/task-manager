@@ -28,11 +28,7 @@ export async function saveTask(event, user) {
         body.append('taskName', inputValueTask);
         body.append('isCompletedOld', oldChecked.toString());
         body.append('isCompleted', isChecked.toString());
-
-        let members: string[] = [''];
-        members.forEach((member) => {
-            body.append('listMembers[]', member);
-        });
+        body.append('nemMember','be95fc8f-ab3d-4f8b-b54b-8c8acbdf535d') // DE ESTA FORMA SE AGREGA Y SE PONE EL isDelete SI ES PARA ELIMINAR
 
         const result = await fetch('/api/tasks/updateTasks', {
             method: 'PUT', body
@@ -86,11 +82,6 @@ export async function saveCalendar(event, user, date, dates, prevDate, prevDates
     }
 
     body.append('modifyDate', 'true');
-
-    let members: string[] = [''];
-    members.forEach((member) => {
-        body.append('listMembers[]', member);
-    });
 
     const result = await fetch('/api/tasks/updateTasks', {
         method: 'PUT', body

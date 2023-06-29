@@ -104,11 +104,6 @@ export async function saveList(event, user) {
 
     const body = new FormData();
 
-    let members: string[] = ['be95fc8f-ab3d-4f8b-b54b-8c8acbdf535d'];
-    members.forEach((member) => {
-        body.append('listMembers[]', member);
-    });
-
     body.append('userId', user.userId.toString());
     body.append('listNameOld', oldList);
     body.append('listName', inputValueListName);

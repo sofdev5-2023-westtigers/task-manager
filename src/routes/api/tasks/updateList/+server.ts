@@ -5,15 +5,8 @@ import { getMailUsers } from "$lib/keycloak/getUserList";
 
 export const PUT: RequestHandler = async ({ request, locals }) => {
   const body = await request.formData();
-  const listMembers: String[] = body.getAll('listMembers[]');
-  const users = await getMailUsers();
-
-  const members = listMembers
-    .map(id => users.find(user => user.id === id))
-    .filter(objetoEncontrado => objetoEncontrado !== undefined);
-
-
-  const list = { userId: body.get('userId'), listNameOld: body.get('listNameOld'), listName: body.get('listName'), listMembers: members };
+  const list = { userId: body.get('userId'), listNameOld: body.get('listNameOld'), listName: body.get('listName') };
+  const member = { newMember: body.get('nemMember'), isDelete: body.get('isDelete') };
 
   const result = await tasks.updateMany(
     { listName: body.get('listNameOld') },
@@ -27,15 +20,27 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     { listName: list.listName },
     { $set: { listName: list.listName } }
   );
-  const result4 = await tasks.updateMany(
-    { listMembers: list.listMembers },
-    { $set: {listMembers: list.listMembers } }
-  );
+
+  const users = await getMailUsers();
+  if (member.newMember !== null && users.find((user) => user.id === member.newMember)) {
+    let listAux = await lists.findOne({ listName: body.get('listNameOld') });
+    const membersList: String[] = listAux.listMembers;
+    console.log(membersList);
+
+    if (member.isDelete) {
+      membersList.splice(membersList.indexOf(member.newMember), 1);
+    }else if(!(membersList.indexOf(member.newMember, 1) >= 0)){
+      membersList.push(member.newMember);
+    }
+
+    await lists.updateOne(
+      { listName: body.get('listNameOld') },
+      { $set: { listMembers: membersList } }
+    );
+  }
 
 
   const updatedList = await tasks.findOne({ listName: list.listName });
-
   console.log(updatedList, locals);
-
   return json(updatedList);
 };
