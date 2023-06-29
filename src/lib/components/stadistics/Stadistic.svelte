@@ -21,7 +21,7 @@
 
   function totalTime(): number {
         let totalTimeInSeconds = 0;
-        console.log(tasks);
+        
         tasks.forEach(element => {
             if (element.isCompleted === true) {
                 totalTimeInSeconds += element.timeChronometer / 1000; // Convertir de milisegundos a segundos
@@ -121,7 +121,7 @@
         </div>
 
         
-        <div class = "flex place-items-center p-5 rounded-md" id="containerCharts" style="float: right; border:3px solid #D9D9D9; margin-left: 10px; margin-right: 10px;">
+        <div class = " place-items-center p-5 rounded-md" id="containerCharts" style="float: right; border:3px solid #D9D9D9; margin-left: 10px; margin-right: 10px;">
           {#if totalTime() == 0}
           <span class=" flex place-items-center p-4 mt-4 text-2xl">Spend time in your tasks to see the graphics!</span>
           {:else}
