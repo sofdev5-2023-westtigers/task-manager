@@ -84,6 +84,13 @@
         showForm = false;
     }
 
+    function toggle() {
+      fetchTasks();
+      isToggled = !isToggled;
+      console.log("isToggled", isToggled);
+      localStorage.setItem('isToggled', isToggled.toString());
+    }
+
 </script>
 
 <Header/>
@@ -138,4 +145,22 @@
     </div>
     </div>
   </div>
+</div>
+
+<div class=" fixed bottom-3 right-3">
+  {#if !isToggled}
+      <div class="form-control">
+        <label class="label cursor-pointer">
+          <input type="checkbox" class="toggle ml-2 mr-2" on:click={toggle}/>
+          <span class="label-text">Board Mode</span>
+        </label>
+      </div>
+  {:else}
+      <div class="form-control">
+        <label class="label cursor-pointer">
+          <input type="checkbox" class="toggle ml-2 mr-2" on:click={toggle} checked/>
+          <span class="label-text">Board Mode</span>
+        </label>
+      </div>
+  {/if}
 </div>
