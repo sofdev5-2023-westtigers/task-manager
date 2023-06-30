@@ -19,6 +19,7 @@
 
 	export let name = '';
 	export let inputValue: any[] = [];
+	export let isToggled:boolean;
 	let user: User;
 	let taskList: any[] = [];
 
@@ -116,7 +117,7 @@
 						showPickDates,
 						setFalsePicks,
 						taskList,
-
+						isToggled,
 						true
 					), hiddenShowAddTask()}>ADD</button
 					>

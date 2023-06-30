@@ -11,7 +11,7 @@
     let listTasks: any[] = [];
     $:tasksList2 = tasksListEvents; 
     let user: User;
-    let isToggled : Boolean;
+    let isToggled : boolean;
     isToggled = localStorage.getItem('isToggled') === 'true';
     let nameError = '';
     let errorMessage = '';
@@ -99,14 +99,14 @@
         {/if}
       </div>
       {#if !isToggled}
-        <div class="flex flex-col">
+        <div class="flex flex-col ml-7 mt-5">
           {#each groupedTasks as group}
             {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
-            <TaskList name={group._id.listName} inputValue={group.tasks}/>
+            <TaskList name={group._id.listName} inputValue={group.tasks} isToggled={isToggled}/>
             {/if}
           {/each}
           {#each listTasks as list}
-              <TaskList key={list.id} name={list.name}/>
+              <TaskList key={list.id} name={list.name} isToggled={isToggled}/>
             {/each}
         </div>
       {:else}
@@ -114,13 +114,13 @@
           {#each groupedTasks as group}
             {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
               <div class="flex-item px-2">
-                <TaskBoard name={group._id.listName} inputValue={group.tasks}/>
+                <TaskBoard name={group._id.listName} inputValue={group.tasks} isToggled={isToggled}/>
               </div> 
             {/if}
           {/each}
           {#each listTasks as list}
           <div class="flex-item px-2">
-            <TaskBoard name={list.name}/>
+            <TaskBoard name={list.name} isToggled={isToggled}/>
           </div>
             {/each}
             <div class=" px-3">
