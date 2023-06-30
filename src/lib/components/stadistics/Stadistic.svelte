@@ -8,7 +8,7 @@
 
   export let nameList = '';
   export let tasks: any[] = [];
-  export let totalTimes;
+  export let totalTimes:number;
 
   let isBarChartV = false;
   let isDonutChart = false;
