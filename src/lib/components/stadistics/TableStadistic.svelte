@@ -1,6 +1,5 @@
 <script lang="ts">
     export let dataTask = [];
-    export let varchar:string = 'a';
     export let times;
 
 </script>
