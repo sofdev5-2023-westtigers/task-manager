@@ -92,51 +92,66 @@
 <div class="listTasks" style="padding-top:80px;">
   <div class="w-full sm:w-3/5">
     <div id="tasklist" class="taskList mt-2 mx-2">
-      <div>{#if showError}
-        <ErrorAlert message={errorMessage}/>
-        <br>
-      {/if}</div>
-    <div class="flex flex-row">
-      {#each groupedTasks as group}
-        {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
-          <div class="flex-item px-2">
-            <TaskBoard name={group._id.listName} inputValue={group.tasks}/>
-          </div> 
+      <div>
+        {#if showError}
+          <ErrorAlert message={errorMessage}/>
+          <br>
         {/if}
-      {/each}
-      {#each listTasks as list}
-      <div class="flex-item px-2">
-        <TaskBoard name={list.name}/>
       </div>
-        {/each}
-        <div class=" px-3">
-          {#if !showForm}
-              <button
-                  class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md"
-                  type="button"
-                  style="font-weight: bold; width: 250px; font-size:large;"
-                  on:click={handleAddList}>
-                      + Add List
-              </button>
-          {/if}
-
-          {#if showForm}
-              <div
-                  class="px-4 py-2 rounded-md"
-                  style="background-color: #F2F2F2; width: 250px; border: 3px solid #D9D9D9;"
-              >
-                  <div class="flex justify-center">
-                      <input class="text-nameList rounded-md text-gray-600" style="border: 3px solid #D9D9D9;" type="text" bind:value={listName} placeholder="List Name" />
-                  </div>
-                  <div class=" mt-2">
-                      <button class="button-addList rounded-md bg-[#ABC4AA]" style="height: 25px; width: 50px; border: 3px solid #92AD91;" on:click={createList}>OK</button>
-                      <button class="rounded-md " style="background-color: #EDB491; height: 25px; width: 80px; border: 3px solid #BB9075;" on:click={handleHide}>CANCEL</button>
-                  </div>
-              </div>
-          {/if}
-
+      {#if !isToggled}
+        <div class="flex flex-col">
+          {#each groupedTasks as group}
+            {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
+            <TaskList name={group._id.listName} inputValue={group.tasks}/>
+            {/if}
+          {/each}
+          {#each listTasks as list}
+              <TaskList key={list.id} name={list.name}/>
+            {/each}
         </div>
-    </div>
+      {:else}
+        <div class="flex flex-row">
+          {#each groupedTasks as group}
+            {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
+              <div class="flex-item px-2">
+                <TaskBoard name={group._id.listName} inputValue={group.tasks}/>
+              </div> 
+            {/if}
+          {/each}
+          {#each listTasks as list}
+          <div class="flex-item px-2">
+            <TaskBoard name={list.name}/>
+          </div>
+            {/each}
+            <div class=" px-3">
+              {#if !showForm}
+                  <button
+                      class="button-addList bg-[#ABC4AA] text-white px-4 py-2 rounded-md"
+                      type="button"
+                      style="font-weight: bold; width: 250px; font-size:large;"
+                      on:click={handleAddList}>
+                          + Add List
+                  </button>
+              {/if}
+
+              {#if showForm}
+                  <div
+                      class="px-4 py-2 rounded-md"
+                      style="background-color: #F2F2F2; width: 250px; border: 3px solid #D9D9D9;"
+                  >
+                      <div class="flex justify-center">
+                          <input class="text-nameList rounded-md text-gray-600" style="border: 3px solid #D9D9D9;" type="text" bind:value={listName} placeholder="List Name" />
+                      </div>
+                      <div class=" mt-2">
+                          <button class="button-addList rounded-md bg-[#ABC4AA]" style="height: 25px; width: 50px; border: 3px solid #92AD91;" on:click={createList}>OK</button>
+                          <button class="rounded-md " style="background-color: #EDB491; height: 25px; width: 80px; border: 3px solid #BB9075;" on:click={handleHide}>CANCEL</button>
+                      </div>
+                  </div>
+              {/if}
+
+            </div>
+        </div>
+      {/if}
     </div>
   </div>
 </div>
