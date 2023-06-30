@@ -53,7 +53,7 @@
   <button on:click={saveList(event, user)} style="display: none;">Done</button>
   <ul class="ul-listTasks"></ul>
   <li class="li-newtask list-none pt-3">
-    <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
+    <input class="border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
     <div class="datepick-select" hidden>
       <DatePick/>
     </div>
@@ -121,7 +121,7 @@
           showPickDates,
           setFalsePicks,
           taskList,
-          false,
+          isToggled,
           true
         ), hiddenShowAddTask()}>ADD</button
         >
