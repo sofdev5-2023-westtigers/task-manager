@@ -42,6 +42,7 @@ export async function getMailUsers() {
     console.log('User get list:');
     console.log(usersKeycloakMail);
   });
+  return userGetList;
 }
 
 export async function addUser(email: string) {

@@ -28,6 +28,7 @@ export async function saveTask(event, user) {
         body.append('taskName', inputValueTask);
         body.append('isCompletedOld', oldChecked.toString());
         body.append('isCompleted', isChecked.toString());
+
         const result = await fetch('/api/tasks/updateTasks', {
             method: 'PUT', body
         });
@@ -99,7 +100,7 @@ export function showCalendar(event) {
 }
 
 export function formatDate(dateString) {
-    dateString = dateString.slice(0,10);
+    dateString = dateString.slice(0, 10);
     const parts = dateString.split("-");
     const formattedDate = `${parts[1]}/${parts[2]}/${parts[0]}`;
     return formattedDate;

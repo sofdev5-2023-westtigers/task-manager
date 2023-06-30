@@ -52,6 +52,12 @@
             showAlert = false;
             const body = new FormData();
             body.append('listName', name);
+
+            let members: string[] = [''];
+            members.forEach((member) => {
+              body.append('listMembers[]', member);
+            });
+            
             const response = await fetch('/api/tasks/addList', {
             method: 'POST', body
             });
