@@ -36,7 +36,7 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
             body.append('dates', dates);
         }
 
-        let members: string[] = [];
+        let members: string[] = [''];
         members.forEach((member) => {
             body.append('listMembers[]', member);
         });

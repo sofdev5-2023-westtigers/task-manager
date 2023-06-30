@@ -50,10 +50,6 @@
 			body.append('taskName', inputValue);
 			body.append('isCompletedOld', oldChecked.toString());
 			body.append('isCompleted', isChecked.toString());
-			let members: string[] = [''];
-			members.forEach((member) => {
-				body.append('listMembers[]', member);
-			});
 
 			const result = await fetch('/api/tasks/updateTasks', {
 				method: 'PUT',
@@ -109,10 +105,6 @@
 		}
 
 		body.append('modifyDate', 'true');
-		let members: string[] = [''];
-		members.forEach((member) => {
-			body.append('listMembers[]', member);
-		});
 
 		const result = await fetch('/api/tasks/updateTasks', {
 			method: 'PUT',
