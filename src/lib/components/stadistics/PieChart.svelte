@@ -2,7 +2,7 @@
   import { quantize, interpolatePlasma, pie, arc } from 'd3';
   import { dataPieChart} from './transformData';
 
-  const width = 500 // outer width of the chart, in pixels
+  const width = 754 // outer width of the chart, in pixels
   const height = width // outer height of the chart, in pixels
   const percent = true // format values as percentages (true/false)
   const fontSize = 16; // font size of the x and y values

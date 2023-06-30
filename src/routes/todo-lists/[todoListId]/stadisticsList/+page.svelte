@@ -9,7 +9,6 @@
     export let data;
 	let user: User;
 	let groupedTasks: any;
-	let totalTaskTime: any;
 
 	onMount(async() => {
 		Registry.auth.checkParams();
@@ -25,25 +24,12 @@
 		trasformDataPieChart(groupedTasks);
 		trasformDataDonutChart(groupedTasks);
 		trasformDataBarChart(groupedTasks);
-		totalTaskTime = totalTime();
-	}
-
-	function totalTime(): number {
-        let totalTimeInSeconds = 0;
-        
-        groupedTasks.forEach(element => {
-            if (element.isCompleted === true) {
-                totalTimeInSeconds += element.timeChronometer / 1000; // Convertir de milisegundos a segundos
-            }
-        });
-        console.log("Total time", totalTimeInSeconds)
-        return totalTimeInSeconds;
 	}
 
 </script>
 
 <AuthGuard manual={true}>
 	<div slot="authed">
-		<Stadistic nameList={data.id} tasks={groupedTasks} totalTimes={totalTaskTime}/>
+		<Stadistic nameList={data.id} tasks={groupedTasks}/>
 	</div>
 </AuthGuard>
