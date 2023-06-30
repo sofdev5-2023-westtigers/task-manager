@@ -156,20 +156,37 @@
   </div>
 </div>
 
-<div class=" fixed bottom-3 right-3">
-  {#if !isToggled}
-      <div class="form-control">
-        <label class="label cursor-pointer">
-          <input type="checkbox" class="toggle ml-2 mr-2" on:click={toggle}/>
-          <span class="label-text">Board Mode</span>
-        </label>
+<div class="fixed bottom-3 right-3">
+  <div class="form-control">
+    <label class="label cursor-pointer">
+      <button
+      class="btn btn-primary btn-radio h-20"
+      data-selected={isToggled}
+      on:click={toggle}>
+      <div>
+        <span class=" text-lg">Board Mode</span>
+          <div>
+            {#if isToggled}
+              <span class=" text-3xl" style="font-weight: bolder;">ON</span>
+            {:else}
+              <span class=" text-3xl" style="font-weight: bolder;">OFF</span>
+            {/if}
+          </div>
       </div>
-  {:else}
-      <div class="form-control">
-        <label class="label cursor-pointer">
-          <input type="checkbox" class="toggle ml-2 mr-2" on:click={toggle} checked/>
-          <span class="label-text">Board Mode</span>
-        </label>
-      </div>
-  {/if}
+      </button>
+    </label>
+  </div>
 </div>
+
+<style>
+  .btn-radio {
+    background-color: white;
+    color: #abc4aa;
+    border-color: #abc4aa;
+  }
+
+  .btn-radio[data-selected='true'] {
+    background-color: #abc4aa;
+    color: white;
+  }
+</style>
