@@ -2,7 +2,7 @@
   import { quantize, interpolatePlasma, pie, arc } from 'd3';
   import {dataDonutChart} from './transformData' // or pass data to component as prop
   
-  const width = 754 // the outer width of the chart, in pixels
+  const width = 500 // the outer width of the chart, in pixels
   const height = width // the outer height of the chart, in pixels
   const percent = true // format values as percentages (true/false)
   const fontSize = 14; // the font size of the x and y values
