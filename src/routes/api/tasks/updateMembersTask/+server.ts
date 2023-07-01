@@ -8,6 +8,10 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     const list = {taskName: body.get('taskName'), listName: body.get('listName') };
     const member = { newMember: body.get('newMember'), isDelete: body.get('isDelete') };
 
+    console.log(list);
+    console.log(member);
+    
+    
     const users = await getMailUsers();
     let userAux = users.find((user) => user.id === member.newMember);
     if (member.newMember !== null && userAux) {
