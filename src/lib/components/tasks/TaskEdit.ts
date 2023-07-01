@@ -1,5 +1,6 @@
-export async function saveTask(event, user) {
+export async function saveTask(event, user, lisName) {
     try {
+
         const parent = event.target.parentElement;
         const inputs = parent.querySelectorAll('input');
         const labels = parent.querySelectorAll('label');
@@ -22,12 +23,14 @@ export async function saveTask(event, user) {
         if (isChecked) {
             oldChecked = false;
         }
+
         const body = new FormData();
         body.append('userId', user.userId.toString());
         body.append('taskNameOld', oldValue);
         body.append('taskName', inputValueTask);
         body.append('isCompletedOld', oldChecked.toString());
         body.append('isCompleted', isChecked.toString());
+        body.append('listName', lisName);
 
         const result = await fetch('/api/tasks/updateTasks', {
             method: 'PUT', body
@@ -55,7 +58,7 @@ export function showTasks() {
     labels[0].style.display = "none";
 }
 
-export async function saveCalendar(event, user, date, dates, prevDate, prevDates) {
+export async function saveCalendar(event, user, date, dates, prevDate, prevDates, lisName) {
     let oldDateElem = event.target.parentNode.querySelector('span');
     let oldDate = oldDateElem.textContent;
     const body = new FormData();
@@ -80,6 +83,7 @@ export async function saveCalendar(event, user, date, dates, prevDate, prevDates
         body.append('oldDates', oldDate);
     }
 
+    body.append('listName', lisName);
     body.append('modifyDate', 'true');
 
     const result = await fetch('/api/tasks/updateTasks', {
