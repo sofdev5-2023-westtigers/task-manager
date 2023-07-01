@@ -9,7 +9,7 @@
     import { msg, setMsg } from '../modalAddMember/Addmsg';
 
     export let name = '';
-    export let nameList : string = '';
+    export let listName:string = '';
     export let isCompleted : boolean;
     export let dateValue = '';
     export let containsDate = false;
@@ -32,7 +32,7 @@
     }
 
     async function sendMsg(){
-        const memberList = await getMembersTaskList(nameList, name);
+        const memberList = await getMembersTaskList(listName, name);
         console.log(memberList);
 
         memberList.forEach(member => {
@@ -41,7 +41,7 @@
                 from: 'wt028615@gmail.com',
                 subject: "Task Complete!!",
                 text: "task are complete",
-                html: "Task " + name + " of the " + nameList +  " list are complete!"
+                html: "Task " + name + " of the " + listName +  " list are complete!"
             };
 
             setMsg(msgNew);
@@ -65,20 +65,20 @@
             <input data-testid="input" type="text" hidden>
             <label class="label-text" on:click={showTasks} >{name}</label>
             <input data-testid="input-edit" class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
-            <button data-testid="button-done" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={() => saveTask(event, user)} style="display: none;">Done</button>
+            <button data-testid="button-done" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={() => saveTask(event, user, listName)} style="display: none;">Done</button>
             {#if isCompleted}
-                <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)} checked />
+                <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user, listName)} checked />
             {:else}
-                <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)} on:change={() => sendMsg()}/>
+                <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user, listName)}/>
             {/if}
         </div>
         {#if containsDate}
             <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{containsDate? dateValue : date}</span></i>
-            <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates)} hidden>Save</button>
+            <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates, listName)} hidden>Save</button>
         {/if}
         {#if containsDates}
             <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{containsDates? dateValue : dates}</span></i>
-            <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates)} hidden>Save</button>
+            <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates, listName)} hidden>Save</button>
         {/if}
         <div data-testid="datepick" class="datepick-select" hidden>
             <DatePick/>
