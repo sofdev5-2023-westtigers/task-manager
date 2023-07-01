@@ -10,14 +10,16 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 
 
   const users = await getMailUsers();
-  let userAux = users.find((user) => user.id === member.newMember);
+  let userAux = users.find((user) => user.email === member.newMember);
+  console.log("🚀 ~ file: +server.ts:14 ~ constPUT:RequestHandler= ~ userAux:", userAux)
+  
   if (member.newMember !== null && userAux) {
     let listAux = await lists.findOne({ listName: list.listName });
     const membersList = listAux.listMembers;
 
     if (member.isDelete === 'True') {
-      membersList.splice(membersList.indexOf(userAux), 1);
-    }else if(!(membersList.indexOf(userAux, 1) >= 0)){
+      membersList.splice(membersList.indexOf(userAux.email), 1);
+    }else if(!(membersList.indexOf(userAux, 1) > -1)){
       membersList.push(userAux);
     }
 
@@ -28,7 +30,7 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
   }
 
 
-  const updatedList = await tasks.findOne({ listName: list.listName });
+  const updatedList = await lists.findOne({ listName: list.listName });
   console.log(updatedList, locals);
   return json(updatedList);
 };
