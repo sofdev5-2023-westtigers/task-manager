@@ -158,26 +158,12 @@
 					>{containsDate ? dateValue : date}</span
 				></i
 			>
-			<button
-				class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm"
-				name="save"
-				type="button"
-				on:click={(event) => saveCalendar(event)}
-				hidden>Save</button
-			>
 		{/if}
 		{#if showPickDates || containsDates}
 			<i class="mi mi-calendar"
 				><span class="u-sr-only" on:click={(event) => showCalendar(event)}
 					>{containsDates ? dateValue : dates}</span
 				></i
-			>
-			<button
-				class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm"
-				name="save"
-				type="button"
-				on:click={(event) => saveCalendar(event)}
-				hidden>Save</button
 			>
 		{/if}
 	</div>
@@ -186,9 +172,6 @@
 		{#if isTimeChronometer}
 			<Cronometer nameTask={inputValue} {nameList} timeChr={timeChronometer} userlog={user} />
 		{/if}
-	</div>
-	<div data-testid="datepick" class="datepick-select" hidden>
-		<DatePick />
 	</div>
 	<!-- check -->
 	<div style="margin-right: 20px;">
