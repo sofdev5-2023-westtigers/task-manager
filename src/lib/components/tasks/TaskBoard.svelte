@@ -63,18 +63,18 @@
 					{/if}
 					{#if task.date}
 						<TaskCard
-							name={task.taskName}
-							containsDate={true}
-							dateValue={formatDate(task.date)}
-							isCompleted={task.isCompleted}
+								name={task.taskName}
+								containsDate={true}
+								dateValue={formatDate(task.date)}
+								isCompleted={task.isCompleted}
 						/>
 					{/if}
 					{#if task.dates}
 						<TaskCard
-							name={task.taskName}
-							containsDates={true}
-							isCompleted={task.isCompleted}
-							dateValue={task.dates.map((dateString) => formatDate(dateString)).join('-')}
+								name={task.taskName}
+								containsDates={true}
+								isCompleted={task.isCompleted}
+								dateValue={task.dates.map((dateString) => formatDate(dateString)).join('-')}
 						/>
 					{/if}
 				{/if}
@@ -84,29 +84,33 @@
 	<div class="flex flex-col justify-center m-2 m-1">
 		{#if !isShowNew}
 			<button
-				class=" btn-ghost button-AddTask px-1 py-1 mt-2 rounded-md text-sm"
-				type="button"
-				on:click={(addNewTask(event, name), hiddenShowAddTask)}>
+					class=" btn-ghost button-AddTask px-1 py-1 mt-2 rounded-md text-sm"
+					type="button"
+					on:click={(addNewTask(event, name), hiddenShowAddTask)}>
 				+ New
 			</button>
 		{/if}
 		{#if isShowNew}
 			<div class="flex-col p-2">
 				<input
-					data-testid="input-name-task"
-					class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm"
-					type="text"
-					name="item1-textfield"
-					placeholder="Name Task...."
+						data-testid="input-name-task"
+						class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm"
+						type="text"
+						name="item1-textfield"
+						placeholder="Name Task...."
 				/>
-				<DatePick />
+				<div class="date-section">
+					<p class="date-text">Select a date</p>
+					<DatePick />
+				</div>
+
 				<div class=" pt-2">
 					<button
-					data-testid="button-add"
-					class="button-add bg-[#ABC4AA] text-black rounded-md"
-					type="button"
-					style="height: 25px; width: 50px; border: 3px solid #92AD91;"
-					on:click={createTask(
+							data-testid="button-add"
+							class="button-add bg-[#ABC4AA] text-black rounded-md"
+							type="button"
+							style="height: 25px; width: 50px; border: 3px solid #92AD91;"
+							on:click={createTask(
 						event,
 						user,
 						name,
@@ -122,8 +126,22 @@
 					>
 					<button class="rounded-md " style="background-color: #EDB491; height: 25px; width: 80px; border: 3px solid #BB9075;" on:click={hiddenShowAddTask}>CANCEL</button>
 				</div>
-				
+
 			</div>
 		{/if}
 	</div>
 </div>
+<style>
+	.date-section {
+		margin: 2px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	.date-text {
+		margin: 2px;
+		font-size: 1em;
+		color: #333;
+	}
+</style>
+
