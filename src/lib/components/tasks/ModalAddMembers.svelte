@@ -25,7 +25,7 @@
 
     	setMsg(msgNew);
     	if (msg !== null) {
-			alert("send menssage for add member in task succefully");
+			alert("send menssage for add member in" + titleModal + "succefully");
     	    fetch("/api/mail/sendmail",{
     	      method: "POST",
     	      body: JSON.stringify(msg),
