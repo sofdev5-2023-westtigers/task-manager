@@ -14,11 +14,11 @@ export async function addNewTask(event, name) {
     }
 }
 
-export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList, isCronometer) {
+export async function createTask(event, user, name, date, dates, showPickDate, showPickDates, setFalsePicks, taskList, isToggled, isCronometer) {
     const inputElement = document.querySelector('.input-nameTask');
-    console.log(inputElement);
     const inputValue1 = inputElement.value;
 
+    console.log(inputValue1)
     if (inputValue1) {
 
         let newTask = null;
@@ -50,24 +50,44 @@ export async function createTask(event, user, name, date, dates, showPickDate, s
         const taskId = data._id;
 
         if (showPickDate == true) {
-            newTask = new TaskCard({
-                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
-                props: { id: taskId, name: inputValue1, isCompleted: false, containsDate: true, dateValue: date, isTimeChronometer: isCronometer },
-            });
-
-
+            console.log("showPickDate");
+            if (!isToggled) {
+                newTask = new NewTask({
+                    target: event.target.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, inputValue: inputValue1, containsDate: true, dateValue: date, isTimeChronometer: isCronometer },
+                });
+            } else {
+                newTask = new TaskCard({
+                    target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, name: inputValue1, isCompleted: false, containsDate: true, dateValue: date, isTimeChronometer: isCronometer },
+                });
+            }
         } else if (showPickDates == true) {
-            newTask = new TaskCard({
-                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
-                props: { id: taskId, name: inputValue1, isCompleted: false, containsDates: true, dateValue: dates, isTimeChronometer: isCronometer },
-            });
-
-
+            console.log("showPickDates");
+            if (!isToggled) {
+                newTask = new NewTask({
+                    target: event.target.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, inputValue: inputValue1, containsDates: true, dateValue: dates, isTimeChronometer: isCronometer },
+                });
+            } else {
+                newTask = new TaskCard({
+                    target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, name: inputValue1, isCompleted: false, containsDates: true, dateValue: dates, isTimeChronometer: isCronometer },
+                });
+            }
         } else {
-            newTask = new TaskCard({
-                target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
-                props: { id: taskId, name: inputValue1, isCompleted: false, isTimeChronometer: isCronometer },
-            });
+            console.log("a")
+            if (!isToggled) {
+                newTask = new NewTask({
+                    target: event.target.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, inputValue: inputValue1, isTimeChronometer: isCronometer },
+                });
+            } else {
+                newTask = new TaskCard({
+                    target: event.target.parentNode.parentNode.parentNode.querySelector('.list-Task'),
+                    props: { id: taskId, name: inputValue1, isCompleted: false, isTimeChronometer: isCronometer },
+                });
+            }
         }
 
         setFalsePicks();

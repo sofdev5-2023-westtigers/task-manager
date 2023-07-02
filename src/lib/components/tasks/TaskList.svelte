@@ -10,6 +10,7 @@
 
   export let name = '';
   export let inputValue = [];
+  export let isToggled:boolean;
   let user: User;
   let taskList = [];
   export let inputValueListName = '';
@@ -34,20 +35,25 @@
     prevDate = date;
     prevDates = dates;
   }
+
+  let isShowNew: boolean = false;
+
+	function hiddenShowAddTask() {
+		isShowNew = !isShowNew;
+	}
 </script>
 
 <svelte:head>
 	<link rel="stylesheet" href="https://unpkg.com/mono-icons@1.0.5/iconfont/icons.css" >
 </svelte:head>
 
-<div class="list bg-[#A9907E] rounded-[10PX] p-4 mb-4">
+<div class="list bg-[#A9907E] rounded-[10PX] p-4 mb-1" style="border: 4px solid #796353">
   <label class="title-List font-bold text-3xl" on:click={handleClick} style="white-space: pre-line;">{name.replace(/(.{1,36})/g, "$1\n")}</label>
-  <button class="button-AddTask bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" type="button" on:click={addNewTask(event, name)}>Add task</button>
   <input class="listName-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
   <button on:click={saveList(event, user)} style="display: none;">Done</button>
   <ul class="ul-listTasks"></ul>
-  <li class="li-newtask list-none">
-    <input class="input-nameTask border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
+  <li class="li-newtask list-none pt-3">
+    <input class="border-gray-300 bg-gray-100 rounded-[20PX] w-1/2 px-2 py-1 mt-2 text-sm" hidden type="text" name="item1-textfield" placeholder="Name Task....">
     <div class="datepick-select" hidden>
       <DatePick/>
     </div>
@@ -77,6 +83,53 @@
       {/each}
     </ul>
   </li>
+
+  
+</div>
+      <div class="rounded-md flex flex-col place-items-center mb-4" style="background-color: #F2F2F2; border: 3px solid #D9D9D9">
+  {#if !isShowNew}
+    <button
+      class=" btn-ghost button-AddTask rounded-md text-lg h-10 w-full"
+      type="button"
+      on:click={(addNewTask(event, name), hiddenShowAddTask)}>
+      + New
+    </button>
+  {/if}
+  {#if isShowNew}
+    <div class="flex-col p-2">
+      <input
+        data-testid="input-name-task"
+        class="input-nameTask text-black border-gray-300 bg-gray-100 rounded-[20PX] px-2 py-1 mt-2 text-sm"
+        type="text"
+        name="item1-textfield"
+        placeholder="Name Task...."
+      />
+      <DatePick />
+      <div class=" pt-2">
+        <button
+        data-testid="button-add"
+        class="button-add bg-[#ABC4AA] text-black rounded-md"
+        type="button"
+        style="height: 25px; width: 50px; border: 3px solid #92AD91;"
+        on:click={createTask(
+          event,
+          user,
+          name,
+          date,
+          dates,
+          showPickDate,
+          showPickDates,
+          setFalsePicks,
+          taskList,
+          isToggled,
+          true
+        ), hiddenShowAddTask()}>ADD</button
+        >
+        <button class="rounded-md " style="background-color: #EDB491; height: 25px; width: 80px; border: 3px solid #BB9075;" on:click={hiddenShowAddTask}>CANCEL</button>
+      </div>
+      
+    </div>
+  {/if}
 </div>
 
 <style>
