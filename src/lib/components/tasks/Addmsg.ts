@@ -2,14 +2,6 @@
 
 export let msg : {} | null = null;
 
-export async function setMsg(toE : string, subjectE : string, textE : string, htmlE : string){
-    const msgNew = {
-        to: toE,
-        from:  "wt028615@gmail.com",
-        subject: subjectE,
-        text: textE,
-        html: htmlE,
-    };
-
+export async function setMsg(msgNew : Object | null){
     msg = msgNew;
 }
