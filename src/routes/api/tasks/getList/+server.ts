@@ -7,7 +7,7 @@ export const PUT: RequestHandler = async ({ request }) => {
   const req = { userID: body.get('userId') }
 
   const [groupedTasks, groupedList] = await Promise.all([
-    tasks.aggregate([{ $group: { _id: { userId: "$userId", listName: "$listName" }, tasks: { $push: "$$ROOT" } } }]).toArray(),
+    tasks.aggregate([{ $group: { _id: { userId: "$userId", listName: "$listName", }, tasks: { $push: "$$ROOT" } } }]).toArray(),
     lists.aggregate([{ $group: { _id: { listName: "$listName" }, lists: { $push: "$listMembers" } } }]).toArray()
   ]);
 
@@ -16,15 +16,28 @@ export const PUT: RequestHandler = async ({ request }) => {
       try {
         const listAux = s.lists[0];
         return listAux && listAux.find(objeto => objeto.id === req.userID);
-      } catch (error: TypeError) { }
+      } catch (error: TypeError) {}
     })
     .map(s => s._id.listName);
 
   const asw = groupedTasks.filter(obj => {
     try {
       return obj._id.userId && (obj._id.userId === req.userID || list.includes(obj._id.listName));
-    } catch (err) { }
+    } catch (err) {}
   });
 
-  return json(asw);
+  const groupedDocuments: Record<string,  [Document]> = {};
+
+  await asw.forEach((doc) => {
+    const { listName, userId } = doc._id
+    const tasks = doc.tasks;
+    if (groupedDocuments[listName]) {
+      groupedDocuments[listName].tasks.push(...tasks);
+    } else {
+      groupedDocuments[listName] = {listName, tasks };
+    }
+  });
+  const result: Document[] = Object.values(groupedDocuments);
+
+  return json(result);
 };

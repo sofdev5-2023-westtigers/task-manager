@@ -126,8 +126,8 @@
       {#if !isToggled}
         <div class="flex flex-col ml-7 mt-5">
           {#each groupedTasks as group}
-            {#if group._id.userId && user}
-            <TaskList name={group._id.listName} inputValue={group.tasks} isToggled={isToggled}/>
+            {#if group.listName && user}
+            <TaskList name={group.listName} inputValue={group.tasks} isToggled={isToggled}/>
             {/if}
           {/each}
           {#each listTasks as list}
@@ -137,9 +137,9 @@
       {:else}
         <div class="flex flex-row">
           {#each groupedTasks as group}
-            {#if group._id.userId && user}
+            {#if group.listName && user}
               <div class="flex-item px-2">
-                <TaskBoard name={group._id.listName} inputValue={group.tasks} isToggled={isToggled}/>
+                <TaskBoard name={group.listName} inputValue={group.tasks} isToggled={isToggled}/>
               </div> 
             {/if}
           {/each}
