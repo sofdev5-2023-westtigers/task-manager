@@ -3,11 +3,24 @@ import { fireEvent, render, screen, waitFor} from '@testing-library/svelte';
 import TaskBoard from '../lib/components/tasks/TaskBoard.svelte';
 
 describe('TaskBoard component background', () => {
-	it('should render with white background color', () => {
-		render(TaskBoard);
-		const clazz = screen.getByTestId('content-element').getAttribute('class');
-		expect(() => screen.getByTestId('content-element')).not.toThrow();
-		expect(clazz).toContain('white');
+	it('should render with correct background color', () => {
+		render(TaskBoard, {
+			props: {
+				name: 'Test Board',
+				inputValue: [],
+				isToggled: false
+			}
+		});
+
+		const boardElement = screen.getByTestId('content-board');
+		const boardLabel = screen.getByText('Test Board');
+
+
+		expect(boardElement).not.toEqual(null);
+		expect(boardLabel).not.toEqual(null);
+	
+		const computedStyles = window.getComputedStyle(boardElement);
+		expect(computedStyles.backgroundColor).toEqual('rgb(242, 242, 242)');
 	});
 });
 

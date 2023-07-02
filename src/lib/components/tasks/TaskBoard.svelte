@@ -19,6 +19,7 @@
 
 	export let name = '';
 	export let inputValue: any[] = [];
+	export let isToggled:boolean;
 	let user: User;
 	let taskList: any[] = [];
 
@@ -50,7 +51,7 @@
 	}
 </script>
 
-<div class="rounded-md" style=" width: 250px; border: 3px solid #D9D9D9; background-color: #F2F2F2;">
+<div data-testid="content-board" class="rounded-md" style=" width: 250px; border: 3px solid #D9D9D9; background-color: #F2F2F2;">
 	<div data-testid="content-element" class="rounded-md p-4 justify-start">
 		<!-- board category header -->
 		<label class=" btn-ghost title-List rounded font-bold text-2xl p-2" on:click={handleClick} style="white-space: pre-line;">{name.replace(/(.{26})/g, "$&\n")}</label>
@@ -120,7 +121,7 @@
 						showPickDates,
 						setFalsePicks,
 						taskList,
-
+						isToggled,
 						true
 					), hiddenShowAddTask()}>ADD</button
 					>
