@@ -24,8 +24,8 @@
         };
 
     	setMsg(msgNew);
-    	if (msg !== null) {
-			alert("send menssage for add member in" + titleModal + "succefully");
+    	if (inputValue1) {
+			alert("send menssage for add member in" + titleModal + " succefully");
     	    fetch("/api/mail/sendmail",{
     	      method: "POST",
     	      body: JSON.stringify(msg),
@@ -33,7 +33,6 @@
     	    });
 		    modalAddMember = false;
     	}
-        setMsg(null);
   	}
 </script>
 		<Modal  bind:open={modalAddMembers} size="xs">
