@@ -4,7 +4,7 @@
   import DatePick from '$calendar/DatePick.svelte';
   import type { User } from '$lib/auth/User';
   import NewTask from './NewTask.svelte';
-  import { setMsg, msg } from './Addmsg';
+  import { setMsg, msg } from '../modalAddMember/Addmsg';
   import { Button, Modal, Label, Input } from 'flowbite-svelte';
   import {
     date,
