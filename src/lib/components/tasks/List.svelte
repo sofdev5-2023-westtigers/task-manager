@@ -35,7 +35,6 @@
   let modalAddMembersList = false;
 
   let email: string;
-  let emailtoDelete: string;
 
   let memberList: any;
 
@@ -302,7 +301,7 @@
                     /></svg
                   >
                   <span class="flex-1 ml-3 whitespace-nowrap"
-                    >{member.lastName} {member.firstName}</span
+                    >{member.firstName} {member.lastName}</span
                   >
                   <Button
                     pill={true}
@@ -311,6 +310,7 @@
                     class="!p-2"
                     size="xs"
                     on:click={() => {
+                      console.log(member.email);
                       deleteMemberToList(member.email);
                     }}
                   >

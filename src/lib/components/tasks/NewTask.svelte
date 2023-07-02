@@ -70,6 +70,7 @@
 		Registry.auth.getUser().subscribe((data: User) => {
 			user = data;
 		});
+		
 	});
 
 	function show() {
@@ -155,6 +156,8 @@
 			textMsg={'added to a Task'}
 			htmlMsg={'in the task manager app you were added to the task ' + inputValue}
 			nameUse={'Task'}
+			taskName={inputValue}
+			listName={nameList}
 			bind:modalAddMemberList={modalAddMembersTask}
 		/>
 		<button
