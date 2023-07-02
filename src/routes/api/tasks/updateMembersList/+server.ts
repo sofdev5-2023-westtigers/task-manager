@@ -17,9 +17,11 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
     let listAux = await lists.findOne({ listName: list.listName });
     const membersList = listAux.listMembers;
 
+    let userFoundIndex = membersList.findIndex(obj => obj.email === userAux.email);
+
     if (member.isDelete === 'True') {
-      membersList.splice(membersList.indexOf(userAux.email), 1);
-    }else if(!(membersList.indexOf(userAux, 1) > -1)){
+      membersList.splice(userFoundIndex, 1);
+    }else if(!(userFoundIndex !== -1)){
       membersList.push(userAux);
     }
 
