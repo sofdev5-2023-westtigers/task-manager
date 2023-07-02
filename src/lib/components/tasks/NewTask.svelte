@@ -137,11 +137,9 @@
     <button data-testid="button-name" class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
     {#if showPickDate || containsDate}
       <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDate? dateValue : date}</span></i>
-      <button class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
     {/if}
     {#if showPickDates  || containsDates}
       <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => showCalendar(event)}>{containsDates? dateValue : dates}</span></i>
-      <button class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event)} hidden>Save</button>
     {/if}
   </div>
   <!-- chrono -->
@@ -150,9 +148,7 @@
       <Cronometer nameTask={inputValue} nameList={nameList} timeChr={timeChronometer} userlog={user}/>
     {/if}
   </div>
-  <div data-testid="datepick" class="datepick-select" hidden>
-    <DatePick/>
-  </div>
+
   <!-- check -->
   <div style="margin-right: 20px;">
     {#if isChecked}
@@ -170,11 +166,9 @@
 
   .card-task {
     background-color: white;
-    border-radius: 10px;
     border: 4px solid;
     border-color: rgb(161, 161, 161);
     margin-bottom:2px;
-    display: inline-flex;
     align-items: center;
     width: 100%;
     height: 80px;
@@ -198,5 +192,11 @@
   .name-label {
     margin-right: auto;
     margin-left: 5px;
+  }
+  .buttonSaveDate {
+    margin-top: 1px;
+    color: #fff;
+    background-color: #000;
+
   }
 </style>
