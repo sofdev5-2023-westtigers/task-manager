@@ -84,11 +84,21 @@
         showForm = false;
     }
 
+    let isButtonDisabled = false; // Variable para desactivar/activar el botón
+
     function toggle() {
-      fetchTasks();
-      isToggled = !isToggled;
-      console.log("isToggled", isToggled);
-      localStorage.setItem('isToggled', isToggled.toString());
+        if (isButtonDisabled) return; // Salir si el botón está desactivado
+
+        isButtonDisabled = true; // Desactivar el botón
+
+        fetchTasks();
+        isToggled = !isToggled;
+        console.log("isToggled", isToggled);
+        localStorage.setItem('isToggled', isToggled.toString());
+
+        setTimeout(() => {
+          isButtonDisabled = false;
+        }, 300);
     }
 
 </script>
