@@ -6,6 +6,8 @@
 	import { date, dates, showPickDate, showPickDates } from '$calendar/CalendarOptions.ts';
 	import { saveTask } from './TaskEdit';
 	import DatePick from '../calendar/DatePick.svelte';
+	import { Button } from 'flowbite-svelte';
+    import ModalAddMembers from '../modalAddMember/ModalAddMembers.svelte';
 
 	export let inputValue = '';
 	export let nameList = '';
@@ -16,6 +18,7 @@
 	export let timeChronometer: number = 0;
 	export let isChecked = false;
 
+	let modalAddMembersTask = false;
 	let user: User;
 	let prevDate;
 	let prevDates;
@@ -67,6 +70,7 @@
 		Registry.auth.getUser().subscribe((data: User) => {
 			user = data;
 		});
+		
 	});
 
 	function show() {
@@ -145,6 +149,16 @@
 			class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm"
 			type="text"
 			style="display: none;"
+		/>
+		<Button color="light" style="margin-left:10px" size="xs" pill on:click={() => (modalAddMembersTask = true)}>+</Button>
+		<ModalAddMembers
+			subjectMsg={'Added to a Task!!'}
+			textMsg={'added to a Task'}
+			htmlMsg={'in the task manager app you were added to the task ' + inputValue}
+			nameUse={'Task'}
+			taskName={inputValue}
+			listName={nameList}
+			bind:modalAddMemberList={modalAddMembersTask}
 		/>
 		<button
 			data-testid="button-name"
