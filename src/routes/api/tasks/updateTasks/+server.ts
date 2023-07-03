@@ -15,12 +15,12 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 
   if (body.get('modifyDate') === "true") {
     const resultDates = await tasks.updateOne(
-      { dates: parseDates(body.get('oldDates')), listName: list.listName },
+      { dates: parseDates(body.get('oldDates')), listName: list.listName , taskName: body.get('taskName')},
       { $set: { date: listCalendar.date !== "" ? parseDate(listCalendar.date) : null, dates: listCalendar.dates !== "" ? parseDates(listCalendar.dates) : null } }
     );
 
     const resultDate = await tasks.updateOne(
-      { date: parseDate(body.get('oldDate')), listName: list.listName },
+      { date: parseDate(body.get('oldDate')), listName: list.listName, taskName: body.get('taskName') },
       { $set: { date: listCalendar.date !== "" ? parseDate(listCalendar.date) : null, dates: listCalendar.dates !== "" ? parseDates(listCalendar.dates) : null } }
     );
   }
