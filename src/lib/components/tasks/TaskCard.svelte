@@ -96,7 +96,7 @@
             {/if}
         {/if}
         {#if containsDates}
-            <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{containsDate? dateValue : dates}</span></i>
+            <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{containsDates? dateValue : dates}</span></i>
             {#if showDatePicker}
                 <div data-testid="datepick" class="datepick-select">
                     <DatePick/>
