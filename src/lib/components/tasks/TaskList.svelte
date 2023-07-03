@@ -99,11 +99,11 @@
             <button class="buttonDone bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" on:click={saveTask(event, user)} style="display: none;">Done</button>
             {#if task.date}
               <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{formatDate(task.date)}</span></i>
-              <button  class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates, task.taskName, name)} hidden>Save</button>
+              <button  class="buttonDoneDate bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates, name, task.taskName)} hidden>Save</button>
             {/if}
             {#if task.dates}
               <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{task.dates.map(dateString => formatDate(dateString)).join("-")}</span></i>
-              <button  class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates, task.taskName, name)} hidden>Save</button>
+              <button  class="buttonDoneDates bg-[#c4bcbc] text-black px-1 py-1 rounded-md text-sm" name="save" type="button" on:click={(event) => saveCalendar(event, user, date, dates, prevDate, prevDates, name, task.taskName)} hidden>Save</button>
             {/if}
           </div>
         {/if}
