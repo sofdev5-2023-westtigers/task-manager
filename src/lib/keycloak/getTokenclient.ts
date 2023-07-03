@@ -6,7 +6,7 @@ export function getTokenClient() {
     },
     body: new URLSearchParams({
       'client_id': 'backendclient',
-      'client_secret': '1ZjngEaIQQqWhsofQlwyJqFnn0L7blht',
+      'client_secret': 'dbMKso2knjfi9ljnZrpqJ55KVGAXMWSG',
       'grant_type': 'client_credentials'
     })
   })

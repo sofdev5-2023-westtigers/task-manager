@@ -5,8 +5,11 @@
     import type { User } from '$lib/auth/User';
     import {date, dates} from '$calendar/CalendarOptions';
     import { saveTask, showTasks, saveCalendar, showCalendar} from "./TaskEdit";
+    import {getMembersTaskList} from '../tasks/MembersTaskList';;
+    import { msg, setMsg } from '../modalAddMember/Addmsg';
 
     export let name = '';
+    export let nameList : string = '';
     export let isCompleted : boolean;
     export let dateValue = '';
     export let containsDate = false;
@@ -36,6 +39,29 @@
         saveCalendar(event, user, date, dates, prevDate, prevDates);
         cancelUpdate();
     }
+
+    async function sendMsg(){
+        const memberList = await getMembersTaskList(nameList, name);
+        console.log(memberList);
+
+        memberList.forEach(member => {
+            const msgNew = {
+                to: member.email,
+                from: 'wt028615@gmail.com',
+                subject: "Task Complete!!",
+                text: "task are complete",
+                html: "Task " + name + " of the " + nameList +  " list are complete!"
+            };
+
+            setMsg(msgNew);
+
+            fetch('/api/mail/sendmail', {
+                method: 'POST',
+                body: JSON.stringify(msg),
+                headers: { 'Content-Type': 'application/json' }
+            });
+        });
+    }
 </script>
 
 
@@ -54,7 +80,7 @@
             {#if isCompleted}
                 <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)} checked />
             {:else}
-                <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)}/>
+                <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)} on:change={() => sendMsg()}/>
             {/if}
         </div>
         {#if containsDate || containsDates}

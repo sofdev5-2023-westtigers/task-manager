@@ -60,22 +60,24 @@
 			{#each inputValue as task}
 				{#if task}
 					{#if !task.dates && !task.date}
-						<TaskCard name={task.taskName} isCompleted={task.isCompleted} />
+						<TaskCard name={task.taskName} nameList={name} isCompleted={task.isCompleted} />
 					{/if}
 					{#if task.date}
 						<TaskCard
-								name={task.taskName}
-								containsDate={true}
-								dateValue={formatDate(task.date)}
-								isCompleted={task.isCompleted}
+							name={task.taskName}
+							nameList={name}
+							containsDate={true}
+							dateValue={formatDate(task.date)}
+							isCompleted={task.isCompleted}
 						/>
 					{/if}
 					{#if task.dates}
 						<TaskCard
-								name={task.taskName}
-								containsDates={true}
-								isCompleted={task.isCompleted}
-								dateValue={task.dates.map((dateString) => formatDate(dateString)).join('-')}
+							name={task.taskName}
+							nameList={name}
+							containsDates={true}
+							isCompleted={task.isCompleted}
+							dateValue={task.dates.map((dateString) => formatDate(dateString)).join('-')}
 						/>
 					{/if}
 				{/if}
