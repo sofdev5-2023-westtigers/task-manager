@@ -79,12 +79,6 @@
 							isCompleted={task.isCompleted}
 							dateValue={task.dates.map((dateString) => formatDate(dateString)).join('-')}
 						/>
-					{/if}
-				{/if}
-			{/each}
-		</ul>
-	</div>
-	<div class="flex flex-col justify-center m-2 m-1">
 		{#if !isShowNew}
 			<button
 					class=" btn-ghost button-AddTask px-1 py-1 mt-2 rounded-md text-sm"
