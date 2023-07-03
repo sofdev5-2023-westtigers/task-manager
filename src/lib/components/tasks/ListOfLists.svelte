@@ -65,7 +65,7 @@
             members.forEach((member) => {
               body.append('listMembers[]', member); 
             });
-            
+            body.append('userId', user.userId);
             const response = await fetch('/api/tasks/addList', {
             method: 'POST', body
             });
