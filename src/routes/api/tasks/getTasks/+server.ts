@@ -8,7 +8,7 @@ export const GET: RequestHandler = async ({ request }) => {
   const userId = params[0].split("=")[1];
   const listName = decodedURL;
 
-  const taskList = await tasks.find({userId: userId, listName: listName}).toArray();
+  const taskList = await tasks.find({listName: listName}).toArray();
 
     return json(taskList);
 };

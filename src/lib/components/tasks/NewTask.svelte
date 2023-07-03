@@ -53,6 +53,7 @@
 			body.append('taskName', inputValue);
 			body.append('isCompletedOld', oldChecked.toString());
 			body.append('isCompleted', isChecked.toString());
+			body.append('listName', nameList);
 
 			const result = await fetch('/api/tasks/updateTasks', {
 				method: 'PUT',
@@ -108,6 +109,7 @@
 			body.append('oldDates', oldDate);
 		}
 
+		body.append('listName', nameList);
 		body.append('modifyDate', 'true');
 
 		const result = await fetch('/api/tasks/updateTasks', {

@@ -9,25 +9,25 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
   const listTimeChronometer = { userId: body.get('userId'), oldTimeChronometer: body.get('oldTimeChronometer'), timeChronometer: body.get('timeChronometer') };
 
   const result = await tasks.updateOne(
-    { userId: body.get('userId'), taskName: body.get('taskNameOld') },
+    { taskName: body.get('taskNameOld'), listName: list.listName },
     { $set: { taskName: list.taskName, isCompleted: list.isCompleted == "true" } }
   );
 
   if (body.get('modifyDate') === "true") {
     const resultDates = await tasks.updateOne(
-      { userId: body.get('userId'), dates: parseDates(body.get('oldDates')) },
+      { dates: parseDates(body.get('oldDates')), listName: list.listName },
       { $set: { date: listCalendar.date !== "" ? parseDate(listCalendar.date) : null, dates: listCalendar.dates !== "" ? parseDates(listCalendar.dates) : null } }
     );
 
     const resultDate = await tasks.updateOne(
-      { userId: body.get('userId'), date: parseDate(body.get('oldDate')) },
+      { date: parseDate(body.get('oldDate')), listName: list.listName },
       { $set: { date: listCalendar.date !== "" ? parseDate(listCalendar.date) : null, dates: listCalendar.dates !== "" ? parseDates(listCalendar.dates) : null } }
     );
   }
 
   if (body.get('modifyChronometerTime') === "true") {
     const resultChronometer = await tasks.updateOne(
-      { userId: body.get('userId'), taskName: body.get('taskName'), listName: body.get('listName') },
+      { taskName: body.get('taskName'), listName: body.get('listName') },
       { $set: { timeChronometer: listTimeChronometer.timeChronometer !== "" ? parseInt(listTimeChronometer.timeChronometer) : 0 } }
     );
   }

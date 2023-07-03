@@ -7,8 +7,9 @@
     import TaskBoard from "./TaskBoard.svelte";
     import { tasksListEvents } from "$calendarTasks/CalendarTaskFunction";
     import ErrorAlert from "./ErrorAlert.svelte";
+
     let tasksList2 = [];
-    let listTasks: any[] = [];
+    let listTasks: any[] = [];  
     $:tasksList2 = tasksListEvents; 
     let user: User;
     let isToggled : boolean;
@@ -17,22 +18,29 @@
     let errorMessage = '';
     let showAlert = false;
     let showError = false;
+    let groupedTasks: any[] = [];
+    let limitToName = 26;
+    let showForm = false;
+    let listName = '';
     isToggled = localStorage.getItem('isToggled') === 'true';
+
     onMount(async() => {
       Registry.auth.getUser().subscribe((data: User) => {
         user = data;
       });
     });
-    let groupedTasks: any[] = [];
-    async function fetchTasks() {
-      const res = await fetch('/api/tasks/getList');
-      groupedTasks = await res.json();
-    }
-    fetchTasks();
 
-    let limitToName = 26;
-    let showForm = false;
-    let listName = '';
+
+    async function fetchTasks() {
+      const body = new FormData();
+      body.append('userId', user.userId);
+      const response = await fetch('/api/tasks/getList',{
+        method: 'PUT', body
+      });
+      groupedTasks = await response.json();
+    }
+
+    onMount(fetchTasks)
 
     async function createList() {
         const nameInput = document.querySelector('.text-nameList');
@@ -53,11 +61,11 @@
             const body = new FormData();
             body.append('listName', name);
 
-            let members: string[] = [''];
+            let members: string[] = [];
             members.forEach((member) => {
-              body.append('listMembers[]', member);
+              body.append('listMembers[]', member); 
             });
-            
+            body.append('userId', user.userId);
             const response = await fetch('/api/tasks/addList', {
             method: 'POST', body
             });
@@ -73,6 +81,7 @@
                 }, 2000);
             }
         }
+
         handleHide();
     }
 
@@ -117,8 +126,8 @@
       {#if !isToggled}
         <div class="flex flex-col ml-7 mt-5">
           {#each groupedTasks as group}
-            {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
-            <TaskList name={group._id.listName} inputValue={group.tasks} isToggled={isToggled}/>
+            {#if group.listName && user}
+            <TaskList name={group.listName} inputValue={group.taskList} isToggled={isToggled}/>
             {/if}
           {/each}
           {#each listTasks as list}
@@ -128,9 +137,9 @@
       {:else}
         <div class="flex flex-row">
           {#each groupedTasks as group}
-            {#if group._id.userId && user && group._id.userId.toString() === user.userId.toString()}
+            {#if group.listName && user}
               <div class="flex-item px-2">
-                <TaskBoard name={group._id.listName} inputValue={group.tasks} isToggled={isToggled}/>
+                <TaskBoard name={group.listName} inputValue={group.taskList} isToggled={isToggled}/>
               </div> 
             {/if}
           {/each}
