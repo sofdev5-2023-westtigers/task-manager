@@ -53,6 +53,8 @@
                 html: "Task " + name + " of the " + nameList +  " list are complete!"
             };
 
+            console.log(member.email);
+
             setMsg(msgNew);
 
             fetch('/api/mail/sendmail', {
