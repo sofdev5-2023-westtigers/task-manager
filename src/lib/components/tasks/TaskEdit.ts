@@ -58,7 +58,7 @@ export function showTasks() {
     labels[0].style.display = "none";
 }
 
-export async function saveCalendar(event, user, date, dates, prevDate, prevDates, lisName) {
+export async function saveCalendar(event, user, date, dates, prevDate, prevDates, lisName, taskName) {
     let oldDateElem = event.target.parentNode.querySelector('span');
     let oldDate = oldDateElem.textContent;
     const body = new FormData();
