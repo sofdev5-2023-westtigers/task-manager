@@ -43,20 +43,24 @@
 
 <li class="title-List font-bold mt-2">Due on</li>
 <div class="ml-2 mt-2">
-    <input type="radio" name="DueOnOption" id="NoDate" value="NoDate" on:change={toggleNoDate}/>
+    <input data-testid="test-nodate" type="radio" name="DueOnOption" id="NoDate" value="NoDate" on:change={toggleNoDate}/>
     <label for="NoDate">No Date</label>
 </div>
 <div class="deadlineradiobutton ml-2 mt-2">
-    <input type="radio" name="DueOnOption" id="deadLine" value="deadLine" on:change={togglePickDate} />
+    <input data-testid="test-deadline" type="radio" name="DueOnOption" id="deadLine" value="deadLine" on:change={togglePickDate} />
     <label for="deadLine">Deadline</label>
     {#if showPickDate}
-        <DeadLineCalendar/>
+        <div data-testid="deadline-calendar">
+            <DeadLineCalendar/>
+        </div>
     {/if}
 </div>
 <div class="ml-2 mt-2">
-    <input type="radio" name="DueOnOption" id="selectDay" value="selectDay" on:change={toggleShowDates} />
+    <input data-testid="test-dueon" type="radio" name="DueOnOption" id="selectDay" value="selectDay" on:change={toggleShowDates} />
     <label for="selectDay">Select Day</label>
     {#if showDates}
-        <SelectDayCalendar />
+        <div data-testid="select-day-calendar">
+            <SelectDayCalendar />
+        </div>
     {/if}
 </div>
