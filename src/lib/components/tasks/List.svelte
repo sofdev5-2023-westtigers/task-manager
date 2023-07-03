@@ -48,19 +48,10 @@
 
   async function addMemberToList() {
     await addMemberList(name, email);
-
-    console.log('userlist:');
-    const memberList = await getMembersList('tasktest2');
-    console.log(memberList);
-    // location.reload();
   }
 
   async function deleteMemberToList(emailToDelete: string) {
     await deleteMemberList(name, emailToDelete);
-    console.log('userlist after deleted:');
-    const memberList = await getMembersList('tasktest2');
-    console.log(memberList);
-    // location.reload();
   }
 
   const handleClick = () => {

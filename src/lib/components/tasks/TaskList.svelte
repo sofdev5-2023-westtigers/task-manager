@@ -3,6 +3,8 @@
   import { Registry } from '$lib/auth/Registry';
   import DatePick from '$calendar/DatePick.svelte';
   import type { User } from '$lib/auth/User';
+  import {getMembersTaskList} from '../tasks/MembersTaskList';;
+  import { msg, setMsg } from '../modalAddMember/Addmsg';
   import {date, dates, showPickDate, showPickDates, setFalsePicks} from '$calendar/CalendarOptions';
   import { saveTask, showTasks, saveCalendar, showCalendar, formatDate } from "./TaskEdit";
   import { goto } from '$app/navigation';
@@ -41,6 +43,30 @@
 	function hiddenShowAddTask() {
 		isShowNew = !isShowNew;
 	}
+
+  async function sendMsg(nameTask : string){
+      const formattedName: string = name.replace(/(.{1,36})/g, "$1\n");
+        const memberList = await getMembersTaskList(formattedName, nameTask);
+        console.log(nameTask);
+
+        memberList.forEach(member => {
+            const msgNew = {
+                to: member.email,
+                from: 'wt028615@gmail.com',
+                subject: "Task Complete!!",
+                text: "task are complete",
+                html: "Task " + nameTask + " of the " + name +  " list are complete!"
+            };
+
+            setMsg(msgNew);
+
+            fetch('/api/mail/sendmail', {
+                method: 'POST',
+                body: JSON.stringify(msg),
+                headers: { 'Content-Type': 'application/json' }
+            });
+        });
+    }
 </script>
 
 <svelte:head>
@@ -63,9 +89,9 @@
         {#if task}
           <div style="margin-bottom:2px;" class="mt-2">
             {#if JSON.parse(task.isCompleted)}
-              <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" on:change={() => saveTask(event, user)} checked>
+              <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" on:change={() => saveTask(event, user)} on:change={() => sendMsg(task.taskName)} checked>
             {:else}
-              <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" on:change={() => saveTask(event, user)}>
+              <input class="checkbox form-checkbox h-5 w-5 text-gray-600 rounded-lg align-middle" type="checkbox" name="task" on:change={() => saveTask(event, user)} on:change={() => sendMsg(task.taskName)}>
             {/if}
             <label class="label-task ml-2 text-xl"  for="task"  on:click={showTasks}>{task.taskName} </label>
             <input class="task-modified border-gray-300 bg-gray-100 rounded-[10PX] w-1/6 px-1 py-1 mt-2 text-sm" type="text" style="display: none;">
