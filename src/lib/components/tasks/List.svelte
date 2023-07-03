@@ -62,13 +62,16 @@
   function submitForm() {
     const inputElement = document.getElementById('emailP');
     const inputValue1 = inputElement?.value;
-    setMsg(
-      inputValue1,
-      'Added to a list!!',
-      'added to a list',
-      'in the task manager app you were added to the list ' + name
-    );
-    if (msg !== null) {
+
+    if (inputValue1) {
+      const msgNew = {
+        to: inputValue1,
+        from: 'wt028615@gmail.com',
+        subject: 'Added to a list!!',
+        text: 'added to a list',
+        html: 'in the task manager app you were added to the list ' + name
+      };
+    setMsg(msgNew);
       alert('send menssage for add member succefully');
       fetch('/api/mail/sendmail', {
         method: 'POST',

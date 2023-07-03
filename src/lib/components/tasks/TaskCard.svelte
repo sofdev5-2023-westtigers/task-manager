@@ -44,6 +44,8 @@
                 html: "Task " + name + " of the " + listName +  " list are complete!"
             };
 
+            console.log(member.email);
+
             setMsg(msgNew);
 
             fetch('/api/mail/sendmail', {
@@ -69,7 +71,7 @@
             {#if isCompleted}
                 <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user, listName)} checked />
             {:else}
-                <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user, listName)}/>
+                <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user, listName)}  on:change={() => sendMsg()}/>
             {/if}
         </div>
         {#if containsDate}
