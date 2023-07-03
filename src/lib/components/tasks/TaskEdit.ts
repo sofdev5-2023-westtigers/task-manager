@@ -84,6 +84,7 @@ export async function saveCalendar(event, user, date, dates, prevDate, prevDates
     }
 
     body.append('listName', lisName);
+    body.append('taskName', taskName);
     body.append('modifyDate', 'true');
 
     const result = await fetch('/api/tasks/updateTasks', {
