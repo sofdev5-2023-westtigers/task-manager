@@ -26,8 +26,8 @@
   
   <DatePicker class="mt-2" datePickerType="range" on:change on:change={handleDateChange}>
     <div>
-      <DatePickerInput labelText="Start Task" placeholder="mm/dd/yyyy" style="width: 200px;"/>
-      <DatePickerInput labelText="End Task" placeholder="mm/dd/yyyy" style="width: 200px;"/>
+      <DatePickerInput labelText="Start Task" placeholder="mm/dd/yyyy" style="width: 150px;"/>
+      <DatePickerInput labelText="End Task" placeholder="mm/dd/yyyy" style="width: 150px;"/>
     </div>
   
     {#if !isDateValid}

@@ -24,7 +24,7 @@
       placeholder="mm/dd/yyyy"
       invalid={!isDateValid}
       invalidText="Invalid date"
-      style="width: 200px;"
+      style="width: 150px;"
       on:input={handleDateChange}
     />
   </DatePicker>

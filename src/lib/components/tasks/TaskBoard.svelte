@@ -64,21 +64,27 @@
 					{/if}
 					{#if task.date}
 						<TaskCard
-							name={task.taskName}
-							nameList={name}
-							containsDate={true}
-							dateValue={formatDate(task.date)}
-							isCompleted={task.isCompleted}
+								name={task.taskName}
+								nameList={name}
+								containsDate={true}
+								dateValue={formatDate(task.date)}
+								isCompleted={task.isCompleted}
 						/>
 					{/if}
 					{#if task.dates}
 						<TaskCard
-							name={task.taskName}
-							nameList={name}
-							containsDates={true}
-							isCompleted={task.isCompleted}
-							dateValue={task.dates.map((dateString) => formatDate(dateString)).join('-')}
+								name={task.taskName}
+								nameList={name}
+								containsDates={true}
+								isCompleted={task.isCompleted}
+								dateValue={task.dates.map((dateString) => formatDate(dateString)).join('-')}
 						/>
+					{/if}
+				{/if}
+			{/each}
+		</ul>
+	</div>
+	<div class="flex flex-col justify-center m-2 m-1">
 		{#if !isShowNew}
 			<button
 					class=" btn-ghost button-AddTask px-1 py-1 mt-2 rounded-md text-sm"
@@ -96,11 +102,7 @@
 						name="item1-textfield"
 						placeholder="Name Task...."
 				/>
-				<div class="date-section">
-					<p class="date-text">Select a date</p>
-					<DatePick />
-				</div>
-
+				<DatePick />
 				<div class=" pt-2">
 					<button
 							data-testid="button-add"
@@ -128,16 +130,3 @@
 		{/if}
 	</div>
 </div>
-<style>
-	.date-section {
-		margin: 2px;
-		display: flex;
-		align-items: center;
-		gap: 10px;
-	}
-	.date-text {
-		margin: 2px;
-		font-size: 1em;
-		color: #333;
-	}
-</style>

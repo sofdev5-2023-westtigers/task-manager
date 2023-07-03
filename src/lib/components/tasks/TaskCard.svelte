@@ -83,8 +83,20 @@
                 <input class="checkbox checkbox-accent" type="checkbox" name="task" on:change={() => saveTask(event, user)} on:change={() => sendMsg()}/>
             {/if}
         </div>
-        {#if containsDate || containsDates}
+        {#if containsDate}
             <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{containsDate? dateValue : date}</span></i>
+
+            {#if showDatePicker}
+                <div data-testid="datepick" class="datepick-select">
+                    <DatePick/>
+                </div>
+                <button class="buttonSaveDate px-2 py-1 rounded-full text-xs font-medium" name="save" type="button" on:click={saveAndUpdate}>Save</button>
+                <button class="buttonCancelDate px-2 py-1 rounded-full text-xs font-medium" name="cancel" type="button" on:click={cancelUpdate}>Cancel</button>
+            {/if}
+        {/if}
+        {#if containsDates}
+            <i class="mi mi-calendar"><span class="u-sr-only" on:click={(event) => updateCalendar(event)}>{containsDate? dateValue : dates}</span></i>
+
             {#if showDatePicker}
                 <div data-testid="datepick" class="datepick-select">
                     <DatePick/>
